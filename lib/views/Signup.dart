@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
-import 'package:galaxy_flutter/views/Signup.dart';
-import 'package:galaxy_flutter/views/Home.dart';
+import 'package:galaxy_flutter/views/Login.dart';
 
-class Login extends StatefulWidget {
+class Signup extends StatefulWidget {
 
   @override
-  _LoginState createState() => _LoginState();
+  _SignupState createState() => _SignupState();
 }
 
-class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
+class _SignupState extends State<Signup> with SingleTickerProviderStateMixin {
   
   FocusNode myFocusNode = new FocusNode();
   FocusNode myFocusNode2 = new FocusNode();
+  FocusNode myFocusNode3 = new FocusNode();
 
   TextEditingController emailController = TextEditingController();
   TextEditingController senhaController = TextEditingController();
@@ -24,6 +24,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     super.initState();
     myFocusNode.addListener((){ setState((){}); });
     myFocusNode2.addListener((){ setState((){}); });
+    myFocusNode3.addListener((){ setState((){}); });
   }
 
   @override
@@ -31,6 +32,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     super.dispose();
     myFocusNode.dispose();
     myFocusNode2.dispose();
+    myFocusNode3.dispose();
   }
 
   bool _obscureText = true;
@@ -55,29 +57,48 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
             child: Column(
               children: <Widget>[
 
-                ClipPath(
-                  clipper: WaveClipperTwo(),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topRight,
-                        end: Alignment.bottomLeft,
-                        colors: [Colors.pinkAccent[700], Colors.purple[900] ])
-                    ),
-                    height: 250,
-                    width: 500 ,
-                    child: Center(
-                      child: SizedBox(
-                        width: 250,
+                Stack(
+                  children: <Widget>[
+                    ClipPath(
+                      clipper: WaveClipperTwo(),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topRight,
+                            end: Alignment.bottomLeft,
+                            colors: [Colors.pinkAccent[700], Colors.purple[900] ])
+                        ),
                         height: 250,
-                            child: FlareActor(
-                                'assets/animations/pinkPlanet.flr',
-                                animation: 'rotation',
-                                fit: BoxFit.fitWidth,
-                              ),
+                        width: 500 ,
+                        child: Center(
+                          child: SizedBox(
+                            width: 250,
+                            height: 250,
+                                child: FlareActor(
+                                    'assets/animations/pinkPlanet.flr',
+                                    animation: 'rotation',
+                                    fit: BoxFit.fitWidth,
+                                  ),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                    
+                    Padding(
+                      padding: const EdgeInsets.only(top: 25.0),
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context, 
+                            MaterialPageRoute(builder: (context) => Login())
+                          );
+                        },
+                        icon: Icon(Icons.arrow_back, color: Colors.white, size: 25.0),
+                      ),
+                    )
+
+
+                  ]
                 ),
 
                 // Form
@@ -87,7 +108,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                   child: TextFormField(
                     focusNode: myFocusNode,
                     decoration: new InputDecoration(
-                      labelText: "Email",
+                      labelText: "Seu email",
                       labelStyle: TextStyle(color: Colors.purple[700]),
                       fillColor: Colors.white,
                       focusedBorder: OutlineInputBorder(
@@ -155,7 +176,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                         : Icon(Icons.visibility_off, color: Colors.purple[700]),
                         onPressed: () => _handleOnPressed(),
                       ),
-                      labelText: "Senha",
+                      labelText: "Sua senha",
                       labelStyle: TextStyle(color: Colors.purple[700]),
                       fillColor: Colors.white,
                       focusedBorder: OutlineInputBorder(
@@ -203,11 +224,77 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                 ),
 
                 Container(
+                  padding: EdgeInsets.only(left: 15, right: 15, top: 15),
+                  child: TextFormField(
+                    style: TextStyle(
+                      fontFamily: "Poppins",
+                      color: Colors.white,
+                    ),
+                    focusNode: myFocusNode3,
+                    obscureText: _obscureText,
+                    decoration: new InputDecoration(
+                      suffixIcon: IconButton(
+                        icon: _obscureText
+                        ? Icon(Icons.visibility,  color: Colors.purple[700]) 
+                        : Icon(Icons.visibility_off, color: Colors.purple[700]),
+                        onPressed: () => _handleOnPressed(),
+                      ),
+                      labelText: "Confirme sua senha",
+                      labelStyle: TextStyle(color: Colors.purple[700]),
+                      fillColor: Colors.white,
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(25.0),
+                        borderSide: BorderSide(
+                          color: Colors.purple[700],
+                          width: 3
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(25.0),
+                        borderSide: BorderSide(
+                          color: Colors.purple[700],
+                          width: 1.5
+                        ),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(25.0),
+                        borderSide: BorderSide(
+                          color: Colors.pink[700],
+                          width: 3
+                        ),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(25.0),
+                        borderSide: BorderSide(
+                          color: Colors.pink[700],
+                          width: 1.5
+                        ),
+                      ),
+                      errorStyle: TextStyle(
+                        color: Colors.pink[700],
+                      )
+                      //fillColor: Colors.green
+                    ),
+                    validator: (val) {
+                      if(val.length==0) {
+                        return "Senha inválida";
+                      } else if (val != senhaController) {
+                        return "Senhas diferentes";
+                      } else{
+                        return null;
+                      }
+                    },
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                ),
+
+
+                Container(
                   padding: EdgeInsets.only(left: 15, right: 15, top: 25),
                   child: RaisedButton(
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+                        print("oi");
                       }
                     },
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
@@ -224,7 +311,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                         constraints: const BoxConstraints(minWidth: 100.0, minHeight: 55.0), // min sizes for Material buttons
                         alignment: Alignment.center,
                         child: Text(
-                          'Entrar',
+                          'Criar conta',
                           textAlign: TextAlign.center,
                           style: TextStyle(color: Colors.white, fontSize: 20.0,
                         ),
@@ -233,22 +320,6 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                   ),
                   ),
                ),
-
-               Container(
-                 padding: EdgeInsets.only(left: 15, right: 15, top: 25),
-                 child: Center(
-                   child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) =>  Signup() ));
-                      },
-                      child: Text('Criar uma conta', style: TextStyle(
-                        color: Colors.pink[700],
-                        fontSize: 17.0
-                        ),
-                      ),
-                   ),
-                 ),
-               )
 
 
               ],
