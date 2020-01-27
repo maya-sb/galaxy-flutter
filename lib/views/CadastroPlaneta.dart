@@ -36,10 +36,6 @@ class _CadastroPlanetaState extends State<CadastroPlaneta> {
        ),
       backgroundColor: Color(0xff380b4c),
       body: SingleChildScrollView(
-        child: Column(children: <Widget>[
-          ExpansionPanelList(body: )
-        ],),
-      ),
 
       );
   }
