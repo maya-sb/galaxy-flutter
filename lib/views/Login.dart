@@ -3,6 +3,7 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:galaxy_flutter/views/Signup.dart';
 import 'package:galaxy_flutter/views/Home.dart';
+import 'package:galaxy_flutter/views/Planet.dart';
 
 class Login extends StatefulWidget {
 
@@ -207,7 +208,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                   child: RaisedButton(
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Planet()));
                       }
                     },
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
