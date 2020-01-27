@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flare_flutter/flare_actor.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
+import 'package:galaxy_flutter/views/Planet.dart';
+import 'package:galaxy_flutter/views/CadastroPlaneta.dart';
 
 class Planetas extends StatefulWidget {
   @override
@@ -16,7 +16,7 @@ class _PlanetasState extends State<Planetas> {
   Widget build(BuildContext context) {
     return Scaffold(
        appBar: AppBar(
-        title: Text("Galaxy Flutter", style: TextStyle(color: Colors.white)),
+        title: Text("Planetas", style: TextStyle(color: Colors.white)),
         iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: Colors.transparent
         //backgroundColor: Colors.purple[900],
@@ -25,10 +25,12 @@ class _PlanetasState extends State<Planetas> {
         child: Icon(Icons.add,color: Colors.pink[700],),
         backgroundColor: Colors.white,
         onPressed: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context)=> CadastroPlaneta()));
       },), 
       backgroundColor: Color(0xff380b4c),
       body: Container(
         color: Color(0xff380b4c),
+        padding: EdgeInsets.only(top: 20),
         child: ListView.builder(
           itemBuilder: (context, index) => Padding(
             padding: const EdgeInsets.all(0.0),
@@ -53,12 +55,12 @@ class PlanetRow extends StatelessWidget {
     return Container(
        height: 120.0,
        margin: const EdgeInsets.symmetric(
-         vertical: 16.0,
-         horizontal: 24.0,
+         vertical: 10.0,
+         //horizontal: 24.0,
        ),
       child: new Stack(
         children: <Widget>[
-          PlanetCard(),
+          PlanetCard(title),
           PlanetAnimation(),
         ],
       )
@@ -71,19 +73,12 @@ class PlanetAnimation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
       return Container(
-        margin: new EdgeInsets.symmetric(
-        vertical: 16.0
-     ),
      alignment: FractionalOffset.centerLeft,
-     //child: SvgPicture.asset('assets/svg/orbit.svg'),
      child: Padding(
-       padding: const EdgeInsets.only(right: 300),
-       child: SizedBox(
-         child: FlareActor('assets/animations/pinkPlanet.flr',
+       padding: const EdgeInsets.only(right: 285, left:0),
+       child: FlareActor('assets/animations/planetList.flr',
           animation: 'rotation',
-          fit: BoxFit.fitHeight,), 
-          height: 250, 
-          width: 1000,),
+          ), 
      ),
 
     );
@@ -91,37 +86,44 @@ class PlanetAnimation extends StatelessWidget {
 }
 
 class PlanetCard extends StatelessWidget {
+  const PlanetCard(this.title);
+
+  final title;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      //height: 124.0,
-      //margin: new EdgeInsets.only(left: 40.0),
-      margin: EdgeInsets.only(left: 40.0, ),
-      decoration:
-      BoxDecoration(
-        color: new Color(0xFF333366),
-        shape: BoxShape.rectangle,
-        borderRadius: new BorderRadius.circular(8.0),
-        boxShadow: <BoxShadow>[
-            BoxShadow(  
-            color: Colors.black12,
-            blurRadius: 10.0,
-            offset: Offset(0.0, 10.0),
-        ),
-      ],
-    ),
+    return GestureDetector(
+      onTap: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Planet()));
+      },
+      child: Container(
+        child: Center(child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(title, 
+            style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff380b4c), fontSize: 20, ),),
+            Text("Tamanho: 49.244 km", 
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white54, fontSize: 15, ),),
+            Text("Massa: 1,024 × 10^26 kg", 
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white54, fontSize: 15, ),),
+          ],
+        )),
+        height: 120.0,
+        margin: EdgeInsets.only(left: 60.0, right: 20 ),
+        decoration:
+        BoxDecoration(
+          color: Colors.purple[800],
+          shape: BoxShape.rectangle,
+          borderRadius: new BorderRadius.circular(8.0),
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            stops:[0,4],
+            colors: [Colors.pink[700], Colors.purple[800]],
+          ),
+      ),
 
+      ),
     );
   }
 }
-
-Decoration box = BoxDecoration(
-    gradient: LinearGradient(
-    begin: Alignment.topRight,
-    end: Alignment.bottomLeft,
-    //stops:[0,0.8],
-    //colors: [Colors.purple[400], Colors.purple[800]],
-    colors: [Colors.pink[700], Colors.purple[800]],
-  ),
-        
-);

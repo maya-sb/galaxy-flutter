@@ -103,7 +103,7 @@ class _Card extends StatelessWidget {
               ),   
                 Padding(
                   padding: const EdgeInsets.only(top: 12.0),
-                  child: Center(child: Text(title,style: TextStyle(fontSize: 18.0,color:Colors.white,))),
+                  child: Center(child: Text(title,style: TextStyle(fontSize: 18.0,color:Colors.white))),
                 )]
               ),
             ),
