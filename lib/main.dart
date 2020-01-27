@@ -11,7 +11,10 @@ class MyApp extends StatelessWidget {
       title: 'Galaxy Flutter',
       theme: ThemeData(
         primarySwatch: Colors.purple,
+        textSelectionHandleColor: Colors.purple[700],
+        cursorColor: Colors.purple[700],
       ),
+      
       debugShowCheckedModeBanner: false,
       home: Home(),
     );

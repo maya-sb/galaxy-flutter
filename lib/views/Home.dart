@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:galaxy_flutter/views/Planetas.dart';
+import 'package:galaxy_flutter/views/Login.dart';
 
 Decoration box = BoxDecoration(
   gradient: LinearGradient(
   begin: Alignment.topRight,
   end: Alignment.bottomLeft,
-  stops:[0,0.8],
-  colors: [Colors.pinkAccent[700], Colors.purple[900]],
+  //stops:[0,0.8],
+  //colors: [Colors.purple[400], Colors.purple[800]],
+  colors: [Colors.pink[700], Colors.purple[800]],
 )
 );
 
@@ -40,13 +43,24 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Galaxy Flutter", style: TextStyle(color: Color(0xff653678))),
-        backgroundColor: Colors.transparent,
+        title: Text("Galaxy Flutter", style: TextStyle(color: Colors.white)),
+        iconTheme: IconThemeData(color: Colors.white),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.exit_to_app) ,
+            onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+            },),
+        ],
 
+        backgroundColor: Colors.transparent
+        //backgroundColor: Colors.purple[900],
        ),
       backgroundColor: Color(0xff380b4c),
+        //backgroundColor: Colors.white,
         body: Container(
-            padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+            //decoration: box,
+            padding: const EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 10.0),
             child: StaggeredGridView.count(
                 crossAxisCount: 4,
                 staggeredTiles: _staggeredTiles,
@@ -68,23 +82,28 @@ class _Card extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+        //color:Color(0xff730b38),
         color:Color(0xff380b4c) ,
         clipBehavior: Clip.antiAlias,
           child: Container(
           decoration: box,
           child: InkWell(
-            onTap: () {},
+            onTap: () {
+              if (title == 'Planetas'){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Planetas()));
+              }
+            },
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                 SizedBox.fromSize(
-                child:  SvgPicture.asset(asset),
+                child:  SvgPicture.asset(asset,color: Colors.white,),
                 size: Size(100.0, 100.0),
               ),   
                 Padding(
                   padding: const EdgeInsets.only(top: 12.0),
-                  child: Center(child: Text(title,style: TextStyle(fontSize: 18.0,color:Color(0xff380b4c) ),)),
+                  child: Center(child: Text(title,style: TextStyle(fontSize: 18.0,color:Colors.white,))),
                 )]
               ),
             ),
