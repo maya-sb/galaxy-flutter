@@ -35,8 +35,6 @@ class _CadastroPlanetaState extends State<CadastroPlaneta> {
         //backgroundColor: Colors.purple[900],
        ),
       backgroundColor: Color(0xff380b4c),
-      body: SingleChildScrollView(
-
-      );
+    );
   }
 }
