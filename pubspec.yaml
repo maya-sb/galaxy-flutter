@@ -59,6 +59,7 @@ flutter:
     - assets/svg/moon2.svg
     - assets/svg/uranus.svg
     - assets/svg/star.svg
+    - assets/animations/pinkPlanet.flr
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
