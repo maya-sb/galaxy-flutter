@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:galaxy_flutter/views/Planet.dart';
-import 'package:galaxy_flutter/views/CadastroPlaneta.dart';
+import 'package:galaxy_flutter/views/EditarPlaneta.dart';
 
 class Planetas extends StatefulWidget {
   @override
@@ -25,7 +25,7 @@ class _PlanetasState extends State<Planetas> {
         child: Icon(Icons.add,color: Colors.pink[700],),
         backgroundColor: Colors.white,
         onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=> CadastroPlaneta()));
+          Navigator.push(context, MaterialPageRoute(builder: (context)=> EditarPlaneta()));
       },), 
       backgroundColor: Color(0xff380b4c),
       body: Container(
@@ -115,6 +115,9 @@ class PlanetCard extends StatelessWidget {
           color: Colors.purple[800],
           shape: BoxShape.rectangle,
           borderRadius: new BorderRadius.circular(8.0),
+          boxShadow: [new BoxShadow(
+            color: Color(0xff280538),
+            blurRadius: 20.0,)],
           gradient: LinearGradient(
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,

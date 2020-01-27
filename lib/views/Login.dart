@@ -208,11 +208,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                   child: RaisedButton(
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
-<<<<<<< HEAD
                         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home()));
-=======
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => Planet()));
->>>>>>> cce68cd2f448867fa7eb8d1b237eb120f1fa69a6
                       }
                     },
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
