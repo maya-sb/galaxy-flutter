@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:galaxy_flutter/views/Home.dart';
 import 'package:galaxy_flutter/views/Planet.dart';
 import 'package:galaxy_flutter/views/EditarPlaneta.dart';
-
-import 'Home.dart';
 
 class Planetas extends StatefulWidget {
   @override
@@ -18,7 +17,8 @@ class _PlanetasState extends State<Planetas> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        onWillPop: () async =>  false,
+        //onWillPop: () async =>  false,
+        onWillPop: () async => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home())),
         child: Scaffold(
          appBar: AppBar(
           title: Text("Planetas", style: TextStyle(color: Colors.white)),
