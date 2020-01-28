@@ -49,7 +49,8 @@ class _HomeState extends State<Home> {
           IconButton(
             icon: Icon(Icons.exit_to_app) ,
             onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+              //Navigator.pop(context);
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
             },),
         ],
 
@@ -90,7 +91,7 @@ class _Card extends StatelessWidget {
           child: InkWell(
             onTap: () {
               if (title == 'Planetas'){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Planetas()));
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Planetas()));
               }
             },
             child: Center(

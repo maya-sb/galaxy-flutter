@@ -61,6 +61,9 @@ flutter:
     - assets/svg/uranus.svg
     - assets/svg/star.svg
     - assets/svg/ventoso.svg
+    - assets/svg/peso.svg
+    - assets/svg/largura.svg
+    - assets/svg/tamanho.svg
     - assets/animations/pinkPlanet.flr
     - assets/animations/planetList.flr
 
