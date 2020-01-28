@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:galaxy_flutter/views/Planetas.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_masked_text/flutter_masked_text.dart';
 
 class EditarPlaneta extends StatefulWidget {
   @override
@@ -18,26 +19,12 @@ class _EditarPlanetaState extends State<EditarPlaneta> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-              /*
-              showDialog(context: context, builder :(context){
-                return AlertDialog(
-                  title: Text("Deseja remover o planeta permanentemente?"),
-                  //content: Text("Deseja remover o planeta permanentemente?"),
-                  actions: <Widget>[
-                    FlatButton(child: Text("Sim"),onPressed: (){
-                      //TO DO removerPlaneta();
-                       Navigator.pop(context);
-                    },),
-                    FlatButton(child: Text("Cancelar"),onPressed: (){
-                        Navigator.pop(context);
-                    },)
-                  ],);
-              });
-            },),
-        ],
-  
-       ),
-       */
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.pink[700],
+        child: Icon(Icons.save, color: Colors.white,),
+        onPressed: (){
+        
+      },),
       backgroundColor: Color(0xff380b4c),
       body: SingleChildScrollView(
           child: Column(
@@ -45,17 +32,19 @@ class _EditarPlanetaState extends State<EditarPlaneta> {
           children: <Widget>[
              Stack(
                   children: <Widget>[
-                    ClipPath(
-                      clipper: OvalBottomBorderClipper(),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topRight,
-                            end: Alignment.bottomLeft,
-                            colors: [Colors.pinkAccent[700], Colors.purple[900] ])
+                    Center(
+                      child: ClipPath(
+                        clipper: OvalBottomBorderClipper(),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topRight,
+                              end: Alignment.bottomLeft,
+                              colors: [Colors.pinkAccent[700], Colors.purple[900] ])
+                          ),
+                          height: 180,
+                          width: 1000,
                         ),
-                        height: 180,
-                        width: 500 ,
                       ),
                     ),
                     Center(
@@ -80,13 +69,42 @@ class _EditarPlanetaState extends State<EditarPlaneta> {
                         },
                         icon: Icon(Icons.arrow_back, color: Colors.white, size: 25.0),
                       ),
-                    )
+                    ),
+                Positioned(
+                        right: 5,
+                        child: Padding(
+                        padding: const EdgeInsets.only(top: 25.0),
+                        child: IconButton(
+                          onPressed: () {
+                             showDialog(context: context, builder :(context){
+                              return AlertDialog(
+                                shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                                title: Text("Deseja remover o planeta permanentemente?"),
+                                //content: Text("Deseja remover o planeta permanentemente?"),
+                                actions: <Widget>[
+                                  FlatButton(child: Text("Sim"),onPressed: (){
+                                    //TO DO removerPlaneta();
+                                    Navigator.pop(context);
+                                  },),
+                                  FlatButton(child: Text("Cancelar"),onPressed: (){
+                                      Navigator.pop(context);
+                                  },)
+                                ],);
+                            });
+                          },
+                          icon: Icon(Icons.delete, color: Colors.white, size: 25.0),
+                        ),
+                      ),
+                )
 
                   ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
-              child: Info(),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
+                child: Info(),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,),
@@ -186,10 +204,7 @@ class SateliteCard extends StatelessWidget {
             borderRadius: new BorderRadius.circular(8.0),
         ),
         ),
-        Positioned(top: 7, right: 5, child: IconButton(onPressed: (){
-            
-        },
-        icon: Icon(Icons.more_vert,color: Color(0xff380b4c),),)),
+        Positioned(top: 7, right: 0, child: _Options(),),
         ]
     );
   }
@@ -241,10 +256,7 @@ class GasCard extends StatelessWidget {
             borderRadius: new BorderRadius.circular(8.0),
         ),
         ),
-        Positioned(top: 7, right: 5, child: IconButton(onPressed: (){
-            
-        },
-        icon: Icon(Icons.more_vert,color: Color(0xff380b4c),),)),
+        Positioned(top: 7, right: 0, child: _Options(),),
         ]
     );
   }
@@ -292,7 +304,12 @@ class Info extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    var tamanhoFormat = NumberFormat("###,###.00#", "pt_BR");
+    var tamanhoController = MoneyMaskedTextController(decimalSeparator: ',', thousandSeparator: '.', rightSymbol: ' Km');
+    tamanhoController.updateValue(49244);
+    var massaController = MoneyMaskedTextController(decimalSeparator: ',', thousandSeparator: '.', rightSymbol: ' Kg');
+    massaController.updateValue(49244);
+
+    //double val = controller.numberValue;
 
     return Container(
           padding: EdgeInsets.all(10),
@@ -361,8 +378,7 @@ class Info extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
-                      initialValue: tamanhoFormat.format(5496666244).toString(),
-                      //focusNode: myFocusNode,
+                      controller: tamanhoController,
                       autofocus: false,
                       decoration: new InputDecoration(
                         labelText: "Tamanho",
@@ -409,7 +425,8 @@ class Info extends StatelessWidget {
                           return null;
                         }
                       },
-                      keyboardType: TextInputType.number,
+                      keyboardType: TextInputType.numberWithOptions(decimal: true),
+                      inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
                       style: TextStyle(
                         fontFamily: "Poppins",
                         color: Colors.white,
@@ -419,6 +436,7 @@ class Info extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      controller: massaController,
                       //focusNode: myFocusNode,
                       autofocus: false,
                       decoration: new InputDecoration(
@@ -492,3 +510,22 @@ class Info extends StatelessWidget {
     );
   }
 }
+
+Widget _Options() => PopupMenuButton<int>(
+          itemBuilder: (context) => [
+                PopupMenuItem(
+                  value: 1,
+                  child: Text("Editar"),
+                ),
+                PopupMenuItem(
+                  value: 2,
+                  child: Text("Remover"),
+                ),
+              ],
+          icon: Icon(Icons.more_vert),
+          offset: Offset(0, -100),
+          shape: RoundedRectangleBorder(
+          side: BorderSide(width: 1.0, style: BorderStyle.none),
+          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+        ),
+        );

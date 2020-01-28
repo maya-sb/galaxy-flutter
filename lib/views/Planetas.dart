@@ -25,7 +25,7 @@ class _PlanetasState extends State<Planetas> {
         child: Icon(Icons.add,color: Colors.pink[700],),
         backgroundColor: Colors.white,
         onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=> EditarPlaneta()));
+          //Navigator.push(context, MaterialPageRoute(builder: (context)=> EditarPlaneta()));
       },), 
       backgroundColor: Color(0xff380b4c),
       body: Container(
@@ -58,10 +58,14 @@ class PlanetRow extends StatelessWidget {
          vertical: 10.0,
          //horizontal: 24.0,
        ),
-      child: new Stack(
+      child: Stack(
         children: <Widget>[
           PlanetCard(title),
-          PlanetAnimation(),
+          //PlanetAnimation(),
+          Positioned (left: 10, child: Padding(
+            padding: const EdgeInsets.only(top:5.0),
+            child: PlanetAnimation(),
+          )),
         ],
       )
     );
@@ -70,15 +74,20 @@ class PlanetRow extends StatelessWidget {
 }
 
 class PlanetAnimation extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
-      return Container(
-     alignment: FractionalOffset.centerLeft,
-     child: Padding(
-       padding: const EdgeInsets.only(right: 285, left:0),
-       child: FlareActor('assets/animations/planetList.flr',
+
+    var largura = MediaQuery.of(context).size.width;
+
+    return Container(
+     //alignment: FractionalOffset.centerLeft,
+     child: SizedBox(
+          width: 110,
+          height: 110,
+          child: FlareActor('assets/animations/planetList.flr',
           animation: 'rotation',
-          ), 
+          ),
      ),
 
     );
@@ -114,8 +123,8 @@ class PlanetCard extends StatelessWidget {
         BoxDecoration(
           color: Colors.purple[800],
           shape: BoxShape.rectangle,
-          borderRadius: new BorderRadius.circular(8.0),
-          boxShadow: [new BoxShadow(
+          borderRadius: BorderRadius.circular(8.0),
+          boxShadow: [BoxShadow(
             color: Color(0xff280538),
             blurRadius: 20.0,)],
           gradient: LinearGradient(

@@ -163,6 +163,7 @@ class _SignupState extends State<Signup> with SingleTickerProviderStateMixin {
                 Container(
                   padding: EdgeInsets.only(left: 15, right: 15, top: 15),
                   child: TextFormField(
+                    controller: senhaController,
                     style: TextStyle(
                       fontFamily: "Poppins",
                       color: Colors.white,
@@ -278,7 +279,7 @@ class _SignupState extends State<Signup> with SingleTickerProviderStateMixin {
                     validator: (val) {
                       if(val.length==0) {
                         return "Senha inválida";
-                      } else if (val != senhaController) {
+                      } else if (val != senhaController.text) {
                         return "Senhas diferentes";
                       } else{
                         return null;
