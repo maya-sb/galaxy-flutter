@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:galaxy_flutter/views/Planetas.dart';
-import 'package:galaxy_flutter/views/Login.dart';
+import 'package:galaxy_flutter/RouteGenerator.dart';
 
 Decoration box = BoxDecoration(
   gradient: LinearGradient(
@@ -49,8 +48,7 @@ class _HomeState extends State<Home> {
           IconButton(
             icon: Icon(Icons.exit_to_app) ,
             onPressed: (){
-              //Navigator.pop(context);
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
+              Navigator.pushNamedAndRemoveUntil(context, RouteGenerator.ROUTE_LOGIN, (_) => false);
             },),
         ],
 
@@ -91,7 +89,7 @@ class _Card extends StatelessWidget {
           child: InkWell(
             onTap: () {
               if (title == 'Planetas'){
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Planetas()));
+                Navigator.pushNamed(context, RouteGenerator.ROUTE_PLANETAS);
               }
             },
             child: Center(

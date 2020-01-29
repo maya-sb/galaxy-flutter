@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flare_flutter/flare_actor.dart';
-import 'package:galaxy_flutter/views/Planetas.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 
 class EditarPlaneta extends StatefulWidget {

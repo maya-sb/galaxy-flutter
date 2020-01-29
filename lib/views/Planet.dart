@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
-import 'package:galaxy_flutter/views/EditarPlaneta.dart';
+import 'package:galaxy_flutter/RouteGenerator.dart';
 
 
 class Planet extends StatefulWidget {
@@ -60,7 +60,7 @@ class _PlanetState extends State<Planet> {
                       padding: const EdgeInsets.only(top: 25.0),
                       child: IconButton(
                         onPressed: () {
-                          Navigator.pop(context);
+                          Navigator.pushNamed(context, RouteGenerator.ROUTE_PLANETAS);
                         },
                         icon: Icon(Icons.arrow_back, color: Colors.white, size: 25.0),
                       ),
@@ -71,7 +71,7 @@ class _PlanetState extends State<Planet> {
                         padding: const EdgeInsets.only(top: 25.0),
                         child: IconButton(
                           onPressed: () {
-                             Navigator.push(context, MaterialPageRoute(builder: (context) => EditarPlaneta()));
+                             Navigator.pushNamed(context, RouteGenerator.ROUTE_EDITAR_PLANETA);
                           },
                           icon: Icon(Icons.edit, color: Colors.white, size: 25.0),
                         ),

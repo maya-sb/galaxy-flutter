@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flare_flutter/flare_actor.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:galaxy_flutter/views/Home.dart';
-import 'package:galaxy_flutter/views/Planet.dart';
-import 'package:galaxy_flutter/views/EditarPlaneta.dart';
+//import 'package:flutter_svg/flutter_svg.dart';
+import 'package:galaxy_flutter/RouteGenerator.dart';
+
+import 'Home.dart';
 
 class Planetas extends StatefulWidget {
   @override
@@ -14,19 +14,23 @@ class _PlanetasState extends State<Planetas> {
 
   var planets = ["Marte","Vênus","Urano","Saturno","Netuno","Mercúrio"];
 
+          //onWillPop: () async => Navigator.pushNamedAndRemoveUntil(context, RouteGenerator.ROUTE_HOME, (Route<dynamic> route) => false),
+
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        //onWillPop: () async =>  false,
-        onWillPop: () async => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home())),
-        child: Scaffold(
+       //onWillPop: () async => Navigator.pushNamedAndRemoveUntil(context, RouteGenerator.ROUTE_HOME, (Route<dynamic> route) => false),
+       //onWillPop: () async => Navigator.pushReplacementNamed(context, RouteGenerator.ROUTE_HOME),
+       onWillPop: () async => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home())),
+       child: Scaffold(
          appBar: AppBar(
           title: Text("Planetas", style: TextStyle(color: Colors.white)),
           iconTheme: IconThemeData(color: Colors.white),
           backgroundColor: Colors.transparent,
-          leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: (){
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home()));
-          },),
+          //leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: (){
+          //  Navigator.pushNamedAndRemoveUntil(context, RouteGenerator.ROUTE_HOME, (_) => false);
+          //},),
           actions: <Widget>[
             Padding(
               padding: const EdgeInsets.only(right: 20.0),
@@ -94,8 +98,6 @@ class PlanetAnimation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    var largura = MediaQuery.of(context).size.width;
-
     return Container(
      //alignment: FractionalOffset.centerLeft,
      child: SizedBox(
@@ -119,7 +121,7 @@ class PlanetCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => Planet()));
+        Navigator.pushNamed(context, RouteGenerator.ROUTE_PLANET);
       },
       child: Container(
         child: Center(child: Column(

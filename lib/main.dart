@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:galaxy_flutter/RouteGenerator.dart';
 import 'package:galaxy_flutter/views/Login.dart';
-import 'package:galaxy_flutter/views/Home.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,7 +14,8 @@ class MyApp extends StatelessWidget {
         textSelectionHandleColor: Colors.purple[700],
         cursorColor: Colors.purple[700],
       ),
-      
+      initialRoute: RouteGenerator.INITIAL_ROUTE,
+      onGenerateRoute: RouteGenerator.generateRoute,
       debugShowCheckedModeBanner: false,
       home: Login(),
     );

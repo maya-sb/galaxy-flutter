@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
-import 'package:galaxy_flutter/views/Signup.dart';
-import 'package:galaxy_flutter/views/Home.dart';
-import 'package:galaxy_flutter/views/Planet.dart';
+import 'package:galaxy_flutter/RouteGenerator.dart';
 
 class Login extends StatefulWidget {
 
@@ -208,7 +206,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                   child: RaisedButton(
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home()));
+                        Navigator.pushReplacementNamed(context, RouteGenerator.ROUTE_HOME);
                       }
                     },
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
@@ -240,7 +238,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                  child: Center(
                    child: GestureDetector(
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) =>  Signup() ));
+                        Navigator.pushNamed(context, RouteGenerator.ROUTE_SIGNUP);
                       },
                       child: Text('Criar uma conta', style: TextStyle(
                         color: Colors.pink[700],
