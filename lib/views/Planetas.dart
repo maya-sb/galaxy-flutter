@@ -3,8 +3,6 @@ import 'package:flare_flutter/flare_actor.dart';
 //import 'package:flutter_svg/flutter_svg.dart';
 import 'package:galaxy_flutter/RouteGenerator.dart';
 
-import 'Home.dart';
-
 class Planetas extends StatefulWidget {
   @override
   _PlanetasState createState() => _PlanetasState();
@@ -14,15 +12,13 @@ class _PlanetasState extends State<Planetas> {
 
   var planets = ["Marte","Vênus","Urano","Saturno","Netuno","Mercúrio"];
 
-          //onWillPop: () async => Navigator.pushNamedAndRemoveUntil(context, RouteGenerator.ROUTE_HOME, (Route<dynamic> route) => false),
-
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-       //onWillPop: () async => Navigator.pushNamedAndRemoveUntil(context, RouteGenerator.ROUTE_HOME, (Route<dynamic> route) => false),
-       //onWillPop: () async => Navigator.pushReplacementNamed(context, RouteGenerator.ROUTE_HOME),
-       onWillPop: () async => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home())),
+       onWillPop: () async {
+         Navigator.pushNamedAndRemoveUntil(context, RouteGenerator.ROUTE_HOME, (_) => false);
+         return false;
+       },
        child: Scaffold(
          appBar: AppBar(
           title: Text("Planetas", style: TextStyle(color: Colors.white)),
