@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:galaxy_flutter/RouteGenerator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Login extends StatefulWidget {
 
@@ -17,6 +18,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   TextEditingController emailController = TextEditingController();
   TextEditingController senhaController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  bool loading = false;
 
   @override
   void initState(){
@@ -39,6 +42,24 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     setState(() {
       _obscureText = !_obscureText;
     });
+  }
+
+  void _login(String email, String password) {
+
+    FirebaseAuth auth = FirebaseAuth.instance;
+
+    auth.signInWithEmailAndPassword(email: email, password: password)
+      .then((user) {
+        this.loading = false;
+        Navigator.pushNamedAndRemoveUntil(context, RouteGenerator.ROUTE_HOME, (_) => false);
+      }).catchError((error) {
+          this.loading = false;
+          setState(() {
+            Scaffold.of(context).showSnackBar(SnackBar(
+              content: Text(error),
+            ));
+          });
+      });
   }
   
 
@@ -84,6 +105,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                 Container(
                   padding: EdgeInsets.only(left: 15, right: 15, top: 60),
                   child: TextFormField(
+                    controller: emailController,
                     focusNode: myFocusNode,
                     decoration: new InputDecoration(
                       labelText: "Email",
@@ -141,6 +163,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                 Container(
                   padding: EdgeInsets.only(left: 15, right: 15, top: 15),
                   child: TextFormField(
+                    controller: senhaController,
                     style: TextStyle(
                       fontFamily: "Poppins",
                       color: Colors.white,
@@ -206,7 +229,10 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                   child: RaisedButton(
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
-                        Navigator.pushReplacementNamed(context, RouteGenerator.ROUTE_HOME);
+                        setState(() {
+                          this.loading = true;
+                          this._login(emailController.text, senhaController.text);
+                        });
                       }
                     },
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
@@ -222,12 +248,17 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                       child: Container(
                         constraints: const BoxConstraints(minWidth: 100.0, minHeight: 55.0), // min sizes for Material buttons
                         alignment: Alignment.center,
-                        child: Text(
-                          'Entrar',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.white, fontSize: 20.0,
-                        ),
-                      ),
+                        child: loading
+                          ? CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(Color(0xff380b4c)),
+                            )
+
+                          : Text(
+                              'Entrar',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Colors.white, fontSize: 20.0,
+                              ),
+                            )
                     ),
                   ),
                   ),
