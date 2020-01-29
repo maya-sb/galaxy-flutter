@@ -18,6 +18,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   TextEditingController emailController = TextEditingController();
   TextEditingController senhaController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   bool loading = false;
 
@@ -53,11 +54,14 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
         this.loading = false;
         Navigator.pushNamedAndRemoveUntil(context, RouteGenerator.ROUTE_HOME, (_) => false);
       }).catchError((error) {
-          this.loading = false;
           setState(() {
-            Scaffold.of(context).showSnackBar(SnackBar(
-              content: Text(error),
-            ));
+            this.loading = false;
+            _scaffoldKey.currentState.showSnackBar(
+              SnackBar(
+                content: Text(error.message),
+                backgroundColor: Colors.pinkAccent[700],
+              )
+            );
           });
       });
   }
@@ -67,6 +71,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Color(0xff380b4c),
       body: SingleChildScrollView(
         child: Center(
