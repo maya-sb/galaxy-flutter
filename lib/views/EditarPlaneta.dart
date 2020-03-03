@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
+import 'package:galaxy_flutter/widgets/Fields.dart';
 
 class EditarPlaneta extends StatefulWidget {
   @override
@@ -15,6 +16,7 @@ class _EditarPlanetaState extends State<EditarPlaneta> {
   var satelites = ["","Tritão", "Talassa", "Náiade", "Nereida", "Proteu"];
   var gases = ["","Óxido Nítrico", "Nitrogênio", "Argônio", "Oxigênio", "Vapor d'Água"];
   var estrelas = ["", "Sol", "Sol"];
+  final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,10 @@ class _EditarPlanetaState extends State<EditarPlaneta> {
         backgroundColor: Colors.pink[700],
         child: Icon(Icons.save, color: Colors.white,),
         onPressed: (){
-        
+           if (formKey.currentState.validate()) {
+          }else{
+          }
+          
       },),
       backgroundColor: Color(0xff380b4c),
       body: SingleChildScrollView(
@@ -103,7 +108,7 @@ class _EditarPlanetaState extends State<EditarPlaneta> {
             Center(
               child: Padding(
                 padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
-                child: Info(),
+                child: Info(formKey),
               ),
             ),
             Padding(
@@ -137,7 +142,6 @@ class _EditarPlanetaState extends State<EditarPlaneta> {
     );
   }
 }
-
 
 class HorizontalList extends StatefulWidget {
 
@@ -348,9 +352,10 @@ class CardAdd extends StatelessWidget {
   }
 }
 
-
 class Info extends StatelessWidget {
+  const Info(this.formKey);
 
+  final formKey;
 
   @override
   Widget build(BuildContext context) {
@@ -359,192 +364,54 @@ class Info extends StatelessWidget {
     tamanhoController.updateValue(49244);
     var massaController = MoneyMaskedTextController(decimalSeparator: ',', thousandSeparator: '.', rightSymbol: ' Kg');
     massaController.updateValue(49244);
+    var nomeController = TextEditingController(text: "Marte");
+    var velocidadeController = MoneyMaskedTextController(decimalSeparator: ',', thousandSeparator: '.', rightSymbol: ' Km/s');
+    velocidadeController.updateValue(5.03);
 
-    //double val = controller.numberValue;
+    String validatorNome (val) {
+        if(val.length==0) {
+          return "Nome inválido";
+        }else{
+          return null;
+        }
+    }
+
+    String validatorMassa (val) {
+        if(val.length==0) {
+          return "Massa inválida";
+        }else{
+          return null;
+        }
+    }
 
     return Container(
           padding: EdgeInsets.all(10),
-          child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-             Padding(
-               padding: const EdgeInsets.all(8.0),
-               child: TextFormField(
-                      initialValue: "Marte",
-                      //focusNode: myFocusNode,
-                      autofocus: false,
-                      decoration: new InputDecoration(
-                        labelText: "Nome",
-                        labelStyle: TextStyle(color: Colors.purple[700]),
-                        fillColor: Colors.white,
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.purple[700],
-                            width: 3
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.purple[700],
-                            width: 1.5
-                          ),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.pink[700],
-                            width: 3
-                          ),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.pink[700],
-                            width: 1.5
-                          ),
-                        ),
-                        errorStyle: TextStyle(
-                          color: Colors.pink[700],
-                        )
-
-                        //fillColor: Colors.green
-                      ),
-                      validator: (val) {
-                        if(val.length==0) {
-                          return "Nome inválido";
-                        }else{
-                          return null;
-                        }
-                      },
-                      keyboardType: TextInputType.emailAddress,
-                      style: TextStyle(
-                        fontFamily: "Poppins",
-                        color: Colors.white,
-                      ),
-                    ),
-             ),  
+          child: Form(
+            key: formKey,
+            child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+               Padding(
+                 padding: const EdgeInsets.all(8.0),
+                 child: EditField("Nome", nomeController, validatorNome),
+               ),  
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                      controller: tamanhoController,
-                      autofocus: false,
-                      decoration: new InputDecoration(
-                        labelText: "Tamanho",
-                        labelStyle: TextStyle(color: Colors.purple[700]),
-                        fillColor: Colors.white,
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.purple[700],
-                            width: 3
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.purple[700],
-                            width: 1.5
-                          ),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.pink[700],
-                            width: 3
-                          ),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.pink[700],
-                            width: 1.5
-                          ),
-                        ),
-                        errorStyle: TextStyle(
-                          color: Colors.pink[700],
-                        )
-
-                        //fillColor: Colors.green
-                      ),
-                      validator: (val) {
-                        if(val.length==0) {
-                          return "Tamanho inválido";
-                        }else{
-                          return null;
-                        }
-                      },
-                      keyboardType: TextInputType.numberWithOptions(decimal: true),
-                      inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
-                      style: TextStyle(
-                        fontFamily: "Poppins",
-                        color: Colors.white,
-                      ),
-                    ),
+                  child: EditField("Tamanho", tamanhoController, validatorMassa),
                 ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      controller: massaController,
-                      //focusNode: myFocusNode,
-                      autofocus: false,
-                      decoration: new InputDecoration(
-                        labelText: "Massa",
-                        labelStyle: TextStyle(color: Colors.purple[700]),
-                        fillColor: Colors.white,
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.purple[700],
-                            width: 3
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.purple[700],
-                            width: 1.5
-                          ),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.pink[700],
-                            width: 3
-                          ),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.pink[700],
-                            width: 1.5
-                          ),
-                        ),
-                        errorStyle: TextStyle(
-                          color: Colors.pink[700],
-                        )
-
-                        //fillColor: Colors.green
-                      ),
-                      validator: (val) {
-                        if(val.length==0) {
-                          return "Massa inválida";
-                        }else{
-                          return null;
-                        }
-                      },
-                      keyboardType: TextInputType.number,
-                      style: TextStyle(
-                        fontFamily: "Poppins",
-                        color: Colors.white,
-                      ),
-                    ),
-                  ), 
-            
-          ],
-            ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: EditField("Massa", massaController, validatorNome),
+                ), 
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: EditField("Velocidade de Rotação", velocidadeController, validatorNome),
+                ), 
+              
+            ],
+              ),
+          ),
           margin: const EdgeInsets.symmetric(
            vertical: 10.0,
            horizontal: 10.0,

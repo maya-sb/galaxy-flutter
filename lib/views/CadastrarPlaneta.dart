@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
+import 'package:galaxy_flutter/widgets/Fields.dart';
 
 class CadastrarPlaneta extends StatefulWidget {
   @override
@@ -120,13 +121,12 @@ class _CadastrarPlanetaState extends State<CadastrarPlaneta> {
   }
 }
 
-
 class HorizontalList extends StatefulWidget {
 
-    final tipo;
-    final lista;
+  final tipo;
+  final lista;
 
-    const HorizontalList({Key key, this.lista, this.tipo}): super(key:key);
+  const HorizontalList({Key key, this.lista, this.tipo}): super(key:key);
 
   @override
   _HorizontalListState createState() => _HorizontalListState();
@@ -333,19 +333,21 @@ class CardAdd extends StatelessWidget {
 
 class Info extends StatelessWidget {
 
-
   @override
   Widget build(BuildContext context) {
 
-    //var tamanhoController = MoneyMaskedTextController(decimalSeparator: ',', thousandSeparator: '.', rightSymbol: ' Km');
     var tamanhoController;
     var massaController;
-    //tamanhoController.updateValue(49244);
-    //var massaController = MoneyMaskedTextController(decimalSeparator: ',', thousandSeparator: '.', rightSymbol: ' Kg');
-    //massaController.updateValue(49244);
+    var nomeController;
+    var velocidadeController;
 
-    //double val = controller.numberValue;
-
+    String validatorNome (val) {
+        if(val.length==0) {
+          return "Nome inválido";
+        }else{
+          return null;
+        }
+    }
     return Container(
           padding: EdgeInsets.all(10),
           child: Column(
@@ -354,236 +356,20 @@ class Info extends StatelessWidget {
           children: <Widget>[
              Padding(
                padding: const EdgeInsets.all(8.0),
-               child: TextFormField(
-                      initialValue: "",
-                      //focusNode: myFocusNode,
-                      autofocus: false,
-                      decoration: new InputDecoration(
-                        labelText: "Nome",
-                        labelStyle: TextStyle(color: Colors.purple[700]),
-                        fillColor: Colors.white,
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.purple[700],
-                            width: 3
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.purple[700],
-                            width: 1.5
-                          ),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.pink[700],
-                            width: 3
-                          ),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.pink[700],
-                            width: 1.5
-                          ),
-                        ),
-                        errorStyle: TextStyle(
-                          color: Colors.pink[700],
-                        )
-
-                        //fillColor: Colors.green
-                      ),
-                      validator: (val) {
-                        if(val.length==0) {
-                          return "Nome inválido";
-                        }else{
-                          return null;
-                        }
-                      },
-                      keyboardType: TextInputType.emailAddress,
-                      style: TextStyle(
-                        fontFamily: "Poppins",
-                        color: Colors.white,
-                      ),
-                    ),
+               child: EditField("Nome", nomeController, validatorNome),
              ),  
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                      controller: tamanhoController,
-                      autofocus: false,
-                      decoration: new InputDecoration(
-                        labelText: "Tamanho",
-                        labelStyle: TextStyle(color: Colors.purple[700]),
-                        fillColor: Colors.white,
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.purple[700],
-                            width: 3
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.purple[700],
-                            width: 1.5
-                          ),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.pink[700],
-                            width: 3
-                          ),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.pink[700],
-                            width: 1.5
-                          ),
-                        ),
-                        errorStyle: TextStyle(
-                          color: Colors.pink[700],
-                        )
-
-                        //fillColor: Colors.green
-                      ),
-                      validator: (val) {
-                        if(val.length==0) {
-                          return "Tamanho inválido";
-                        }else{
-                          return null;
-                        }
-                      },
-                      keyboardType: TextInputType.numberWithOptions(decimal: true),
-                      inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
-                      style: TextStyle(
-                        fontFamily: "Poppins",
-                        color: Colors.white,
-                      ),
-                    ),
-                ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      controller: massaController,
-                      //focusNode: myFocusNode,
-                      autofocus: false,
-                      decoration: new InputDecoration(
-                        labelText: "Massa",
-                        labelStyle: TextStyle(color: Colors.purple[700]),
-                        fillColor: Colors.white,
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.purple[700],
-                            width: 3
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.purple[700],
-                            width: 1.5
-                          ),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.pink[700],
-                            width: 3
-                          ),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.pink[700],
-                            width: 1.5
-                          ),
-                        ),
-                        errorStyle: TextStyle(
-                          color: Colors.pink[700],
-                        )
-
-                        //fillColor: Colors.green
-                      ),
-                      validator: (val) {
-                        if(val.length==0) {
-                          return "Massa inválida";
-                        }else{
-                          return null;
-                        }
-                      },
-                      keyboardType: TextInputType.number,
-                      style: TextStyle(
-                        fontFamily: "Poppins",
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  Padding(
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: EditField("Tamanho", tamanhoController, validatorNome),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: EditField("Massa", massaController, validatorNome),
+            ),
+            Padding(
                padding: const EdgeInsets.all(8.0),
-               child: TextFormField(
-                      initialValue: "",
-                      //focusNode: myFocusNode,
-                      autofocus: false,
-                      decoration: new InputDecoration(
-                        labelText: "Velocidade",
-                        labelStyle: TextStyle(color: Colors.purple[700]),
-                        fillColor: Colors.white,
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.purple[700],
-                            width: 3
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.purple[700],
-                            width: 1.5
-                          ),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.pink[700],
-                            width: 3
-                          ),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.pink[700],
-                            width: 1.5
-                          ),
-                        ),
-                        errorStyle: TextStyle(
-                          color: Colors.pink[700],
-                        )
-
-                        //fillColor: Colors.green
-                      ),
-                      validator: (val) {
-                        if(val.length==0) {
-                          return "Velocidade inválida";
-                        }else{
-                          return null;
-                        }
-                      },
-                      keyboardType: TextInputType.number,
-                      style: TextStyle(
-                        fontFamily: "Poppins",
-                        color: Colors.white,
-                      ),
-                    ),
-             ),   
+               child: EditField("Velocidade de Rotação", velocidadeController, validatorNome),
+            ),   
             
           ],
             ),

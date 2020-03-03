@@ -5,6 +5,7 @@ import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:galaxy_flutter/RouteGenerator.dart';
+import 'package:galaxy_flutter/widgets/Fields.dart';
 
 class Planet extends StatefulWidget {
   @override
@@ -155,8 +156,6 @@ class _HorizontalListState extends State<HorizontalList> {
   }
 }
 
-
-
 class SateliteCard extends StatelessWidget {
   const SateliteCard (this.title);
 
@@ -291,7 +290,6 @@ class GasCard extends StatelessWidget {
 
 class Info extends StatelessWidget {
 
-
   @override
   Widget build(BuildContext context) {
 
@@ -299,8 +297,9 @@ class Info extends StatelessWidget {
     tamanhoController.updateValue(49244);
     var massaController = MoneyMaskedTextController(decimalSeparator: ',', thousandSeparator: '.', rightSymbol: ' Kg');
     massaController.updateValue(49244);
-
-    //double val = controller.numberValue;
+    var nomeController = TextEditingController(text: "Marte");
+    var velocidadeController = MoneyMaskedTextController(decimalSeparator: ',', thousandSeparator: '.', rightSymbol: ' Km/s');
+    velocidadeController.updateValue(5.03);
 
     return Container(
           padding: EdgeInsets.all(10),
@@ -309,104 +308,20 @@ class Info extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
              Padding(
-               padding: const EdgeInsets.all(8.0),
-               child: TextFormField(
-                      initialValue: "Marte",
-                      readOnly: true,
-                      //focusNode: myFocusNode,
-                      autofocus: false,
-                      decoration: new InputDecoration(
-                        labelText: "Nome",
-                        labelStyle: TextStyle(color: Colors.purple[700]),
-                        fillColor: Colors.white,
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.purple[700],
-                            width: 1.5
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.purple[700],
-                            width: 1.5
-                          ),
-                        ),
-                        //fillColor: Colors.green
-                      ),
-                      keyboardType: TextInputType.emailAddress,
-                      style: TextStyle(
-                        fontFamily: "Poppins",
-                        color: Colors.white,
-                      ),
-                    ),
+               padding: const EdgeInsets.only(top: 25.0, bottom: 2.0),
+               child: OutputField("Nome", nomeController),
              ),  
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                      readOnly: true,
-                      controller: tamanhoController,
-                      autofocus: false,
-                      decoration: new InputDecoration(
-                        labelText: "Tamanho",
-                        labelStyle: TextStyle(color: Colors.purple[700]),
-                        fillColor: Colors.white,
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.purple[700],
-                            width: 1.5
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.purple[700],
-                            width: 1.5
-                          ),
-                        ),                 //fillColor: Colors.green
-                      ),
-                      keyboardType: TextInputType.numberWithOptions(decimal: true),
-                      inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
-                      style: TextStyle(
-                        fontFamily: "Poppins",
-                        color: Colors.white,
-                      ),
-                    ),
+            Padding(
+                  padding: const EdgeInsets.only(bottom: 2.0),
+                  child:  OutputField("Tamanho", tamanhoController)
                 ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      controller: massaController,
-                      readOnly: true,
-                      //focusNode: myFocusNode,
-                      autofocus: false,
-                      decoration: new InputDecoration(
-                        labelText: "Massa",
-                        labelStyle: TextStyle(color: Colors.purple[700]),
-                        fillColor: Colors.white,
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.purple[700],
-                            width: 1.5
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                            color: Colors.purple[700],
-                            width: 1.5
-                          ),
-                        ),//fillColor: Colors.green
-                      ),
-                      keyboardType: TextInputType.number,
-                      style: TextStyle(
-                        fontFamily: "Poppins",
-                        color: Colors.white,
-                      ),
-                    ),
+            Padding(
+                  padding: const EdgeInsets.only(bottom: 2.0),
+                  child: OutputField("Massa", massaController)
+                  ), 
+             Padding(
+                  padding: const EdgeInsets.only(bottom: 0.0),
+                  child: OutputField("Velocidade de Rotação", velocidadeController)
                   ), 
             
           ],
