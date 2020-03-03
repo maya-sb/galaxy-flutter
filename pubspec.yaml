@@ -71,6 +71,9 @@ flutter:
     - assets/svg/peso.svg
     - assets/svg/largura.svg
     - assets/svg/tamanho.svg
+    - assets/svg/star4.svg
+    - assets/svg/star3.svg
+    - assets/svg/stars.svg
     - assets/animations/pinkPlanet.flr
     - assets/animations/planetList.flr
 

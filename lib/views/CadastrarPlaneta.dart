@@ -5,133 +5,115 @@ import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 
-class EditarPlaneta extends StatefulWidget {
+class CadastrarPlaneta extends StatefulWidget {
   @override
-  _EditarPlanetaState createState() => _EditarPlanetaState();
+  _CadastrarPlanetaState createState() => _CadastrarPlanetaState();
 }
 
-class _EditarPlanetaState extends State<EditarPlaneta> {
+class _CadastrarPlanetaState extends State<CadastrarPlaneta> {
 
-  var satelites = ["","Tritão", "Talassa", "Náiade", "Nereida", "Proteu"];
-  var gases = ["","Óxido Nítrico", "Nitrogênio", "Argônio", "Oxigênio", "Vapor d'Água"];
-  var estrelas = ["", "Sol", "Sol"];
+  var satelites = [""];
+  var gases = [""];
+  var estrelas = [""];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.pink[700],
-        child: Icon(Icons.save, color: Colors.white,),
-        onPressed: (){
-        
-      },),
-      backgroundColor: Color(0xff380b4c),
-      body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-             Stack(
-                  children: <Widget>[
-                    Center(
-                      child: ClipPath(
-                        clipper: OvalBottomBorderClipper(),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topRight,
-                              end: Alignment.bottomLeft,
-                              colors: [Colors.pinkAccent[700], Colors.purple[900] ])
+    return WillPopScope(
+        onWillPop: () async {
+        showDialog(context: context, builder: (context) {
+             return descartarAlteracoes(context);
+          });
+         return false;
+       },
+        child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.pink[700],
+          child: Icon(Icons.save, color: Colors.white,),
+          onPressed: (){
+
+            //Cadastrar o planeta
+          
+        },),
+        backgroundColor: Color(0xff380b4c),
+        body: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+               Stack(
+                    children: <Widget>[
+                      Center(
+                        child: ClipPath(
+                          clipper: OvalBottomBorderClipper(),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topRight,
+                                end: Alignment.bottomLeft,
+                                colors: [Colors.pinkAccent[700], Colors.purple[900] ])
+                            ),
+                            height: 180,
+                            width: 1000,
                           ),
-                          height: 180,
-                          width: 1000,
                         ),
                       ),
-                    ),
-                    Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 100.0, bottom: 0),
-                      child: SizedBox(
-                        width: 150,
-                        height: 150,
-                            child: FlareActor(
-                                'assets/animations/planetList.flr',
-                                animation: 'rotation',
-                                fit: BoxFit.cover,
-                              ),
+                      Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 100.0, bottom: 0),
+                        child: SizedBox(
+                          width: 150,
+                          height: 150,
+                              child: FlareActor(
+                                  'assets/animations/planetList.flr',
+                                  animation: 'rotation',
+                                  fit: BoxFit.cover,
+                                ),
+                        ),
                       ),
-                    ),
-                ),
-                Padding(
-                      padding: const EdgeInsets.only(top: 25.0),
-                      child: IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(Icons.arrow_back, color: Colors.white, size: 25.0),
-                      ),
-                    ),
-                Positioned(
-                        right: 5,
-                        child: Padding(
+                  ),
+                  Padding(
                         padding: const EdgeInsets.only(top: 25.0),
                         child: IconButton(
-                          onPressed: () {
-                             showDialog(context: context, builder :(context){
-                              return AlertDialog(
-                                shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(8.0))),
-                                title: Text("Deseja remover o planeta permanentemente?"),
-                                //content: Text("Deseja remover o planeta permanentemente?"),
-                                actions: <Widget>[
-                                  FlatButton(child: Text("Sim"),onPressed: (){
-                                    //TO DO removerPlaneta();
-                                    Navigator.pop(context);
-                                  },),
-                                  FlatButton(child: Text("Cancelar"),onPressed: (){
-                                      Navigator.pop(context);
-                                  },)
-                                ],);
-                            });
-                          },
-                          icon: Icon(Icons.delete, color: Colors.white, size: 25.0),
+                          onPressed: () { showDialog(context: context, builder: (context) {
+                            return descartarAlteracoes(context);
+                          }); },
+                          icon: Icon(Icons.arrow_back, color: Colors.white, size: 25.0),
                         ),
                       ),
-                )
-
-                  ],
-            ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
-                child: Info(),
+                    ],
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,),
-              child: Text("Composição", style: TextStyle(color: Colors.pink[800], fontSize: 18),),
-            ), 
-            Container(
-              padding: EdgeInsets.only(left: 15, right: 10),
-              height: 180, 
-              child: HorizontalList(lista: gases, tipo:"Gas")),  
-            Padding(
-              padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
-              child: Text("Satélites", style: TextStyle(color: Colors.pink[800], fontSize: 18),),
-            ),      
-            Container(
-              padding: EdgeInsets.only(left:15, right: 10),
-              height: 180, 
-              child: HorizontalList(lista: satelites, tipo:"Satelite")),    
-            Padding(
-              padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
-              child: Text("Estrelas", style: TextStyle(color: Colors.pink[800], fontSize: 18),),
-            ),      
-            Container(
-              padding: EdgeInsets.only(left:15, right: 10),
-              height: 180, 
-              child: HorizontalList(lista: estrelas, tipo:"Estrela")),    
-             
-          ],
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
+                  child: Info(),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,),
+                child: Text("Composição", style: TextStyle(color: Colors.pink[800], fontSize: 18),),
+              ), 
+              Container(
+                padding: EdgeInsets.only(left: 15, right: 10),
+                height: 180, 
+                child: HorizontalList(lista: gases, tipo:"Gas")),  
+              Padding(
+                padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
+                child: Text("Satélites", style: TextStyle(color: Colors.pink[800], fontSize: 18),),
+              ),      
+              Container(
+                padding: EdgeInsets.only(left:15, right: 10),
+                height: 180, 
+                child: HorizontalList(lista: satelites, tipo:"Satelite")),  
+              Padding(
+                padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
+                child: Text("Estrelas", style: TextStyle(color: Colors.pink[800], fontSize: 18),),
+              ),      
+              Container(
+                padding: EdgeInsets.only(left:15, right: 10),
+                height: 180, 
+                child: HorizontalList(lista: estrelas, tipo:"Estrela")),   
+               
+            ],
+          ),
         ),
       ),
     );
@@ -163,9 +145,9 @@ class _HorizontalListState extends State<HorizontalList> {
         var card;
         if (widget.tipo == "Satelite"){
           card = SateliteCard(widget.lista[index]);
-        }else if(widget.tipo == "Gas"){
+        }else if (widget.tipo == "Gas"){
           card = GasCard(widget.lista[index], index);
-        }else {
+        }else if (widget.tipo == "Estrela"){
           card = EstrelaCard(widget.lista[index]);
         }
 
@@ -175,47 +157,6 @@ class _HorizontalListState extends State<HorizontalList> {
           return card;
         }
       } ,
-    );
-  }
-}
-
-class EstrelaCard extends StatelessWidget {
-  const EstrelaCard (this.title);
-
-  final title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-        children: [
-          Container(
-          padding: EdgeInsets.all(10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10.0),
-                child: Text(title, style: TextStyle(color: Color(0xff380b4c), fontSize: 16),),
-              ),
-              SizedBox.fromSize(
-                  child:  SvgPicture.asset('assets/svg/star4.svg'),
-                  size: Size(70.0, 70.0),
-                ),
-            ],
-          ),
-          margin: const EdgeInsets.symmetric(
-           vertical: 10.0,
-           horizontal: 5.0,
-         ),
-          width: 140.0,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            shape: BoxShape.rectangle,
-            borderRadius: new BorderRadius.circular(8.0),
-        ),
-        ),
-        Positioned(top: 7, right: 0, child: _Options(),),
-        ]
     );
   }
 }
@@ -261,6 +202,47 @@ class SateliteCard extends StatelessWidget {
   }
 }
 
+class EstrelaCard extends StatelessWidget {
+  const EstrelaCard (this.title);
+
+  final title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+        children: [
+          Container(
+          padding: EdgeInsets.all(10),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10.0),
+                child: Text(title, style: TextStyle(color: Color(0xff380b4c), fontSize: 16),),
+              ),
+              SizedBox.fromSize(
+                  child:  SvgPicture.asset('assets/svg/star4.svg'),
+                  size: Size(70.0, 70.0),
+                ),
+            ],
+          ),
+          margin: const EdgeInsets.symmetric(
+           vertical: 10.0,
+           horizontal: 5.0,
+         ),
+          width: 140.0,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.rectangle,
+            borderRadius: new BorderRadius.circular(8.0),
+        ),
+        ),
+        Positioned(top: 7, right: 0, child: _Options(),),
+        ]
+    );
+  }
+}
+
 class GasCard extends StatelessWidget {
   const GasCard (this.title, this.index);
 
@@ -270,7 +252,7 @@ class GasCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    var quant = ["95,33%", "2,7%","1,6%","0,13%","0,07%","0,03%"];
+    var quant = [];
 
     return Stack(
         children: [
@@ -355,10 +337,12 @@ class Info extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    var tamanhoController = MoneyMaskedTextController(decimalSeparator: ',', thousandSeparator: '.', rightSymbol: ' Km');
-    tamanhoController.updateValue(49244);
-    var massaController = MoneyMaskedTextController(decimalSeparator: ',', thousandSeparator: '.', rightSymbol: ' Kg');
-    massaController.updateValue(49244);
+    //var tamanhoController = MoneyMaskedTextController(decimalSeparator: ',', thousandSeparator: '.', rightSymbol: ' Km');
+    var tamanhoController;
+    var massaController;
+    //tamanhoController.updateValue(49244);
+    //var massaController = MoneyMaskedTextController(decimalSeparator: ',', thousandSeparator: '.', rightSymbol: ' Kg');
+    //massaController.updateValue(49244);
 
     //double val = controller.numberValue;
 
@@ -371,7 +355,7 @@ class Info extends StatelessWidget {
              Padding(
                padding: const EdgeInsets.all(8.0),
                child: TextFormField(
-                      initialValue: "Marte",
+                      initialValue: "",
                       //focusNode: myFocusNode,
                       autofocus: false,
                       decoration: new InputDecoration(
@@ -541,7 +525,65 @@ class Info extends StatelessWidget {
                         color: Colors.white,
                       ),
                     ),
-                  ), 
+                  ),
+                  Padding(
+               padding: const EdgeInsets.all(8.0),
+               child: TextFormField(
+                      initialValue: "",
+                      //focusNode: myFocusNode,
+                      autofocus: false,
+                      decoration: new InputDecoration(
+                        labelText: "Velocidade",
+                        labelStyle: TextStyle(color: Colors.purple[700]),
+                        fillColor: Colors.white,
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(25.0),
+                          borderSide: BorderSide(
+                            color: Colors.purple[700],
+                            width: 3
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(25.0),
+                          borderSide: BorderSide(
+                            color: Colors.purple[700],
+                            width: 1.5
+                          ),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(25.0),
+                          borderSide: BorderSide(
+                            color: Colors.pink[700],
+                            width: 3
+                          ),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(25.0),
+                          borderSide: BorderSide(
+                            color: Colors.pink[700],
+                            width: 1.5
+                          ),
+                        ),
+                        errorStyle: TextStyle(
+                          color: Colors.pink[700],
+                        )
+
+                        //fillColor: Colors.green
+                      ),
+                      validator: (val) {
+                        if(val.length==0) {
+                          return "Velocidade inválida";
+                        }else{
+                          return null;
+                        }
+                      },
+                      keyboardType: TextInputType.number,
+                      style: TextStyle(
+                        fontFamily: "Poppins",
+                        color: Colors.white,
+                      ),
+                    ),
+             ),   
             
           ],
             ),
@@ -579,4 +621,21 @@ Widget _Options() => PopupMenuButton<int>(
           side: BorderSide(width: 1.0, style: BorderStyle.none),
           borderRadius: BorderRadius.all(Radius.circular(8.0)),
         ),
-        );
+);
+
+Widget descartarAlteracoes(context){
+    return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(8.0))),
+        title: Text("Descartar planeta"),
+        content: Text("Sair da tela descartará informações ainda não salvas. Tem certeza que deseja voltar?"),
+        actions: <Widget>[
+          FlatButton(child: Text("Sim"),onPressed: (){
+            Navigator.pop(context);
+            Navigator.pop(context);
+          },),
+          FlatButton(child: Text("Cancelar"),onPressed: (){
+              Navigator.pop(context);
+          },)
+      ],);
+  }

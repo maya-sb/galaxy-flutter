@@ -40,7 +40,7 @@ class _PlanetasState extends State<Planetas> {
           child: Icon(Icons.add,color: Colors.pink[700],),
           backgroundColor: Colors.white,
           onPressed: (){
-            //Navigator.push(context, MaterialPageRoute(builder: (context)=> EditarPlaneta()));
+             Navigator.pushNamed(context, RouteGenerator.ROUTE_CADASTRAR_PLANETA);
         },),
         backgroundColor: Color(0xff380b4c),
         body: Container(

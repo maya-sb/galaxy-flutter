@@ -5,6 +5,7 @@ import 'package:galaxy_flutter/views/Login.dart';
 import 'package:galaxy_flutter/views/Planet.dart';
 import 'package:galaxy_flutter/views/Planetas.dart';
 import 'package:galaxy_flutter/views/Signup.dart';
+import 'package:galaxy_flutter/views/CadastrarPlaneta.dart';
 
 class RouteGenerator {
 
@@ -15,6 +16,7 @@ class RouteGenerator {
   static const String ROUTE_PLANETAS = "/planetas";
   static const String ROUTE_PLANET = "/planet";
   static const String ROUTE_EDITAR_PLANETA = "/editarPlaneta";
+  static const String ROUTE_CADASTRAR_PLANETA = "/cadastrarPlaneta";
 
   static Route<dynamic> generateRoute(RouteSettings settings){
     
@@ -40,6 +42,9 @@ class RouteGenerator {
       case ROUTE_EDITAR_PLANETA:
         return MaterialPageRoute(
           builder: (_) => EditarPlaneta());
+      case ROUTE_CADASTRAR_PLANETA:
+        return MaterialPageRoute(
+          builder: (_) => CadastrarPlaneta());
     }
     
   }

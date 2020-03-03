@@ -6,7 +6,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:galaxy_flutter/RouteGenerator.dart';
 
-
 class Planet extends StatefulWidget {
   @override
   _PlanetState createState() => _PlanetState();
@@ -16,6 +15,7 @@ class _PlanetState extends State<Planet> {
 
   var satelites = ["Tritão", "Talassa", "Náiade", "Nereida", "Proteu"];
   var gases = ["Óxido Nítrico", "Nitrogênio", "Argônio", "Oxigênio", "Vapor d'Água"];
+  var estrelas = ["Sol", "Sol"];
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +91,7 @@ class _PlanetState extends State<Planet> {
               child: Text("Composição", style: TextStyle(color: Colors.pink[800], fontSize: 18),),
             ), 
             Container(
-              padding: EdgeInsets.only(left: 10, right: 10),
+              padding: EdgeInsets.only(left: 15, right: 10),
               height: 180, 
               child: HorizontalList(lista: gases, tipo:"Gas")),  
             Padding(
@@ -99,9 +99,17 @@ class _PlanetState extends State<Planet> {
               child: Text("Satélites", style: TextStyle(color: Colors.pink[800], fontSize: 18),),
             ),      
             Container(
-              padding: EdgeInsets.only(left:10, right: 10),
+              padding: EdgeInsets.only(left:15, right: 10),
               height: 180, 
-              child: HorizontalList(lista: satelites, tipo:"Satelite")),    
+              child: HorizontalList(lista: satelites, tipo:"Satelite")), 
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
+              child: Text("Estrelas", style: TextStyle(color: Colors.pink[800], fontSize: 18),),
+            ),      
+            Container(
+              padding: EdgeInsets.only(left:15, right: 10),
+              height: 180, 
+              child: HorizontalList(lista: estrelas, tipo:"Estrela")),   
              
           ],
         ),
@@ -135,8 +143,10 @@ class _HorizontalListState extends State<HorizontalList> {
         var card;
         if (widget.tipo == "Satelite"){
           card = SateliteCard(widget.lista[index]);
-        }else{
+        }else if(widget.tipo == "Gas"){
           card = GasCard(widget.lista[index], index);
+        }else{
+          card = EstrelaCard(widget.lista[index]);
         }
 
         return card;
@@ -144,6 +154,8 @@ class _HorizontalListState extends State<HorizontalList> {
     );
   }
 }
+
+
 
 class SateliteCard extends StatelessWidget {
   const SateliteCard (this.title);
@@ -165,6 +177,47 @@ class SateliteCard extends StatelessWidget {
               ),
               SizedBox.fromSize(
                   child:  SvgPicture.asset('assets/svg/moon2.svg'),
+                  size: Size(70.0, 70.0),
+                ),
+            ],
+          ),
+          margin: const EdgeInsets.symmetric(
+           vertical: 10.0,
+           horizontal: 5.0,
+         ),
+          width: 140.0,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.rectangle,
+            borderRadius: new BorderRadius.circular(8.0),
+        ),
+        ),
+        ]
+    );
+  }
+}
+
+
+class EstrelaCard extends StatelessWidget {
+  const EstrelaCard (this.title);
+
+  final title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+        children: [
+          Container(
+          padding: EdgeInsets.all(10),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10.0),
+                child: Text(title, style: TextStyle(color: Color(0xff380b4c), fontSize: 16),),
+              ),
+              SizedBox.fromSize(
+                  child:  SvgPicture.asset('assets/svg/star4.svg'),
                   size: Size(70.0, 70.0),
                 ),
             ],

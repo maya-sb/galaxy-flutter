@@ -35,7 +35,7 @@ class _HomeState extends State<Home> {
     const _Card('Planetas','assets/svg/uranus.svg'),
     const _Card('  Sistemas\nPlanetários','assets/svg/galaxy.svg'),
     const _Card('Satélites','assets/svg/moon2.svg'),
-    const _Card('Estrelas','assets/svg/star.svg'),
+    const _Card('Estrelas','assets/svg/stars.svg'),
   ];
 
   @override
