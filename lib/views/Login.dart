@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:galaxy_flutter/components/Decorations.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:galaxy_flutter/RouteGenerator.dart';
@@ -112,43 +113,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                   child: TextFormField(
                     controller: emailController,
                     focusNode: myFocusNode,
-                    decoration: new InputDecoration(
-                      labelText: "Email",
-                      labelStyle: TextStyle(color: Colors.purple[700]),
-                      fillColor: Colors.white,
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: new BorderRadius.circular(25.0),
-                        borderSide: BorderSide(
-                          color: Colors.purple[700],
-                          width: 3
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: new BorderRadius.circular(25.0),
-                        borderSide: BorderSide(
-                          color: Colors.purple[700],
-                          width: 1.5
-                        ),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderRadius: new BorderRadius.circular(25.0),
-                        borderSide: BorderSide(
-                          color: Colors.pink[700],
-                          width: 3
-                        ),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: new BorderRadius.circular(25.0),
-                        borderSide: BorderSide(
-                          color: Colors.pink[700],
-                          width: 1.5
-                        ),
-                      ),
-                      errorStyle: TextStyle(
-                        color: Colors.pink[700],
-                      )
-
-                      //fillColor: Colors.green
+                    decoration: GalaxyFieldDecoration(
+                      labelText: "Email"
                     ),
                     validator: (val) {
                       if(val.length==0) {

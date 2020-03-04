@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 
 class EditField extends StatelessWidget {
 
-  const EditField(this.title, this.controller, this.validator);
+  const EditField({this.title, this.controller, this.validator, this.fontSize});
 
   final title;
   final controller;
   final validator;
+  final fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +55,7 @@ class EditField extends StatelessWidget {
       style: TextStyle(
         fontFamily: "Poppins",
         color: Colors.white,
-        fontSize: 18.0
+        fontSize: this.fontSize
       ),
     );
   }
