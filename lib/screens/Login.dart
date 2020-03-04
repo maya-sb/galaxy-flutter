@@ -73,7 +73,6 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Color(0xff380b4c),
       body: SingleChildScrollView(
         child: Center(
           child: Form(

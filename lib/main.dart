@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:galaxy_flutter/RouteGenerator.dart';
-import 'package:galaxy_flutter/views/Login.dart';
+import 'package:galaxy_flutter/screens/Login.dart';
 
 void main() => runApp(MyApp());
 

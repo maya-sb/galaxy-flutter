@@ -55,7 +55,6 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.transparent
         //backgroundColor: Colors.purple[900],
        ),
-      backgroundColor: Color(0xff380b4c),
         //backgroundColor: Colors.white,
         body: Container(
             //decoration: box,

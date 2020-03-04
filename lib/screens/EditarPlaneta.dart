@@ -32,7 +32,6 @@ class _EditarPlanetaState extends State<EditarPlaneta> {
           }
           
       },),
-      backgroundColor: Color(0xff380b4c),
       body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

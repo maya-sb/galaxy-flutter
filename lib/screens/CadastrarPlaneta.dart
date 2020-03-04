@@ -32,10 +32,8 @@ class _CadastrarPlanetaState extends State<CadastrarPlaneta> {
           backgroundColor: Colors.pink[700],
           child: Icon(Icons.save, color: Colors.white,),
           onPressed: (){
-
             //Cadastrar o planeta
         },),
-        backgroundColor: Color(0xff380b4c),
         body: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

@@ -40,7 +40,6 @@ class _PlanetasState extends State<Planetas> {
           onPressed: (){
              Navigator.pushNamed(context, RouteGenerator.ROUTE_CADASTRAR_PLANETA);
         },),
-        backgroundColor: Color(0xff380b4c),
         body: Container(
           color: Color(0xff380b4c),
           padding: EdgeInsets.only(top: 20),
