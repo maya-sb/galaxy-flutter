@@ -131,6 +131,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                     title: "Email", 
                     controller: emailController,
                     validator: validatorEmail,
+                    fontSize: 18.0,
                   ),
                 ),
 
@@ -141,6 +142,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                     controller: passwordController,
                     validator: validatorPassword,
                     isPassword: true,
+                    fontSize: 18.0,
                   ), 
                   // TextFormField(
                   //   controller: senhaController,
