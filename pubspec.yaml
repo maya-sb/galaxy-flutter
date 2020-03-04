@@ -74,6 +74,7 @@ flutter:
     - assets/svg/star4.svg
     - assets/svg/star3.svg
     - assets/svg/stars.svg
+    - assets/svg/blackhole.svg
     - assets/animations/pinkPlanet.flr
     - assets/animations/planetList.flr
 
