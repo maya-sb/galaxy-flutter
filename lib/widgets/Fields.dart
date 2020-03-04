@@ -10,7 +10,7 @@ class EditField extends StatefulWidget {
     this.title,
     this.controller,
     this.validator,
-    this.fontSize: 14,
+    this.fontSize: 16,
     this.isPassword: false
   });
 
@@ -35,11 +35,18 @@ class _EditFieldState extends State<EditField> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    // TODO: implement initState
+    super.initState();
     _obscureText = widget.isPassword;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     
     return TextFormField(
       controller: widget.controller,
+      obscureText: _obscureText,
       autofocus: false,
       decoration: new InputDecoration(
         suffixIcon:  widget.isPassword
@@ -82,7 +89,7 @@ class _EditFieldState extends State<EditField> {
         ),
         errorStyle: TextStyle(
           color: Colors.pink[700],
-        )
+        ),
         //fillColor: Colors.green
       ),
       validator: widget.validator,
@@ -90,7 +97,7 @@ class _EditFieldState extends State<EditField> {
       style: TextStyle(
         fontFamily: "Poppins",
         color: Colors.white,
-        fontSize: widget.fontSize
+        fontSize: widget.fontSize,
       ),
     );
   }
