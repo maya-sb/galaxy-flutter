@@ -15,8 +15,8 @@ class MyApp extends StatelessWidget {
         cursorColor: Colors.purple[700],
         scaffoldBackgroundColor: Color(0xff380b4c)
       ),
-      //initialRoute: RouteGenerator.INITIAL_ROUTE,
-      initialRoute: RouteGenerator.ROUTE_PLANETAS,
+      initialRoute: RouteGenerator.INITIAL_ROUTE,
+      //initialRoute: RouteGenerator.ROUTE_PLANETAS,
       onGenerateRoute: RouteGenerator.generateRoute,
       debugShowCheckedModeBanner: false,
       home: Login(),

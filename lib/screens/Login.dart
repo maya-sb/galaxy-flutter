@@ -26,6 +26,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   @override
   void initState(){
     super.initState();
+    _checkLogged();
     myFocusNode.addListener((){ setState((){}); });
     myFocusNode2.addListener((){ setState((){}); });
   }
@@ -66,8 +67,17 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
           });
       });
   }
-  
 
+
+  Future _checkLogged() async{
+    FirebaseAuth auth = FirebaseAuth.instance;
+    
+    if (await auth.currentUser() != null){
+      Navigator.pushNamedAndRemoveUntil(context, RouteGenerator.ROUTE_HOME, (_) => false);
+    }
+
+  }
+  
   @override
   Widget build(BuildContext context) {
     

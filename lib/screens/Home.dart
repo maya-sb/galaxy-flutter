@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:galaxy_flutter/RouteGenerator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 Decoration box = BoxDecoration(
   gradient: LinearGradient(
@@ -38,6 +39,11 @@ class _HomeState extends State<Home> {
     const _Card('Estrelas','assets/svg/stars.svg'),
   ];
 
+  _signOut() async {
+    final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+    await _firebaseAuth.signOut();
+   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,6 +54,7 @@ class _HomeState extends State<Home> {
           IconButton(
             icon: Icon(Icons.exit_to_app) ,
             onPressed: (){
+              _signOut();
               Navigator.pushNamedAndRemoveUntil(context, RouteGenerator.ROUTE_LOGIN, (_) => false);
             },),
         ],

@@ -144,19 +144,19 @@ class Info extends StatelessWidget {
           children: <Widget>[
              Padding(
                padding: const EdgeInsets.all(8.0),
-               child: EditField(title: "Nome", controller: nomeController, validator: validatorNome, fontSize: 18,),
+               child: EditField(title: "Nome", controller: nomeController, validator: validatorNome, fontSize: 18.0,),
              ),  
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: EditField(title: "Tamanho", controller: tamanhoController, validator: validatorNome, fontSize: 18
+              child: EditField(title: "Tamanho", controller: tamanhoController, validator: validatorNome, fontSize: 18.0
             ),),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: EditField(title: "Massa", controller: massaController, validator: validatorNome, fontSize: 18),
+              child: EditField(title: "Massa", controller: massaController, validator: validatorNome, fontSize: 18.0),
             ),
             Padding(
                padding: const EdgeInsets.all(8.0),
-               child: EditField(title: "Velocidade de Rotação", controller: velocidadeController, validator: validatorNome, fontSize: 18,),
+               child: EditField(title: "Velocidade de Rotação", controller: velocidadeController, validator: validatorNome, fontSize: 18.0,),
             ),   
             
           ],
