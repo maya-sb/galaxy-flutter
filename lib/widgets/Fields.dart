@@ -63,7 +63,7 @@ class EditField extends StatelessWidget {
 
 class OutputField extends StatelessWidget {
 
-  const OutputField(this.title, this.controller);
+  const OutputField({this.title, this.controller});
 
   final title;
   final controller;

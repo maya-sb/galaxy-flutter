@@ -143,19 +143,19 @@ class Info extends StatelessWidget {
           children: <Widget>[
              Padding(
                padding: const EdgeInsets.only(top: 25.0, bottom: 2.0),
-               child: OutputField( "Nome", nomeController),
+               child: OutputField(title: "Nome", controller: nomeController),
              ),  
             Padding(
                   padding: const EdgeInsets.only(bottom: 2.0),
-                  child:  OutputField("Tamanho", tamanhoController)
+                  child:  OutputField(title: "Tamanho",controller: tamanhoController)
                 ),
             Padding(
                   padding: const EdgeInsets.only(bottom: 2.0),
-                  child: OutputField("Massa", massaController)
+                  child: OutputField(title: "Massa",controller: massaController)
                   ), 
              Padding(
                   padding: const EdgeInsets.only(bottom: 0.0),
-                  child: OutputField("Velocidade de Rotação", velocidadeController)
+                  child: OutputField(title: "Velocidade de Rotação", controller: velocidadeController)
                   ), 
             
           ],
