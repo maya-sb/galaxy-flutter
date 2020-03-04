@@ -152,6 +152,7 @@ class _SignupState extends State<Signup> with SingleTickerProviderStateMixin {
                   title: "Seu email",
                   controller: emailController,
                   validator: validatorEmail,
+                  keyboardType: TextInputType.emailAddress,
                 ),
               ),
 
@@ -162,6 +163,7 @@ class _SignupState extends State<Signup> with SingleTickerProviderStateMixin {
                   controller: passwordController,
                   validator: validatorPassword,
                   isPassword: true,
+                  keyboardType: TextInputType.visiblePassword,
                 )
               ),
 
@@ -171,6 +173,7 @@ class _SignupState extends State<Signup> with SingleTickerProviderStateMixin {
                   title: "Confirme sua senha",
                   validator: validatorConfirm,
                   isPassword: true,
+                  keyboardType: TextInputType.visiblePassword,
                 )
               ),
 
