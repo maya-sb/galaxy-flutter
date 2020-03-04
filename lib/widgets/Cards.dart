@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class OrbitingCard extends StatelessWidget {
-  const OrbitingCard({this.title, this.svg, this.editable = false});
+  const OrbitingCard({this.title, this.svg, this.editable: false});
 
   final title;
   final svg;
@@ -49,7 +49,7 @@ class OrbitingCard extends StatelessWidget {
 }
 
 class GasCard extends StatelessWidget {
-  const GasCard ({this.title, this.index, this.editable = false});
+  const GasCard ({this.title, this.index, this.editable: false});
 
   final title;
   final index;
