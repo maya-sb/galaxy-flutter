@@ -76,7 +76,6 @@ class _SignupState extends State<Signup> with SingleTickerProviderStateMixin {
     
     return Scaffold(
     key: _scaffoldKey2,
-    backgroundColor: Color(0xff380b4c),
     body: SingleChildScrollView(
       child: Center(
         child: Form(

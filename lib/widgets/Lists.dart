@@ -24,11 +24,11 @@ class _HorizontalListState extends State<HorizontalList> {
       itemBuilder: (context, index) {
         var card;
         if (widget.tipo == "Satelite"){
-          card = OrbitingCard(widget.lista[index],'assets/svg/moon2.svg', widget.editable);
+          card = OrbitingCard(title: widget.lista[index], svg:'assets/svg/moon2.svg', editable: widget.editable);
         }else if(widget.tipo == "Gas"){
-          card = GasCard(widget.lista[index], index, widget.editable);
+          card = GasCard(title: widget.lista[index], index: index, editable: widget.editable);
         }else if(widget.tipo == "Estrela"){
-          card = OrbitingCard(widget.lista[index],'assets/svg/star4.svg', widget.editable);
+          card = OrbitingCard(title: widget.lista[index], svg:'assets/svg/star4.svg', editable: widget.editable);
         }
 
         if (widget.editable == true && index == 0){

@@ -98,7 +98,7 @@ class _EditFieldState extends State<EditField> {
 
 class OutputField extends StatelessWidget {
 
-  const OutputField(this.title, this.controller);
+  const OutputField({this.title, this.controller});
 
   final title;
   final controller;

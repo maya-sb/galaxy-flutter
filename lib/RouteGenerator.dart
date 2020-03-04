@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:galaxy_flutter/views/EditarPlaneta.dart';
-import 'package:galaxy_flutter/views/Home.dart';
-import 'package:galaxy_flutter/views/Login.dart';
-import 'package:galaxy_flutter/views/Planet.dart';
-import 'package:galaxy_flutter/views/Planetas.dart';
-import 'package:galaxy_flutter/views/Signup.dart';
-import 'package:galaxy_flutter/views/CadastrarPlaneta.dart';
+import 'package:galaxy_flutter/screens/EditarPlaneta.dart';
+import 'package:galaxy_flutter/screens/Home.dart';
+import 'package:galaxy_flutter/screens/Login.dart';
+import 'package:galaxy_flutter/screens/Planet.dart';
+import 'package:galaxy_flutter/screens/Planetas.dart';
+import 'package:galaxy_flutter/screens/Signup.dart';
+import 'package:galaxy_flutter/screens/CadastrarPlaneta.dart';
 
 class RouteGenerator {
 

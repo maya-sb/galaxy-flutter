@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:galaxy_flutter/RouteGenerator.dart';
-import 'package:galaxy_flutter/views/Login.dart';
+import 'package:galaxy_flutter/screens/Login.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,9 +13,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.purple,
         textSelectionHandleColor: Colors.purple[700],
         cursorColor: Colors.purple[700],
+        scaffoldBackgroundColor: Color(0xff380b4c)
       ),
-      //initialRoute: RouteGenerator.INITIAL_ROUTE,
-      initialRoute: RouteGenerator.ROUTE_PLANETAS,
+      initialRoute: RouteGenerator.INITIAL_ROUTE,
+      //initialRoute: RouteGenerator.ROUTE_PLANETAS,
       onGenerateRoute: RouteGenerator.generateRoute,
       debugShowCheckedModeBanner: false,
       home: Login(),
