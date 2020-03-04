@@ -1,21 +1,56 @@
+import 'dart:ffi';
 import 'package:flutter/material.dart';
 
-class EditField extends StatelessWidget {
 
-  const EditField({this.title, this.controller, this.validator, this.fontSize});
+class EditField extends StatefulWidget {
+  /// TextFormField based on the Galaxy theme
+  /// 
+  /// when [isPassword] is activated, the text is hidden and an icon to show the password is added.
+  EditField({
+    this.title,
+    this.controller,
+    this.validator,
+    this.fontSize: 14,
+    this.isPassword: false
+  });
 
-  final title;
+  final String title;
   final controller;
-  final validator;
-  final fontSize;
+  final String Function(String) validator;
+  final double fontSize;
+  final bool isPassword;
+
+  @override
+  _EditFieldState createState() => _EditFieldState();
+}
+
+class _EditFieldState extends State<EditField> {
+
+  bool _obscureText;
+
+  void _handleOnPressed() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    _obscureText = widget.isPassword;
+    
     return TextFormField(
-      controller: controller,
+      controller: widget.controller,
       autofocus: false,
       decoration: new InputDecoration(
-        labelText: title,
+        suffixIcon:  widget.isPassword
+        ? IconButton(
+          icon: _obscureText
+          ? Icon(Icons.visibility,  color: Colors.purple[700]) 
+          : Icon(Icons.visibility_off, color: Colors.purple[700]),
+          onPressed: () => _handleOnPressed(),
+        )
+        : null,
+        labelText: widget.title,
         labelStyle: TextStyle(color: Colors.purple[700], fontSize: 18.0),
         focusedBorder: OutlineInputBorder(
           borderRadius: new BorderRadius.circular(25.0),
@@ -50,12 +85,12 @@ class EditField extends StatelessWidget {
         )
         //fillColor: Colors.green
       ),
-      validator: validator,
+      validator: widget.validator,
       keyboardType: TextInputType.emailAddress,
       style: TextStyle(
         fontFamily: "Poppins",
         color: Colors.white,
-        fontSize: this.fontSize
+        fontSize: widget.fontSize
       ),
     );
   }

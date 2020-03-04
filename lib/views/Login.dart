@@ -4,6 +4,7 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:galaxy_flutter/RouteGenerator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:galaxy_flutter/widgets/Fields.dart';
 
 class Login extends StatefulWidget {
 
@@ -17,11 +18,27 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   FocusNode myFocusNode2 = new FocusNode();
 
   TextEditingController emailController = TextEditingController();
-  TextEditingController senhaController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   bool loading = false;
+
+  String validatorEmail (val) {
+    if(val.length==0) {
+      return "Nome inválido";
+    }else{
+      return null;
+    }
+  }
+
+  String validatorPassword (val) {
+    if(val.length==0) {
+      return "Nome inválido";
+    }else{
+      return null;
+    }
+  }
 
   @override
   void initState(){
@@ -35,15 +52,6 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     super.dispose();
     myFocusNode.dispose();
     myFocusNode2.dispose();
-  }
-
-  bool _obscureText = true;
-
-
-  void _handleOnPressed() {
-    setState(() {
-      _obscureText = !_obscureText;
-    });
   }
 
   void _login(String email, String password) {
@@ -110,89 +118,81 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
 
                 Container(
                   padding: EdgeInsets.only(left: 15, right: 15, top: 60),
-                  child: TextFormField(
+                  child: EditField(
+                    title: "Email", 
                     controller: emailController,
-                    focusNode: myFocusNode,
-                    decoration: GalaxyFieldDecoration(
-                      labelText: "Email"
-                    ),
-                    validator: (val) {
-                      if(val.length==0) {
-                        return "Email inválido";
-                      }else{
-                        return null;
-                      }
-                    },
-                    keyboardType: TextInputType.emailAddress,
-                    style: TextStyle(
-                      fontFamily: "Poppins",
-                      color: Colors.white,
-                    ),
+                    validator: validatorEmail,
                   ),
                 ),
 
                 Container(
                   padding: EdgeInsets.only(left: 15, right: 15, top: 15),
-                  child: TextFormField(
-                    controller: senhaController,
-                    style: TextStyle(
-                      fontFamily: "Poppins",
-                      color: Colors.white,
-                    ),
-                    focusNode: myFocusNode2,
-                    obscureText: _obscureText,
-                    decoration: new InputDecoration(
-                      suffixIcon: IconButton(
-                        icon: _obscureText
-                        ? Icon(Icons.visibility,  color: Colors.purple[700]) 
-                        : Icon(Icons.visibility_off, color: Colors.purple[700]),
-                        onPressed: () => _handleOnPressed(),
-                      ),
-                      labelText: "Senha",
-                      labelStyle: TextStyle(color: Colors.purple[700]),
-                      fillColor: Colors.white,
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: new BorderRadius.circular(25.0),
-                        borderSide: BorderSide(
-                          color: Colors.purple[700],
-                          width: 3
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: new BorderRadius.circular(25.0),
-                        borderSide: BorderSide(
-                          color: Colors.purple[700],
-                          width: 1.5
-                        ),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderRadius: new BorderRadius.circular(25.0),
-                        borderSide: BorderSide(
-                          color: Colors.pink[700],
-                          width: 3
-                        ),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: new BorderRadius.circular(25.0),
-                        borderSide: BorderSide(
-                          color: Colors.pink[700],
-                          width: 1.5
-                        ),
-                      ),
-                      errorStyle: TextStyle(
-                        color: Colors.pink[700],
-                      )
-                      //fillColor: Colors.green
-                    ),
-                    validator: (val) {
-                      if(val.length==0) {
-                        return "Senha inválida";
-                      }else{
-                        return null;
-                      }
-                    },
-                    keyboardType: TextInputType.emailAddress,
-                  ),
+                  child: EditField(
+                    title: "Password",
+                    controller: passwordController,
+                    validator: validatorPassword,
+                    isPassword: true,
+                  ), 
+                  // TextFormField(
+                  //   controller: senhaController,
+                  //   style: TextStyle(
+                  //     fontFamily: "Poppins",
+                  //     color: Colors.white,
+                  //   ),
+                  //   focusNode: myFocusNode2,
+                  //   obscureText: _obscureText,
+                  //   decoration: new InputDecoration(
+                  //     suffixIcon: IconButton(
+                  //       icon: _obscureText
+                  //       ? Icon(Icons.visibility,  color: Colors.purple[700]) 
+                  //       : Icon(Icons.visibility_off, color: Colors.purple[700]),
+                  //       onPressed: () => _handleOnPressed(),
+                  //     ),
+                  //     labelText: "Senha",
+                  //     labelStyle: TextStyle(color: Colors.purple[700]),
+                  //     fillColor: Colors.white,
+                  //     focusedBorder: OutlineInputBorder(
+                  //       borderRadius: new BorderRadius.circular(25.0),
+                  //       borderSide: BorderSide(
+                  //         color: Colors.purple[700],
+                  //         width: 3
+                  //       ),
+                  //     ),
+                  //     enabledBorder: OutlineInputBorder(
+                  //       borderRadius: new BorderRadius.circular(25.0),
+                  //       borderSide: BorderSide(
+                  //         color: Colors.purple[700],
+                  //         width: 1.5
+                  //       ),
+                  //     ),
+                  //     focusedErrorBorder: OutlineInputBorder(
+                  //       borderRadius: new BorderRadius.circular(25.0),
+                  //       borderSide: BorderSide(
+                  //         color: Colors.pink[700],
+                  //         width: 3
+                  //       ),
+                  //     ),
+                  //     errorBorder: OutlineInputBorder(
+                  //       borderRadius: new BorderRadius.circular(25.0),
+                  //       borderSide: BorderSide(
+                  //         color: Colors.pink[700],
+                  //         width: 1.5
+                  //       ),
+                  //     ),
+                  //     errorStyle: TextStyle(
+                  //       color: Colors.pink[700],
+                  //     )
+                  //     //fillColor: Colors.green
+                  //   ),
+                  //   validator: (val) {
+                  //     if(val.length==0) {
+                  //       return "Senha inválida";
+                  //     }else{
+                  //       return null;
+                  //     }
+                  //   },
+                  //   keyboardType: TextInputType.emailAddress,
+                  // ),
                 ),
 
                 Container(
@@ -202,7 +202,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                       if (_formKey.currentState.validate()) {
                         setState(() {
                           this.loading = true;
-                          this._login(emailController.text, senhaController.text);
+                          this._login(emailController.text, passwordController.text);
                         });
                       }
                     },
