@@ -3,6 +3,8 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:galaxy_flutter/RouteGenerator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:galaxy_flutter/widgets/Fields.dart';
+
 
 class Signup extends StatefulWidget {
 
@@ -17,12 +19,37 @@ class _SignupState extends State<Signup> with SingleTickerProviderStateMixin {
   FocusNode myFocusNode3 = new FocusNode();
 
   TextEditingController emailController = TextEditingController();
-  TextEditingController senhaController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey2 = new GlobalKey<ScaffoldState>();
 
-  bool _obscureText = true;
   bool loading = false;
+
+  String validatorEmail (val) {
+    if(val.length==0) {
+      return "Nome inválido";
+    }else{
+      return null;
+    }
+  }
+
+  String validatorPassword (val) {
+    if(val.length==0) {
+      return "Nome inválido";
+    }else{
+      return null;
+    }
+  }
+
+  String validatorConfirm (val) {
+    if(val.length==0) {
+      return "Senha inválida";
+    } else if (val != passwordController.text) {
+      return "Senhas diferentes";
+    } else{
+      return null;
+    }
+  }
 
   @override
   void initState(){
@@ -38,12 +65,6 @@ class _SignupState extends State<Signup> with SingleTickerProviderStateMixin {
     myFocusNode.dispose();
     myFocusNode2.dispose();
     myFocusNode3.dispose();
-  }
-
-  void _handleOnPressed() {
-    setState(() {
-      _obscureText = !_obscureText;
-    });
   }
 
   void _signup(String email, String password) {
@@ -127,191 +148,34 @@ class _SignupState extends State<Signup> with SingleTickerProviderStateMixin {
 
               Container(
                 padding: EdgeInsets.only(left: 15, right: 15, top: 60),
-                child: TextFormField(
+                child: EditField(
+                  title: "Seu email",
                   controller: emailController,
-                  focusNode: myFocusNode,
-                  decoration: new InputDecoration(
-                    labelText: "Seu email",
-                    labelStyle: TextStyle(color: Colors.purple[700]),
-                    fillColor: Colors.white,
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(25.0),
-                      borderSide: BorderSide(
-                        color: Colors.purple[700],
-                        width: 3
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(25.0),
-                      borderSide: BorderSide(
-                        color: Colors.purple[700],
-                        width: 1.5
-                      ),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(25.0),
-                      borderSide: BorderSide(
-                        color: Colors.pink[700],
-                        width: 3
-                      ),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(25.0),
-                      borderSide: BorderSide(
-                        color: Colors.pink[700],
-                        width: 1.5
-                      ),
-                    ),
-                    errorStyle: TextStyle(
-                      color: Colors.pink[700],
-                    )
-
-                    //fillColor: Colors.green
-                  ),
-                  validator: (val) {
-                    if(val.length==0) {
-                      return "Email inválido";
-                    }else{
-                      return null;
-                    }
-                  },
-                  keyboardType: TextInputType.emailAddress,
-                  style: TextStyle(
-                    fontFamily: "Poppins",
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-
-              Container(
-                padding: EdgeInsets.only(left: 15, right: 15, top: 15),
-                child: TextFormField(
-                  controller: senhaController,
-                  style: TextStyle(
-                    fontFamily: "Poppins",
-                    color: Colors.white,
-                  ),
-                  focusNode: myFocusNode2,
-                  obscureText: _obscureText,
-                  decoration: new InputDecoration(
-                    suffixIcon: IconButton(
-                      icon: _obscureText
-                      ? Icon(Icons.visibility,  color: Colors.purple[700]) 
-                      : Icon(Icons.visibility_off, color: Colors.purple[700]),
-                      onPressed: () => _handleOnPressed(),
-                    ),
-                    labelText: "Sua senha",
-                    labelStyle: TextStyle(color: Colors.purple[700]),
-                    fillColor: Colors.white,
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(25.0),
-                      borderSide: BorderSide(
-                        color: Colors.purple[700],
-                        width: 3
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(25.0),
-                      borderSide: BorderSide(
-                        color: Colors.purple[700],
-                        width: 1.5
-                      ),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(25.0),
-                      borderSide: BorderSide(
-                        color: Colors.pink[700],
-                        width: 3
-                      ),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(25.0),
-                      borderSide: BorderSide(
-                        color: Colors.pink[700],
-                        width: 1.5
-                      ),
-                    ),
-                    errorStyle: TextStyle(
-                      color: Colors.pink[700],
-                    )
-                    //fillColor: Colors.green
-                  ),
-                  validator: (val) {
-                    if(val.length==0) {
-                      return "Senha inválida";
-                    }else{
-                      return null;
-                    }
-                  },
+                  validator: validatorEmail,
                   keyboardType: TextInputType.emailAddress,
                 ),
               ),
 
               Container(
                 padding: EdgeInsets.only(left: 15, right: 15, top: 15),
-                child: TextFormField(
-                  style: TextStyle(
-                    fontFamily: "Poppins",
-                    color: Colors.white,
-                  ),
-                  focusNode: myFocusNode3,
-                  obscureText: _obscureText,
-                  decoration: new InputDecoration(
-                    suffixIcon: IconButton(
-                      icon: _obscureText
-                      ? Icon(Icons.visibility,  color: Colors.purple[700]) 
-                      : Icon(Icons.visibility_off, color: Colors.purple[700]),
-                      onPressed: () => _handleOnPressed(),
-                    ),
-                    labelText: "Confirme sua senha",
-                    labelStyle: TextStyle(color: Colors.purple[700]),
-                    fillColor: Colors.white,
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(25.0),
-                      borderSide: BorderSide(
-                        color: Colors.purple[700],
-                        width: 3
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(25.0),
-                      borderSide: BorderSide(
-                        color: Colors.purple[700],
-                        width: 1.5
-                      ),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(25.0),
-                      borderSide: BorderSide(
-                        color: Colors.pink[700],
-                        width: 3
-                      ),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(25.0),
-                      borderSide: BorderSide(
-                        color: Colors.pink[700],
-                        width: 1.5
-                      ),
-                    ),
-                    errorStyle: TextStyle(
-                      color: Colors.pink[700],
-                    )
-                    //fillColor: Colors.green
-                  ),
-                  validator: (val) {
-                    if(val.length==0) {
-                      return "Senha inválida";
-                    } else if (val != senhaController.text) {
-                      return "Senhas diferentes";
-                    } else{
-                      return null;
-                    }
-                  },
-                  keyboardType: TextInputType.emailAddress,
-                ),
+                child: EditField(
+                  title: "Sua senha",
+                  controller: passwordController,
+                  validator: validatorPassword,
+                  isPassword: true,
+                  keyboardType: TextInputType.visiblePassword,
+                )
               ),
 
+              Container(
+                padding: EdgeInsets.only(left: 15, right: 15, top: 15),
+                child: EditField(
+                  title: "Confirme sua senha",
+                  validator: validatorConfirm,
+                  isPassword: true,
+                  keyboardType: TextInputType.visiblePassword,
+                )
+              ),
 
               Container(
                 padding: EdgeInsets.only(left: 15, right: 15, top: 25),
@@ -320,7 +184,7 @@ class _SignupState extends State<Signup> with SingleTickerProviderStateMixin {
                     if (_formKey.currentState.validate()) {
                       setState(() {
                         this.loading = true;
-                        _signup(emailController.text, senhaController.text);
+                        _signup(emailController.text, passwordController.text);
                       });
                     }
                   },

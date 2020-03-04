@@ -10,8 +10,10 @@ class EditField extends StatefulWidget {
     this.title,
     this.controller,
     this.validator,
-    this.fontSize: 16,
-    this.isPassword: false
+    this.fontSize: 18,
+    this.isPassword: false,
+    this.keyboardType: TextInputType.text
+
   });
 
   final String title;
@@ -19,6 +21,7 @@ class EditField extends StatefulWidget {
   final String Function(String) validator;
   final double fontSize;
   final bool isPassword;
+  final TextInputType keyboardType;
 
   @override
   _EditFieldState createState() => _EditFieldState();
@@ -92,7 +95,7 @@ class _EditFieldState extends State<EditField> {
         //fillColor: Colors.green
       ),
       validator: widget.validator,
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: widget.keyboardType,
       style: TextStyle(
         fontFamily: "Poppins",
         color: Colors.white,
