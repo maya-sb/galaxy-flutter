@@ -145,3 +145,49 @@ class CardAdd extends StatelessWidget {
     );
   }
 }
+
+class CardList extends StatelessWidget {
+  const CardList({this.title, this.actionOnTap});
+
+  final title;
+  final actionOnTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: actionOnTap,
+      child: Container(
+        child: Center(child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(title, 
+            style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff380b4c), fontSize: 25, ),),
+            /*Text("Tamanho: 49.244 km", 
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white54, fontSize: 15, ),),
+            Text("Massa: 1,024 × 10^26 kg", 
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white54, fontSize: 15, ),),   
+            */
+          ],
+        )),
+        height: 120.0,
+        margin: EdgeInsets.only(left: 60.0, right: 20 ),
+        decoration:
+        BoxDecoration(
+          color: Colors.purple[800],
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(8.0),
+          boxShadow: [BoxShadow(
+            color: Color(0xff280538),
+            blurRadius: 20.0,)],
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            stops:[0,4],
+            colors: [Colors.pink[700], Colors.purple[800]],
+          ),
+      ),
+
+      ),
+    );
+  }
+}

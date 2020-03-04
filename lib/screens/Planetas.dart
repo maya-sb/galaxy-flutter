@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:galaxy_flutter/RouteGenerator.dart';
+import 'package:galaxy_flutter/widgets/Cards.dart';
+import 'package:galaxy_flutter/widgets/Lists.dart';
 
 class Planetas extends StatefulWidget {
   @override
@@ -47,7 +49,12 @@ class _PlanetasState extends State<Planetas> {
             itemBuilder: (context, index) => 
             Padding(
               padding: const EdgeInsets.all(0.0),
-              child: PlanetRow(planets[index]),
+              child: RowList(
+                title: planets[index], 
+                asset: 'assets/animations/planetList.flr', 
+                action: () => Navigator.pushNamed(context, RouteGenerator.ROUTE_PLANET)
+                ),
+              //child: PlanetRow(planets[index]),
             ),
             itemCount: planets.length,
           ),
@@ -56,6 +63,8 @@ class _PlanetasState extends State<Planetas> {
     );
   }
 }
+
+/*
 
 class PlanetRow extends StatelessWidget {
   const PlanetRow(this.title);
@@ -147,3 +156,5 @@ class PlanetCard extends StatelessWidget {
     );
   }
 }
+
+*/

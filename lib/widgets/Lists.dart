@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:galaxy_flutter/widgets/Cards.dart';
+import 'package:galaxy_flutter/widgets/Animations.dart';
 
 class HorizontalList extends StatefulWidget {
 
@@ -38,5 +39,34 @@ class _HorizontalListState extends State<HorizontalList> {
         }
       } ,
     );
+  }
+}
+
+
+class RowList extends StatelessWidget {
+  const RowList({this.title, this.asset, this.action});
+
+  final title;
+  final action;
+  final asset;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+       height: 120.0,
+       margin: const EdgeInsets.symmetric(
+         vertical: 10.0,
+       ),
+      child: Stack(
+        children: <Widget>[
+          CardList(title: title, actionOnTap: action),
+          Positioned (left: 10, child: Padding(
+            padding: const EdgeInsets.only(top:5.0),
+            child: AnimationList(asset: asset,),
+          )),
+        ],
+      )
+    );
+    
   }
 }
