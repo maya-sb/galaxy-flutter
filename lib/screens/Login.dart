@@ -144,66 +144,6 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                     isPassword: true,
                     fontSize: 18.0,
                   ), 
-                  // TextFormField(
-                  //   controller: senhaController,
-                  //   style: TextStyle(
-                  //     fontFamily: "Poppins",
-                  //     color: Colors.white,
-                  //   ),
-                  //   focusNode: myFocusNode2,
-                  //   obscureText: _obscureText,
-                  //   decoration: new InputDecoration(
-                  //     suffixIcon: IconButton(
-                  //       icon: _obscureText
-                  //       ? Icon(Icons.visibility,  color: Colors.purple[700]) 
-                  //       : Icon(Icons.visibility_off, color: Colors.purple[700]),
-                  //       onPressed: () => _handleOnPressed(),
-                  //     ),
-                  //     labelText: "Senha",
-                  //     labelStyle: TextStyle(color: Colors.purple[700]),
-                  //     fillColor: Colors.white,
-                  //     focusedBorder: OutlineInputBorder(
-                  //       borderRadius: new BorderRadius.circular(25.0),
-                  //       borderSide: BorderSide(
-                  //         color: Colors.purple[700],
-                  //         width: 3
-                  //       ),
-                  //     ),
-                  //     enabledBorder: OutlineInputBorder(
-                  //       borderRadius: new BorderRadius.circular(25.0),
-                  //       borderSide: BorderSide(
-                  //         color: Colors.purple[700],
-                  //         width: 1.5
-                  //       ),
-                  //     ),
-                  //     focusedErrorBorder: OutlineInputBorder(
-                  //       borderRadius: new BorderRadius.circular(25.0),
-                  //       borderSide: BorderSide(
-                  //         color: Colors.pink[700],
-                  //         width: 3
-                  //       ),
-                  //     ),
-                  //     errorBorder: OutlineInputBorder(
-                  //       borderRadius: new BorderRadius.circular(25.0),
-                  //       borderSide: BorderSide(
-                  //         color: Colors.pink[700],
-                  //         width: 1.5
-                  //       ),
-                  //     ),
-                  //     errorStyle: TextStyle(
-                  //       color: Colors.pink[700],
-                  //     )
-                  //     //fillColor: Colors.green
-                  //   ),
-                  //   validator: (val) {
-                  //     if(val.length==0) {
-                  //       return "Senha inválida";
-                  //     }else{
-                  //       return null;
-                  //     }
-                  //   },
-                  //   keyboardType: TextInputType.emailAddress,
-                  // ),
                 ),
 
                 Container(

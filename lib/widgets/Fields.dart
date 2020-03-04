@@ -10,7 +10,7 @@ class EditField extends StatefulWidget {
     this.title,
     this.controller,
     this.validator,
-    this.fontSize: 16,
+    this.fontSize: 18,
     this.isPassword: false
   });
 
@@ -36,7 +36,6 @@ class _EditFieldState extends State<EditField> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _obscureText = widget.isPassword;
   }
@@ -93,7 +92,7 @@ class _EditFieldState extends State<EditField> {
         //fillColor: Colors.green
       ),
       validator: widget.validator,
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.visiblePassword,
       style: TextStyle(
         fontFamily: "Poppins",
         color: Colors.white,
