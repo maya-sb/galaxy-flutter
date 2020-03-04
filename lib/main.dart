@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.purple,
         textSelectionHandleColor: Colors.purple[700],
         cursorColor: Colors.purple[700],
+        scaffoldBackgroundColor: Color(0xff380b4c)
       ),
       //initialRoute: RouteGenerator.INITIAL_ROUTE,
       initialRoute: RouteGenerator.ROUTE_PLANETAS,

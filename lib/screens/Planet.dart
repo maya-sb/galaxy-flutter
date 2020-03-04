@@ -23,7 +23,7 @@ class _PlanetState extends State<Planet> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff380b4c),
+      //backgroundColor: Color(0xff380b4c),
       body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,7 +144,7 @@ class Info extends StatelessWidget {
           children: <Widget>[
              Padding(
                padding: const EdgeInsets.only(top: 25.0, bottom: 2.0),
-               child: OutputField("Nome", nomeController),
+               child: OutputField( "Nome", nomeController),
              ),  
             Padding(
                   padding: const EdgeInsets.only(bottom: 2.0),
