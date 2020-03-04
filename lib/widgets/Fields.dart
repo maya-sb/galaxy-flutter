@@ -36,7 +36,6 @@ class _EditFieldState extends State<EditField> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _obscureText = widget.isPassword;
   }

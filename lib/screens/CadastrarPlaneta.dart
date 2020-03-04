@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
+import 'package:galaxy_flutter/widgets/Dialogs.dart';
 import 'package:galaxy_flutter/widgets/Fields.dart';
 import 'package:galaxy_flutter/widgets/Lists.dart';
 
@@ -18,12 +19,17 @@ class _CadastrarPlanetaState extends State<CadastrarPlaneta> {
   var gases = [""];
   var estrelas = [""];
 
+  _discardChanges(){
+    Navigator.pop(context);
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: () async {
         showDialog(context: context, builder: (context) {
-             return descartarAlteracoes(context);
+            return confirmExitRemove(title: "Descartar Planeta", content: "Sair da tela descartará informações ainda não salvas. Tem certeza que deseja voltar?", action: _discardChanges);
           });
          return false;
        },
@@ -73,7 +79,7 @@ class _CadastrarPlanetaState extends State<CadastrarPlaneta> {
                         padding: const EdgeInsets.only(top: 25.0),
                         child: IconButton(
                           onPressed: () { showDialog(context: context, builder: (context) {
-                            return descartarAlteracoes(context);
+                            return confirmExitRemove(title: "Descartar Planeta", content: "Sair da tela descartará informações ainda não salvas. Tem certeza que deseja voltar?", action: _discardChanges);
                           }); },
                           icon: Icon(Icons.arrow_back, color: Colors.white, size: 25.0),
                         ),
@@ -177,20 +183,3 @@ class Info extends StatelessWidget {
     );
   }
 }
-
-Widget descartarAlteracoes(context){
-    return AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(8.0))),
-        title: Text("Descartar planeta"),
-        content: Text("Sair da tela descartará informações ainda não salvas. Tem certeza que deseja voltar?"),
-        actions: <Widget>[
-          FlatButton(child: Text("Sim"),onPressed: (){
-            Navigator.pop(context);
-            Navigator.pop(context);
-          },),
-          FlatButton(child: Text("Cancelar"),onPressed: (){
-              Navigator.pop(context);
-          },)
-      ],);
-  }

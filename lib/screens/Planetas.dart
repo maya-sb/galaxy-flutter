@@ -117,11 +117,12 @@ class PlanetCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(title, 
-            style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff380b4c), fontSize: 20, ),),
-            Text("Tamanho: 49.244 km", 
+            style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff380b4c), fontSize: 25, ),),
+            /*Text("Tamanho: 49.244 km", 
             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white54, fontSize: 15, ),),
             Text("Massa: 1,024 × 10^26 kg", 
             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white54, fontSize: 15, ),),   
+            */
           ],
         )),
         height: 120.0,

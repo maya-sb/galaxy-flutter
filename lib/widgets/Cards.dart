@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:galaxy_flutter/widgets/Dialogs.dart';
 
 class OrbitingCard extends StatelessWidget {
   const OrbitingCard({this.title, this.svg, this.editable: false});
@@ -41,7 +42,8 @@ class OrbitingCard extends StatelessWidget {
         editable ? Positioned(top: 7, right: 0, 
         child: IconButton(icon: Icon(Icons.clear,color:Color(0xff380b4c),),  
           onPressed: (){
-            showDialog(context: context, builder :(context){ return removerCard(context);},);},),) 
+            showDialog(context: context, builder :(context){ 
+              return confirmExitRemove(title: "Tem certeza que deseja remover?", action: () => Navigator.pop(context));},);},),) 
         : Positioned(top: 7, right: 0, child: SizedBox.shrink(),)
         ]
     );
@@ -99,7 +101,8 @@ class GasCard extends StatelessWidget {
          ? Positioned(top: 7, right: 0, child: IconButton(
            icon: Icon(Icons.clear,color:Color(0xff380b4c),), 
            onPressed: (){
-            showDialog(context: context, builder :(context){ return removerCard(context);},);}
+            showDialog(context: context, builder :(context){ 
+              return confirmExitRemove(title: "Tem certeza que deseja remover?", action: () => Navigator.pop(context));},);}
             ))
          : Positioned(top: 7, right: 0, child: SizedBox.shrink(),)
         ]
@@ -114,7 +117,9 @@ class CardAdd extends StatelessWidget {
           padding: EdgeInsets.all(10),
           child: InkWell(
               onTap: (){
-
+                showDialog(context: context, builder: (context){
+                    return addHorizontalList(list: ["Sol", "Sol", "Sol", "Sol", "Sol", "Sol", "Sol", "Marte", "Vênus", "Sol", "Terra"],title: "Adicionar Satélite", create: () => null, save: () => null,);
+                });
               },
               borderRadius: BorderRadius.circular(8.0),
               child: Center(child: Column(
@@ -139,21 +144,4 @@ class CardAdd extends StatelessWidget {
         ),
     );
   }
-}
-
-//TODO tirar isso daqui
-Widget removerCard(context){
-  return AlertDialog(
-    shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.all(Radius.circular(8.0))),
-    title: Text("Tem certeza que deseja remover?"),
-    actions: <Widget>[
-      FlatButton(child: Text("Sim"),onPressed: (){
-        //TODO remover;
-        Navigator.pop(context);
-      },),
-      FlatButton(child: Text("Cancelar"),onPressed: (){
-          Navigator.pop(context);
-      },)
-    ],);
 }

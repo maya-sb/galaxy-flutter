@@ -37,7 +37,7 @@ class _HomeState extends State<Home> {
     const _Card('  Sistemas\nPlanetários','assets/svg/galaxy.svg'),
     const _Card('Satélites','assets/svg/moon2.svg'),
     const _Card('Estrelas','assets/svg/stars.svg'),
-    const _Card('Buracos \nNegros', 'assets/svg/blackhole.svg')
+    const _Card('Buracos \n Negros', 'assets/svg/blackhole.svg')
   ];
 
   _signOut() async {
@@ -62,7 +62,7 @@ class _HomeState extends State<Home> {
             icon: Icon(Icons.exit_to_app) ,
             onPressed: (){
               showDialog(context: context, builder: (context) {
-              return confirmExit(title: "Tem certeza que deseja sair?", action: exitApp);
+              return confirmExitRemove(title: "Tem certeza que deseja sair?", action: exitApp);
              });    
             },),
         ],

@@ -6,6 +6,7 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:galaxy_flutter/widgets/Fields.dart';
 import 'package:galaxy_flutter/widgets/Lists.dart';
+import 'package:galaxy_flutter/widgets/Dialogs.dart';
 
 class EditarPlaneta extends StatefulWidget {
   @override
@@ -83,20 +84,7 @@ class _EditarPlanetaState extends State<EditarPlaneta> {
                         child: IconButton(
                           onPressed: () {
                              showDialog(context: context, builder :(context){
-                              return AlertDialog(
-                                shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(8.0))),
-                                title: Text("Deseja remover o planeta permanentemente?"),
-                                //content: Text("Deseja remover o planeta permanentemente?"),
-                                actions: <Widget>[
-                                  FlatButton(child: Text("Sim"),onPressed: (){
-                                    //TO DO removerPlaneta();
-                                    Navigator.pop(context);
-                                  },),
-                                  FlatButton(child: Text("Cancelar"),onPressed: (){
-                                      Navigator.pop(context);
-                                  },)
-                                ],);
+                              return confirmExitRemove(title: "Deseja remover planeta permanentemente?", action: () => Navigator.pop(context));
                             });
                           },
                           icon: Icon(Icons.delete, color: Colors.white, size: 25.0),
