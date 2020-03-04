@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flare_flutter/flare_actor.dart';
-//import 'package:flutter_svg/flutter_svg.dart';
 import 'package:galaxy_flutter/RouteGenerator.dart';
 
 class Planetas extends StatefulWidget {
@@ -10,6 +9,8 @@ class Planetas extends StatefulWidget {
 
 class _PlanetasState extends State<Planetas> {
 
+  // TODO Vai ser uma lista de objetos
+ 
   var planets = ["Marte","Vênus","Urano","Saturno","Netuno","Mercúrio"];
 
   @override
@@ -24,16 +25,13 @@ class _PlanetasState extends State<Planetas> {
           title: Text("Planetas", style: TextStyle(color: Colors.white)),
           iconTheme: IconThemeData(color: Colors.white),
           backgroundColor: Colors.transparent,
-          //leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: (){
-          //  Navigator.pushNamedAndRemoveUntil(context, RouteGenerator.ROUTE_HOME, (_) => false);
-          //},),
           actions: <Widget>[
             Padding(
               padding: const EdgeInsets.only(right: 20.0),
+              //TODO busca por nome
               child: Icon(Icons.search),
             )
           ],
-          //backgroundColor: Colors.purple[900],
          ),
 
         floatingActionButton: FloatingActionButton(
@@ -47,15 +45,14 @@ class _PlanetasState extends State<Planetas> {
           color: Color(0xff380b4c),
           padding: EdgeInsets.only(top: 20),
           child: ListView.builder(
-            itemBuilder: (context, index) => Padding(
+            itemBuilder: (context, index) => 
+            Padding(
               padding: const EdgeInsets.all(0.0),
               child: PlanetRow(planets[index]),
             ),
             itemCount: planets.length,
-            //padding: new EdgeInsets.symmetric(vertical: 16.0)
           ),
         ),
-
       ),
     );
   }
@@ -72,12 +69,10 @@ class PlanetRow extends StatelessWidget {
        height: 120.0,
        margin: const EdgeInsets.symmetric(
          vertical: 10.0,
-         //horizontal: 24.0,
        ),
       child: Stack(
         children: <Widget>[
           PlanetCard(title),
-          //PlanetAnimation(),
           Positioned (left: 10, child: Padding(
             padding: const EdgeInsets.only(top:5.0),
             child: PlanetAnimation(),
@@ -95,7 +90,6 @@ class PlanetAnimation extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Container(
-     //alignment: FractionalOffset.centerLeft,
      child: SizedBox(
           width: 110,
           height: 110,
@@ -103,7 +97,6 @@ class PlanetAnimation extends StatelessWidget {
           animation: 'rotation',
           ),
      ),
-
     );
   }
 }
@@ -117,6 +110,7 @@ class PlanetCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
+        //TODO Identificar qual planeta e entrar no perfil
         Navigator.pushNamed(context, RouteGenerator.ROUTE_PLANET);
       },
       child: Container(
@@ -128,26 +122,7 @@ class PlanetCard extends StatelessWidget {
             Text("Tamanho: 49.244 km", 
             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white54, fontSize: 15, ),),
             Text("Massa: 1,024 × 10^26 kg", 
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white54, fontSize: 15, ),),
-            /*
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-              SizedBox.fromSize(
-                child:  SvgPicture.asset('assets/svg/tamanho.svg',color: Colors.white70,),
-                size: Size(20.0, 20.0),
-              ),
-              Text("49.244 km", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white54, fontSize: 15,),),
-            ],),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-              SizedBox.fromSize(
-                child:  SvgPicture.asset('assets/svg/peso.svg',color: Colors.white70,),
-                size: Size(18.0, 18.0),
-              ),
-              Text("1,024 × 10^26 kg", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white54, fontSize: 15,),),
-            ],), */    
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white54, fontSize: 15, ),),   
           ],
         )),
         height: 120.0,
