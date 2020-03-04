@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:galaxy_flutter/components/Decorations.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:galaxy_flutter/RouteGenerator.dart';

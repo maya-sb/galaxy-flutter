@@ -3,13 +3,12 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:galaxy_flutter/RouteGenerator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:galaxy_flutter/widgets/Dialogs.dart';
 
 Decoration box = BoxDecoration(
   gradient: LinearGradient(
   begin: Alignment.topRight,
   end: Alignment.bottomLeft,
-  //stops:[0,0.8],
-  //colors: [Colors.purple[400], Colors.purple[800]],
   colors: [Colors.pink[700], Colors.purple[800]],
 )
 );
@@ -46,6 +45,12 @@ class _HomeState extends State<Home> {
     await _firebaseAuth.signOut();
    }
 
+   exitApp() {
+    _signOut();
+    Navigator.pop(context);
+    Navigator.pushNamedAndRemoveUntil(context, RouteGenerator.ROUTE_LOGIN, (_) => false);
+   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,17 +61,14 @@ class _HomeState extends State<Home> {
           IconButton(
             icon: Icon(Icons.exit_to_app) ,
             onPressed: (){
-              _signOut();
-              Navigator.pushNamedAndRemoveUntil(context, RouteGenerator.ROUTE_LOGIN, (_) => false);
+              showDialog(context: context, builder: (context) {
+              return confirmExit(title: "Tem certeza que deseja sair?", action: exitApp);
+             });    
             },),
         ],
-
         backgroundColor: Colors.transparent
-        //backgroundColor: Colors.purple[900],
        ),
-        //backgroundColor: Colors.white,
         body: Container(
-            //decoration: box,
             padding: const EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 10.0),
             child: StaggeredGridView.count(
                 crossAxisCount: 4,
@@ -74,7 +76,6 @@ class _HomeState extends State<Home> {
                 children: _tiles,
                 mainAxisSpacing: 4.0,
                 crossAxisSpacing: 4.0,
-                //padding: const EdgeInsets.all(4.0),
               ),
             ));
   }
@@ -89,7 +90,6 @@ class _Card extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-        //color:Color(0xff730b38),
         color:Color(0xff380b4c) ,
         clipBehavior: Clip.antiAlias,
           child: Container(
