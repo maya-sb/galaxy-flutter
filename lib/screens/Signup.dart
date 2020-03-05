@@ -5,7 +5,6 @@ import 'package:galaxy_flutter/RouteGenerator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:galaxy_flutter/widgets/Fields.dart';
 
-
 class Signup extends StatefulWidget {
 
   @override

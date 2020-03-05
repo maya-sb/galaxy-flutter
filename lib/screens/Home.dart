@@ -32,12 +32,12 @@ class _HomeState extends State<Home> {
 
 
   List<Widget> _tiles = const <Widget>[
-    const _Card('Galáxias','assets/svg/orbit.svg'),
-    const _Card('Planetas','assets/svg/uranus.svg'),
-    const _Card('  Sistemas\nPlanetários','assets/svg/galaxy.svg'),
-    const _Card('Satélites','assets/svg/moon2.svg'),
-    const _Card('Estrelas','assets/svg/stars.svg'),
-    const _Card('Buracos \n Negros', 'assets/svg/blackhole.svg')
+    const _Card(title: 'Galáxias',asset: 'assets/svg/orbit.svg', type:'Galaxias'),
+    const _Card(title: 'Planetas',asset: 'assets/svg/uranus.svg', type: 'Planetas',),
+    const _Card(title:'  Sistemas\nPlanetários', asset: 'assets/svg/galaxy.svg'),
+    const _Card(title:'Satélites', asset: 'assets/svg/moon2.svg'),
+    const _Card(title:'Estrelas', asset: 'assets/svg/stars.svg'),
+    const _Card(title:'Buracos \n Negros', asset:'assets/svg/blackhole.svg')
   ];
 
   _signOut() async {
@@ -82,10 +82,11 @@ class _HomeState extends State<Home> {
 }
 
 class _Card extends StatelessWidget {
-  const _Card(this.title, this.asset);
+  const _Card({this.title, this.asset, this.type});
 
   final title; 
   final asset;
+  final type;
 
   @override
   Widget build(BuildContext context) {
@@ -96,8 +97,10 @@ class _Card extends StatelessWidget {
           decoration: box,
           child: InkWell(
             onTap: () {
-              if (title == 'Planetas'){
+              if (type == 'Planetas'){
                 Navigator.pushNamed(context, RouteGenerator.ROUTE_PLANETAS);
+              }else if(type == 'Galaxias'){
+                Navigator.pushNamed(context, RouteGenerator.ROUTE_GALAXIES);
               }
             },
             child: Center(
