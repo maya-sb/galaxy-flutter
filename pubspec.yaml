@@ -76,7 +76,11 @@ flutter:
     - assets/svg/stars.svg
     - assets/svg/blackhole.svg
     - assets/animations/pinkPlanet.flr
-    - assets/animations/planetList.flr
+    - assets/animations/bluePlanet.flr
+    - assets/animations/orangePlanet.flr
+    - assets/animations/greenPlanet.flr
+    - assets/animations/yellowPlanet.flr
+    - assets/animations/greyPlanet.flr
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

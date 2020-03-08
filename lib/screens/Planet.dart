@@ -51,7 +51,7 @@ class _PlanetState extends State<Planet> {
                         width: 150,
                         height: 150,
                             child: FlareActor(
-                                'assets/animations/planetList.flr',
+                                'assets/animations/greenPlanet.flr',
                                 animation: 'rotation',
                                 fit: BoxFit.cover,
                               ),
@@ -100,9 +100,10 @@ class _PlanetState extends State<Planet> {
               child: Text("Satélites", style: TextStyle(color: Colors.pink[800], fontSize: 18),),
             ),      
             Container(
-              padding: EdgeInsets.only(left:15, right: 10),
+              padding: EdgeInsets.only(left:15),
               height: 180, 
-              child: HorizontalList(lista: satelites, tipo:"Satelite", editable: false)), 
+              child: HorizontalList(lista: satelites, tipo:"Satelite", editable: false)
+            ), 
             Padding(
               padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
               child: Text("Estrelas", style: TextStyle(color: Colors.pink[800], fontSize: 18),),
@@ -110,7 +111,13 @@ class _PlanetState extends State<Planet> {
             Container(
               padding: EdgeInsets.only(left:15, right: 10),
               height: 180, 
-              child: HorizontalList(lista: estrelas, tipo:"Estrela", editable: false)),   
+              child: HorizontalList(lista: estrelas, tipo:"Estrela", editable: false)
+            ),
+
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
+              child: Text("Cor", style: TextStyle(color: Colors.pink[800], fontSize: 18),),
+            ),      
              
           ],
         ),
