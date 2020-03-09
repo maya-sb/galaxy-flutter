@@ -33,6 +33,7 @@ dependencies:
   flutter_custom_clippers: 1.1.0
   intl: ^0.16.1
   flutter_masked_text: ^0.8.0
+  flutter_material_color_picker: ^1.0.5
 
 dev_dependencies:
   flutter_test:
@@ -62,25 +63,32 @@ flutter:
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
   assets:
-    - assets/svg/galaxy.svg
-    - assets/svg/orbit.svg
-    - assets/svg/moon2.svg
-    - assets/svg/uranus.svg
-    - assets/svg/star.svg
-    - assets/svg/ventoso.svg
-    - assets/svg/peso.svg
-    - assets/svg/largura.svg
-    - assets/svg/tamanho.svg
-    - assets/svg/star4.svg
-    - assets/svg/star3.svg
-    - assets/svg/stars.svg
-    - assets/svg/blackhole.svg
-    - assets/animations/pinkPlanet.flr
-    - assets/animations/bluePlanet.flr
-    - assets/animations/orangePlanet.flr
-    - assets/animations/greenPlanet.flr
-    - assets/animations/yellowPlanet.flr
-    - assets/animations/greyPlanet.flr
+  - assets/svg/galaxy.svg
+  - assets/svg/orbit.svg
+  - assets/svg/moon2.svg
+  - assets/svg/uranus.svg
+  - assets/svg/star.svg
+  - assets/svg/ventoso.svg
+  - assets/svg/peso.svg
+  - assets/svg/largura.svg
+  - assets/svg/tamanho.svg
+  - assets/svg/star4.svg
+  - assets/svg/star3.svg
+  - assets/svg/stars.svg
+  - assets/svg/blackhole.svg
+  - assets/animations/pinkPlanet.flr
+  - assets/animations/pinkPlanetBig.flr
+  - assets/animations/bluePlanet.flr
+  - assets/animations/orangePlanet.flr
+  - assets/animations/greenPlanet.flr
+  - assets/animations/yellowPlanet.flr
+  - assets/animations/greyPlanet.flr
+  - assets/animations/pinkGalaxy.flr
+  - assets/animations/blueGalaxy.flr
+  - assets/animations/greenGalaxy.flr
+  - assets/animations/yellowGalaxy.flr
+  - assets/animations/orangeGalaxy.flr
+  - assets/animations/greyGalaxy.flr
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

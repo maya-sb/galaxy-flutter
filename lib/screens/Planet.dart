@@ -7,7 +7,6 @@ import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:galaxy_flutter/RouteGenerator.dart';
 import 'package:galaxy_flutter/widgets/Fields.dart';
 import 'package:galaxy_flutter/widgets/Lists.dart';
-import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
 class Planet extends StatefulWidget {
   @override
@@ -20,11 +19,6 @@ class _PlanetState extends State<Planet> {
   var satelites = ["Tritão", "Talassa", "Náiade", "Nereida", "Proteu"];
   var gases = ["Óxido Nítrico", "Nitrogênio", "Argônio", "Oxigênio", "Vapor d'Água"];
   var estrelas = ["Sol", "Sol"];
-
-  var assets = ["pink", "blue", "green", "yellow", "orange", "grey"];
-  var cores = [Colors.pinkAccent[200], Colors.blue[600], Colors.green[400], Colors.amber[700], Colors.deepOrange[500], Colors.grey[500]];
-  var selecionado = 0;
-
 
   @override
   Widget build(BuildContext context) {
@@ -56,11 +50,7 @@ class _PlanetState extends State<Planet> {
                       child: SizedBox(
                         width: 150,
                         height: 150,
-                            child: FlareActor(
-                                'assets/animations/'+ assets[selecionado] +'Planet.flr',
-                                animation: 'rotation',
-                                fit: BoxFit.cover,
-                              ),
+                            child: Text("oi"),
                       ),
                     ),
                 ),
@@ -93,23 +83,6 @@ class _PlanetState extends State<Planet> {
                 child: Info(),
               ),
             ),
-
-            Padding(
-              padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
-              child: Text("Cor", style: TextStyle(color: Colors.pink[800], fontSize: 18),),
-            ),
-
-            Container(
-              padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
-              child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: _colorList(),
-                  ),
-                )        
-            ),
-
             Padding(
               padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,),
               child: Text("Composição", style: TextStyle(color: Colors.pink[800], fontSize: 18),),
@@ -123,7 +96,7 @@ class _PlanetState extends State<Planet> {
               child: Text("Satélites", style: TextStyle(color: Colors.pink[800], fontSize: 18),),
             ),      
             Container(
-              padding: EdgeInsets.only(left:15),
+              padding: EdgeInsets.only(),
               height: 180, 
               child: HorizontalList(lista: satelites, tipo:"Satelite", editable: false)
             ), 
@@ -137,6 +110,32 @@ class _PlanetState extends State<Planet> {
               child: HorizontalList(lista: estrelas, tipo:"Estrela", editable: false)
             ),
 
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
+              child: Text("Corrr", style: TextStyle(color: Colors.pink[800], fontSize: 18),),
+            ),      
+
+            Container(
+              padding: EdgeInsets.only(left:15),
+              child: Row(
+                children: <Widget>[
+                  
+                  RawMaterialButton(
+                    onPressed: () {},
+                    child: new Icon(
+                      Icons.pause,
+                      color: Colors.blue,
+                      size: 35.0,
+                    ),
+                    shape: new CircleBorder(),
+                    elevation: 2.0,
+                    fillColor: Colors.white,
+                    padding: const EdgeInsets.all(15.0),
+                  ),
+
+                ],
+              ),
+            ),
              
           ],
         ),
@@ -144,32 +143,6 @@ class _PlanetState extends State<Planet> {
       
     );
   }
-
-  List<Widget> _colorList() {
-    List<Widget> colors = []; // this will hold Rows according to available lines
-    for (int i = 0; i < 6; i++) {    
-      colors.add(
-        GestureDetector(
-            onTap: () {
-              setState(() {
-                selecionado = i;
-              });
-            },
-            child: CircleAvatar(
-              backgroundColor: cores[i],
-              child: selecionado == i
-                ? Icon(
-                    Icons.check,
-                    color: Colors.white,
-                  )
-                : null
-            ),
-          ),
-      );
-    }
-    return colors;
-  }
-
 }
 
 
