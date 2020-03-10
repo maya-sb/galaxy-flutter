@@ -2041,7 +2041,7 @@
 			],
 			"animations": [
 				{
-					"name": "Untitled",
+					"name": "rotation",
 					"fps": 60,
 					"duration": 2,
 					"isLooping": true,
