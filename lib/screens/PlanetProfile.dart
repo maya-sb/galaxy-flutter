@@ -57,7 +57,7 @@ class _PlanetState extends State<Planet> {
                         width: 150,
                         height: 150,
                             child: FlareActor(
-                                'assets/animations/'+ assets[selecionado] +'Planet.flr',
+                                'assets/animations/'+ assets[selecionado] +'System.flr',
                                 animation: 'rotation',
                                 fit: BoxFit.cover,
                               ),
