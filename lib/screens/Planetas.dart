@@ -12,6 +12,7 @@ class _PlanetasState extends State<Planetas> {
   // TODO Vai ser uma lista de objetos
  
   var planets = ["Marte","Vênus","Urano","Saturno","Netuno","Mercúrio"];
+  var cores = ["orangePlanet.flr","bluePlanet.flr","yellowPlanet.flr","greenPlanet.flr","bluePlanet.flr","greyPlanet.flr"];
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +50,7 @@ class _PlanetasState extends State<Planetas> {
               padding: const EdgeInsets.all(0.0),
               child: RowList(
                 title: planets[index], 
-                asset: 'assets/animations/planetList.flr', 
+                asset: 'assets/animations/'+cores[index], 
                 action: () => Navigator.pushNamed(context, RouteGenerator.ROUTE_PLANET)
                 ),
               //child: PlanetRow(planets[index]),

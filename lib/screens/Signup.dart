@@ -120,7 +120,7 @@ class _SignupState extends State<Signup> with SingleTickerProviderStateMixin {
                           width: 250,
                           height: 250,
                               child: FlareActor(
-                                  'assets/animations/pinkPlanet.flr',
+                                  'assets/animations/pinkPlanetBig.flr',
                                   animation: 'rotation',
                                   fit: BoxFit.fitWidth,
                                 ),
