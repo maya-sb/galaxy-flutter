@@ -26,18 +26,18 @@ class _HomeState extends State<Home> {
     const StaggeredTile.count(2, 2),
     const StaggeredTile.count(2, 3),
     const StaggeredTile.count(2, 2),
-    const StaggeredTile.count(2, 2),
-    const StaggeredTile.count(2, 2),
+    const StaggeredTile.count(4, 2),
+    //const StaggeredTile.count(2, 2),
   ];
 
 
   List<Widget> _tiles = const <Widget>[
     const _Card(title: 'Galáxias',asset: 'assets/svg/orbit.svg', type:'Galaxias'),
     const _Card(title: 'Planetas',asset: 'assets/svg/uranus.svg', type: 'Planetas',),
-    const _Card(title:'  Sistemas\nPlanetários', asset: 'assets/svg/galaxy.svg'),
+    const _Card(title:'  Sistemas\nPlanetários', asset: 'assets/svg/galaxy.svg', type: 'Sistemas'),
     const _Card(title:'Satélites', asset: 'assets/svg/moon2.svg'),
     const _Card(title:'Estrelas', asset: 'assets/svg/stars.svg'),
-    const _Card(title:'Buracos \n Negros', asset:'assets/svg/blackhole.svg')
+    //const _Card(title:'Buracos \n Negros', asset:'assets/svg/blackhole.svg')
   ];
 
   _signOut() async {
@@ -101,6 +101,8 @@ class _Card extends StatelessWidget {
                 Navigator.pushNamed(context, RouteGenerator.ROUTE_PLANETAS);
               }else if(type == 'Galaxias'){
                 Navigator.pushNamed(context, RouteGenerator.ROUTE_GALAXIES);
+              }else if(type == 'Sistemas'){
+                Navigator.pushNamed(context, RouteGenerator.ROUTE_PLANETARY_SYSTEMS);
               }
             },
             child: Center(

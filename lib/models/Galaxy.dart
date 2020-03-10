@@ -3,43 +3,28 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Galaxy{
 
   String id;
-  String nome;
-  String distanciaTerra;
-  String numSistemas;
+  String name;
+  String earthDistance;
+  String numSystems;
+  int colorId;
 
-  Galaxy({this.id, this.nome, this.distanciaTerra, this.numSistemas});
+  Galaxy({this.id, this.name, this.earthDistance, this.numSystems, this.colorId});
 
   Galaxy.fromMap(DocumentSnapshot document){
     id = document.documentID;
 
-    this.nome = document.data["nome"];
-    this.distanciaTerra = document.data["distanciaTerra"];
-    this.numSistemas = document.data["numSistemas"];
+    this.name = document.data["name"];
+    this.earthDistance = document.data["earthDistance"];
+    this.numSystems = document.data["numSystems"];
+    this.colorId = document.data["colorId"];
 
   }
 
    toMap(){
     return {
-      "nome":this.nome,
-      "distanciaTerra":this.distanciaTerra,
-      "numSistemas": this.numSistemas};
+      "name":this.name,
+      "earthDistance":this.earthDistance,
+      "numSystems": this.numSystems,
+      "colorId": this.colorId};
   }
-
-  register(){
-    Firestore db = Firestore.instance;
-    db.collection("galaxias").add(this.toMap());
-  }
-
-  update(){
-    Firestore db = Firestore.instance;
-    db.collection("galaxias").document(this.id).updateData(this.toMap());
-  }
-
-  remove(){
-    Firestore db = Firestore.instance;
-    db.collection("galaxias").document(this.id).delete();
-  }
-
-
-
 }

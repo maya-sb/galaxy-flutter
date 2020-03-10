@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flare_flutter/flare_actor.dart';
-import 'package:flutter_masked_text/flutter_masked_text.dart';
+import 'package:galaxy_flutter/Api.dart';
+import 'package:galaxy_flutter/RouteGenerator.dart';
 import 'package:galaxy_flutter/models/Galaxy.dart';
 import 'package:galaxy_flutter/widgets/Fields.dart';
-import 'package:galaxy_flutter/widgets/Lists.dart';
 import 'package:galaxy_flutter/widgets/Dialogs.dart';
+import 'package:galaxy_flutter/widgets/Animations.dart';
 
 class EditGalaxy extends StatefulWidget {
-  EditGalaxy({this.galaxy});
+  EditGalaxy({this.id});
 
-  final galaxy;
+  final id;
 
   @override
   _EditGalaxyState createState() => _EditGalaxyState();
@@ -21,116 +21,189 @@ class EditGalaxy extends StatefulWidget {
 class _EditGalaxyState extends State<EditGalaxy> {
   
   final _formKey = GlobalKey<FormState>();
-  var nomeController = TextEditingController();
-  var distanciaController = TextEditingController();
-  var numSistemasController = TextEditingController();
+  var nameController = TextEditingController();
+  var distanceController = TextEditingController();
+  var numSystemsController = TextEditingController();
+  int _selectedColor = 0;
+
+  Api db = Api();
+  Future future;
+
+  _getGalaxy() async{
+
+    Map<String, dynamic> dados = await db.getbyId("galaxy", widget.id);
+    nameController.text = dados["name"];
+    distanceController.text = dados["earthDistance"];
+    numSystemsController.text = dados["numSystems"];
+    _selectedColor = dados["colorId"];
+    return widget.id;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    future = _getGalaxy();
+  }
+
+  List<Widget> _colorList() {
+    var cores = [Colors.pinkAccent[200], Colors.blue[600], Colors.green[400], Colors.amber[700], Colors.deepOrange[500], Colors.grey[500]];
+
+    List<Widget> colors = []; // this will hold Rows according to available lines
+    for (int i = 0; i < 6; i++) {    
+      colors.add(
+        GestureDetector(
+            onTap: () {
+              setState(() {
+                _selectedColor = i;
+              });
+            },
+            child: CircleAvatar(
+              backgroundColor: cores[i],
+              child: _selectedColor == i
+                ? Icon(
+                    Icons.check,
+                    color: Colors.white,
+                  )
+                : null
+            ),
+          ),
+      );
+    }
+    return colors;
+  }
 
   @override
   Widget build(BuildContext context) {
-    nomeController.text = widget.galaxy.nome;
-    distanciaController.text = widget.galaxy.distanciaTerra;
-    numSistemasController.text = widget.galaxy.numSistemas;
-
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.pink[700],
         child: Icon(Icons.save, color: Colors.white,),
         onPressed: (){
           if (_formKey.currentState.validate()) {
-            Galaxy galaxy = Galaxy(nome: nomeController.text, distanciaTerra:distanciaController.text, id: widget.galaxy.id, numSistemas: widget.galaxy.numSistemas);
-            galaxy.update();
-            Navigator.pop(context);
+            Galaxy galaxy = Galaxy(name: nameController.text, earthDistance:distanceController.text, id: widget.id, numSystems: numSystemsController.text, colorId: _selectedColor);
+            db.update("galaxy", galaxy);
+            Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_GALAXY_PROFILE, arguments: widget.id);
           }
           
       },),
-      body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-             Stack(
-                  children: <Widget>[
-                    Center(
-                      child: ClipPath(
-                        clipper: OvalBottomBorderClipper(),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topRight,
-                              end: Alignment.bottomLeft,
-                              colors: [Colors.pinkAccent[700], Colors.purple[900] ])
+      body: FutureBuilder(
+              future: future,
+              builder: (context, snapshot){
+              switch (snapshot.connectionState){
+                case ConnectionState.none:
+                  case ConnectionState.waiting:
+                  return Center(
+                    child:  Center(child: CircularProgressIndicator())
+                  );
+                  case ConnectionState.active:
+                  case ConnectionState.done:  
+                    return  SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Stack(
+                              children: <Widget>[
+                                Center(
+                                  child: ClipPath(
+                                    clipper: OvalBottomBorderClipper(),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          begin: Alignment.topRight,
+                                          end: Alignment.bottomLeft,
+                                          colors: [Colors.pinkAccent[700], Colors.purple[900] ])
+                                      ),
+                                      height: 180,
+                                      width: 1000,
+                                    ),
+                                  ),
+                                ),
+                                Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 100.0, bottom: 0),
+                                  child: SizedBox(
+                                    width: 150,
+                                    height: 150,
+                                        child: FlareActor(
+                                            'assets/animations/'+ assets[_selectedColor] + 'Galaxy.flr',
+                                            animation: 'rotation',
+                                            fit: BoxFit.cover,
+                                          ),
+                                  ),
+                                ),
+                            ),
+                            Padding(
+                                  padding: const EdgeInsets.only(top: 25.0),
+                                  child: IconButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    icon: Icon(Icons.arrow_back, color: Colors.white, size: 25.0),
+                                  ),
+                                ),
+                            Positioned(
+                                    right: 5,
+                                    child: Padding(
+                                    padding: const EdgeInsets.only(top: 25.0),
+                                    child: IconButton(
+                                      onPressed: () {
+                                        
+                                        showDialog(context: context, builder :(context){
+                                          return confirmExitRemove(
+                                            title: "Deseja remover galáxia permanentemente?", 
+                                            action: (){ db.remove("galaxy", widget.id); 
+                                              Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_GALAXIES);});
+                                        });
+                                        
+                                      },
+                                      icon: Icon(Icons.delete, color: Colors.white, size: 25.0),
+                                    ),
+                                  ),
+                            ),
+                            ],
+                        ),
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
+                            child: Form(
+                              key: _formKey, 
+                              child: Info(nameController: nameController, distanceController: distanceController, numSystemsController: numSystemsController,))),
                           ),
-                          height: 180,
-                          width: 1000,
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
+                          child: Text("Cor", style: TextStyle(color: Colors.pink[800], fontSize: 18),),
                         ),
-                      ),
-                    ),
-                    Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 100.0, bottom: 0),
-                      child: SizedBox(
-                        width: 150,
-                        height: 150,
-                            child: FlareActor(
-                                'assets/animations/planetList.flr',
-                                animation: 'rotation',
-                                fit: BoxFit.cover,
+                        Container(
+                          padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                          child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: _colorList(),
                               ),
-                      ),
-                    ),
-                ),
-                Padding(
-                      padding: const EdgeInsets.only(top: 25.0),
-                      child: IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(Icons.arrow_back, color: Colors.white, size: 25.0),
-                      ),
-                    ),
-                Positioned(
-                        right: 5,
-                        child: Padding(
-                        padding: const EdgeInsets.only(top: 25.0),
-                        child: IconButton(
-                          onPressed: () {
-                             showDialog(context: context, builder :(context){
-                               Galaxy galaxy = Galaxy(id: widget.galaxy.id);
-                              //return confirmExitRemove(title: "Deseja remover galáxia permanentemente?", action: () => Navigator.pop(context));
-                              return confirmExitRemove(title: "Deseja remover galáxia permanentemente?", action: galaxy.remove);
-                            });
-                          },
-                          icon: Icon(Icons.delete, color: Colors.white, size: 25.0),
+                            )        
                         ),
-                      ),
-                )
-                ],
-            ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
-                child: Form(
-                  key: _formKey, 
-                  child: Info(nomeController: nomeController, distanciaController: distanciaController, numSistemasController: numSistemasController,))),
-              ),
-            ]
-            )
-          )
-    );
+                        ]
+                        )
+          );
+              }
+            }
+    ));
   }
 }
 
 
 class Info extends StatelessWidget {
-  Info({this.nomeController, this.distanciaController, this.numSistemasController});
+  Info({this.nameController, this.distanceController, this.numSystemsController});
 
-  final nomeController;
-  final distanciaController;
-  final numSistemasController;
+  final nameController;
+  final distanceController;
+  final numSystemsController;
 
   @override
   Widget build(BuildContext context) {
 
-    String validatorNome (val) {
+    String validatorName (val) {
         if(val.length==0) {
           return "Nome inválido";
         }else{
@@ -138,7 +211,7 @@ class Info extends StatelessWidget {
         }
     }
 
-    String validatorDistancia (val) {
+    String validatorDistance (val) {
         if(val.length==0) {
           return "Distância inválida";
         }else{
@@ -154,23 +227,24 @@ class Info extends StatelessWidget {
           children: <Widget>[
              Padding(
                padding: const EdgeInsets.all(8.0),
-               child: EditField(title: "Nome", controller: nomeController, validator: validatorNome, fontSize: 18.0,),
+               child: EditField(title: "Nome", controller: nameController, validator: validatorName, fontSize: 18.0,),
              ),  
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: EditField(
                 title: "Distância da Terra", 
-                controller: distanciaController, 
-                validator: validatorDistancia, 
+                controller: distanceController, 
+                validator: validatorDistance, 
                 fontSize: 18.0,
                 keyboardType: TextInputType.number,
             ),), 
-             Padding(
+             /*Padding(
               padding: const EdgeInsets.all(8.0),
               child: OutputField(
                 title: "Nº de Sistemas Planetários", 
                 controller: numSistemasController, 
             ),),
+            */
             
           ],
             ),

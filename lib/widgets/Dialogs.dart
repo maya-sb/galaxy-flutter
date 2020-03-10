@@ -16,10 +16,9 @@ class confirmExitRemove extends StatelessWidget {
     content: Text(content),
     contentPadding: content == '' ? EdgeInsets.all(0.0) : EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 24.0),
     actions: <Widget>[
-      FlatButton(child: Text("Sim"),onPressed: action
-      ,),
+      FlatButton(child: Text("Sim"),onPressed: action,),
       FlatButton(child: Text("Cancelar"),onPressed: (){
-          Navigator.pop(context);
+        Navigator.pop(context);
       },)
     ],);
   }

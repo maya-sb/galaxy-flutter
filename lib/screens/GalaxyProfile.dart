@@ -1,15 +1,15 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
-import 'package:galaxy_flutter/models/Galaxy.dart';
+import 'package:galaxy_flutter/Api.dart';
+import 'package:galaxy_flutter/widgets/Animations.dart';
 import 'package:galaxy_flutter/widgets/Fields.dart';
-
 import '../RouteGenerator.dart';
 
 class GalaxyProfile extends StatefulWidget {
-  GalaxyProfile({this.galaxy});
+  GalaxyProfile({this.id});
 
-  final galaxy;
+  final id;
 
   @override
   _GalaxyProfileState createState() => _GalaxyProfileState();
@@ -17,96 +17,127 @@ class GalaxyProfile extends StatefulWidget {
 
 class _GalaxyProfileState extends State<GalaxyProfile> {
 
+  var nameController = TextEditingController();
+  var distanceController = TextEditingController();
+  var numSystemsController = TextEditingController();
+  int _selectedColor = 0;
 
-  var nomeController = TextEditingController();
-  var distanciaController = TextEditingController();
-  var numSistemasController = TextEditingController();
+  Api db = Api();
+
+  Future future;
+
+  _getGalaxy() async{
+
+    Map<String, dynamic> data = await db.getbyId("galaxy", widget.id);
+    nameController.text = data["name"];
+    distanceController.text = data["earthDistance"];
+    numSystemsController.text = data["numSystems"];
+    _selectedColor = data["colorId"];
+    return widget.id;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    future = _getGalaxy();
+  }
 
   @override
   Widget build(BuildContext context) {
-    nomeController.text = widget.galaxy.nome;
-    distanciaController.text = widget.galaxy.distanciaTerra;
-    numSistemasController.text = widget.galaxy.numSistemas;
-    
     return Scaffold(
-      body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-             Stack(
-                  children: <Widget>[
-                    Center(
-                      child: ClipPath(
-                        clipper: OvalBottomBorderClipper(),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topRight,
-                              end: Alignment.bottomLeft,
-                              colors: [Colors.pinkAccent[700], Colors.purple[900] ])
+      body: FutureBuilder(
+              future: future,
+              builder: (context, snapshot){
+              switch (snapshot.connectionState){
+                case ConnectionState.none:
+                  case ConnectionState.waiting:
+                  return Center(
+                    child:  Center(child: CircularProgressIndicator())
+                  );
+                  case ConnectionState.active:
+                  case ConnectionState.done:  
+                    return  SingleChildScrollView(
+                      child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                      Stack(
+                            children: <Widget>[
+                                Center(
+                                  child: ClipPath(
+                                    clipper: OvalBottomBorderClipper(),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          begin: Alignment.topRight,
+                                          end: Alignment.bottomLeft,
+                                          colors: [Colors.pinkAccent[700], Colors.purple[900] ])
+                                      ),
+                                      height: 180,
+                                      width: 1000,
+                                    ),
+                                  ),
+                                ),
+                                Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 100.0, bottom: 0),
+                                  child: SizedBox(
+                                    width: 150,
+                                    height: 150,
+                                        child: FlareActor(
+                                            //'assets/animations/pinkPlanet.flr',
+                                            'assets/animations/'+ assets[_selectedColor] + 'Galaxy.flr',
+                                            animation: 'rotation',
+                                            fit: BoxFit.cover,
+                                          ),
+                                  ),
+                                ),
                           ),
-                          height: 180,
-                          width: 1000,
-                        ),
+                          Padding(
+                                  padding: const EdgeInsets.only(top: 25.0),
+                                  child: IconButton(
+                                    onPressed: () {
+                                      Navigator.pushNamed(context, RouteGenerator.ROUTE_GALAXIES);
+                                    },
+                                    icon: Icon(Icons.arrow_back, color: Colors.white, size: 25.0),
+                                  ),
+                                ),
+                          Positioned(
+                                    right: 5,
+                                    child: Padding(
+                                    padding: const EdgeInsets.only(top: 25.0),
+                                    child: IconButton(
+                                      onPressed: () {
+                                        Navigator.pushNamed(context, RouteGenerator.ROUTE_EDIT_GALAXY, arguments: widget.id);
+                                      },
+                                      icon: Icon(Icons.edit, color: Colors.white, size: 25.0),
+                                    ),
+                                  ),
+                          )
+                            ],
                       ),
-                    ),
-                    Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 100.0, bottom: 0),
-                      child: SizedBox(
-                        width: 150,
-                        height: 150,
-                            child: FlareActor(
-                                'assets/animations/planetList.flr',
-                                animation: 'rotation',
-                                fit: BoxFit.cover,
-                              ),
-                      ),
-                    ),
-                ),
-                Padding(
-                      padding: const EdgeInsets.only(top: 25.0),
-                      child: IconButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, RouteGenerator.ROUTE_GALAXIES);
-                        },
-                        icon: Icon(Icons.arrow_back, color: Colors.white, size: 25.0),
-                      ),
-                    ),
-                Positioned(
-                        right: 5,
+                      Center(
                         child: Padding(
-                        padding: const EdgeInsets.only(top: 25.0),
-                        child: IconButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, RouteGenerator.ROUTE_EDIT_GALAXY, arguments: widget.galaxy);
-                          },
-                          icon: Icon(Icons.edit, color: Colors.white, size: 25.0),
+                          padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
+                          child: Info(nameController: nameController, distanceController: distanceController, numSystemsController: numSystemsController,),
                         ),
                       ),
-                )
-                  ],
-            ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
-                child: Info(nomeController: nomeController, distanciaController: distanciaController, numSistemasController: numSistemasController,),
-              ),
-            ),
-            ]
+                      ]
+                    ),
+                     );
+              }
+
+           }
           )
-        )
-      );
+        );
   }
 }
 
-
 class Info extends StatelessWidget {
-  Info({this.nomeController, this.distanciaController, this.numSistemasController});
+  Info({this.nameController, this.distanceController, this.numSystemsController});
 
-  final nomeController;
-  final distanciaController;
-  final numSistemasController;
+  final nameController;
+  final distanceController;
+  final numSystemsController;
 
   @override
   Widget build(BuildContext context) {
@@ -119,19 +150,19 @@ class Info extends StatelessWidget {
           children: <Widget>[
              Padding(
                padding: const EdgeInsets.all(8.0),
-               child: OutputField(title: "Nome", controller: nomeController),
+               child: OutputField(title: "Nome", controller: nameController),
              ),  
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: OutputField(
                 title: "Distância da Terra", 
-                controller: distanciaController,  
+                controller: distanceController,  
             ),), 
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: OutputField(
                 title: "Nº de Sistemas Planetários", 
-                controller: numSistemasController, 
+                controller: numSystemsController, 
             ),),
             
           ],

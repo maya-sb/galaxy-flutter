@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flare_flutter/flare_actor.dart';
 
+var assets = ["pink", "blue", "green", "yellow", "orange", "grey"];
+
 class AnimationList extends StatelessWidget {
   AnimationList({this.asset});
 

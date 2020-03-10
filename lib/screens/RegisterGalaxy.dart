@@ -1,7 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:galaxy_flutter/Api.dart';
+import 'package:galaxy_flutter/widgets/Animations.dart';
 import 'package:galaxy_flutter/widgets/Dialogs.dart';
 import 'package:galaxy_flutter/widgets/Fields.dart';
 import 'package:galaxy_flutter/models/Galaxy.dart';
@@ -19,8 +20,37 @@ class _RegisterGalaxyState extends State<RegisterGalaxy> {
   }
 
   final _formKey = GlobalKey<FormState>();
-  var nomeController = TextEditingController();
-  var distanciaController = TextEditingController();
+  var nameController = TextEditingController();
+  var distanceController = TextEditingController();
+  Api db = Api();
+
+  var allColors = [Colors.pinkAccent[200], Colors.blue[600], Colors.green[400], Colors.amber[700], Colors.deepOrange[500], Colors.grey[500]];
+  var selectedColor = 0;
+
+  List<Widget> _colorList() {
+    List<Widget> colors = []; // this will hold Rows according to available lines
+    for (int i = 0; i < 6; i++) {    
+      colors.add(
+        GestureDetector(
+            onTap: () {
+              setState(() {
+                selectedColor = i;
+              });
+            },
+            child: CircleAvatar(
+              backgroundColor: allColors[i],
+              child: selectedColor == i
+                ? Icon(
+                    Icons.check,
+                    color: Colors.white,
+                  )
+                : null
+            ),
+          ),
+      );
+    }
+    return colors;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +67,8 @@ class _RegisterGalaxyState extends State<RegisterGalaxy> {
           child: Icon(Icons.save, color: Colors.white,),
           onPressed: (){
             if (_formKey.currentState.validate()) {
-              Galaxy galaxy = Galaxy(nome: nomeController.text, distanciaTerra:distanciaController.text, numSistemas: '0');
-              galaxy.register();
+              Galaxy galaxy = Galaxy(name: nameController.text, earthDistance:distanceController.text, numSystems: '0', colorId: selectedColor);
+              db.insert("galaxy", galaxy);
               Navigator.pop(context);
             }
             }),
@@ -70,7 +100,7 @@ class _RegisterGalaxyState extends State<RegisterGalaxy> {
                           width: 150,
                           height: 150,
                               child: FlareActor(
-                                  'assets/animations/planetList.flr',
+                                 'assets/animations/'+ assets[selectedColor] +'Galaxy.flr',
                                   animation: 'rotation',
                                   fit: BoxFit.cover,
                                 ),
@@ -94,8 +124,22 @@ class _RegisterGalaxyState extends State<RegisterGalaxy> {
                   child: 
                   Form(
                     key: _formKey,
-                    child: Info(nomeController: nomeController, distanciaController: distanciaController)),
+                    child: Info(nameController: nameController, distanceController: distanceController)),
                 ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
+                child: Text("Cor", style: TextStyle(color: Colors.pink[800], fontSize: 18),),
+              ),
+              Container(
+                padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: _colorList(),
+                    ),
+                  )        
               ),
             ],
           ),
@@ -107,15 +151,15 @@ class _RegisterGalaxyState extends State<RegisterGalaxy> {
 }
 
 class Info extends StatelessWidget {
-  Info({this.nomeController, this.distanciaController});
+  Info({this.nameController, this.distanceController});
 
-  final nomeController;
-  final distanciaController;
+  final nameController;
+  final distanceController;
 
   @override
   Widget build(BuildContext context) {
 
-    String validatorNome (val) {
+    String validatorName (val) {
         if(val.length==0) {
           return "Nome inválido";
         }else{
@@ -123,7 +167,7 @@ class Info extends StatelessWidget {
         }
     }
 
-    String validatorDistancia (val) {
+    String validatorDistance (val) {
         if(val.length==0) {
           return "Distância inválida";
         }else{
@@ -139,14 +183,14 @@ class Info extends StatelessWidget {
           children: <Widget>[
              Padding(
                padding: const EdgeInsets.all(8.0),
-               child: EditField(title: "Nome", controller: nomeController, validator: validatorNome, fontSize: 18.0,),
+               child: EditField(title: "Nome", controller: nameController, validator: validatorName, fontSize: 18.0,),
              ),  
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: EditField(
                 title: "Distância da Terra", 
-                controller: distanciaController, 
-                validator: validatorDistancia, 
+                controller: distanceController, 
+                validator: validatorDistance, 
                 fontSize: 18.0,
                 keyboardType: TextInputType.number,
             ),), 
@@ -169,3 +213,4 @@ class Info extends StatelessWidget {
     );
   }
 }
+

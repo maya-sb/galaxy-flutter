@@ -1,13 +1,10 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:galaxy_flutter/RouteGenerator.dart';
 import 'package:galaxy_flutter/widgets/Fields.dart';
 import 'package:galaxy_flutter/widgets/Lists.dart';
-import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
 class Planet extends StatefulWidget {
   @override
@@ -24,7 +21,6 @@ class _PlanetState extends State<Planet> {
   var assets = ["pink", "blue", "green", "yellow", "orange", "grey"];
   var cores = [Colors.pinkAccent[200], Colors.blue[600], Colors.green[400], Colors.amber[700], Colors.deepOrange[500], Colors.grey[500]];
   var selecionado = 0;
-
 
   @override
   Widget build(BuildContext context) {
