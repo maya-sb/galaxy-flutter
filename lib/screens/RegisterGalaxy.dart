@@ -3,6 +3,7 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:galaxy_flutter/Api.dart';
+import 'package:galaxy_flutter/widgets/Animations.dart';
 import 'package:galaxy_flutter/widgets/Dialogs.dart';
 import 'package:galaxy_flutter/widgets/Fields.dart';
 import 'package:galaxy_flutter/models/Galaxy.dart';
@@ -24,6 +25,34 @@ class _RegisterGalaxyState extends State<RegisterGalaxy> {
   var distanciaController = TextEditingController();
   Api db = Api();
 
+  var cores = [Colors.pinkAccent[200], Colors.blue[600], Colors.green[400], Colors.amber[700], Colors.deepOrange[500], Colors.grey[500]];
+  var selecionado = 0;
+
+  List<Widget> _colorList() {
+    List<Widget> colors = []; // this will hold Rows according to available lines
+    for (int i = 0; i < 6; i++) {    
+      colors.add(
+        GestureDetector(
+            onTap: () {
+              setState(() {
+                selecionado = i;
+              });
+            },
+            child: CircleAvatar(
+              backgroundColor: cores[i],
+              child: selecionado == i
+                ? Icon(
+                    Icons.check,
+                    color: Colors.white,
+                  )
+                : null
+            ),
+          ),
+      );
+    }
+    return colors;
+  }
+
   @override
   Widget build(BuildContext context) {
      return WillPopScope(
@@ -39,7 +68,7 @@ class _RegisterGalaxyState extends State<RegisterGalaxy> {
           child: Icon(Icons.save, color: Colors.white,),
           onPressed: (){
             if (_formKey.currentState.validate()) {
-              Galaxy galaxy = Galaxy(name: nomeController.text, earthDistance:distanciaController.text, numSystems: '0');
+              Galaxy galaxy = Galaxy(name: nomeController.text, earthDistance:distanciaController.text, numSystems: '0', colorId: selecionado);
               db.insert("galaxia", galaxy);
               Navigator.pop(context);
             }
@@ -72,7 +101,7 @@ class _RegisterGalaxyState extends State<RegisterGalaxy> {
                           width: 150,
                           height: 150,
                               child: FlareActor(
-                                  'assets/animations/planetList.flr',
+                                 'assets/animations/'+ assets[selecionado] +'Galaxy.flr',
                                   animation: 'rotation',
                                   fit: BoxFit.cover,
                                 ),
@@ -98,6 +127,20 @@ class _RegisterGalaxyState extends State<RegisterGalaxy> {
                     key: _formKey,
                     child: Info(nomeController: nomeController, distanciaController: distanciaController)),
                 ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
+                child: Text("Cor", style: TextStyle(color: Colors.pink[800], fontSize: 18),),
+              ),
+              Container(
+                padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: _colorList(),
+                    ),
+                  )        
               ),
             ],
           ),
@@ -171,3 +214,4 @@ class Info extends StatelessWidget {
     );
   }
 }
+

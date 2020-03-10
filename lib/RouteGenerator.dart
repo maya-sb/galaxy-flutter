@@ -69,7 +69,7 @@ class RouteGenerator {
           builder: (_) => RegisterGalaxy());
       case ROUTE_GALAXY_PROFILE:
         return MaterialPageRoute(
-          builder: (_) => GalaxyProfile(galaxy: arguments));
+          builder: (_) => GalaxyProfile(id: arguments));
       case ROUTE_EDIT_GALAXY:
         return MaterialPageRoute(
           builder: (_) => EditGalaxy(galaxy: arguments));

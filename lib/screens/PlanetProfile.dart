@@ -25,7 +25,6 @@ class _PlanetState extends State<Planet> {
   var cores = [Colors.pinkAccent[200], Colors.blue[600], Colors.green[400], Colors.amber[700], Colors.deepOrange[500], Colors.grey[500]];
   var selecionado = 0;
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

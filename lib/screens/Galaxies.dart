@@ -41,7 +41,7 @@ class _GalaxiesState extends State<Galaxies> {
           onPressed: (){
              Navigator.pushNamed(context, RouteGenerator.ROUTE_REGISTER_GALAXY);
         },),
-        body: NameList(asset: 'assets/animations/planetList.flr', future: bd.getAll("galaxia", Galaxy), rota:  RouteGenerator.ROUTE_GALAXY_PROFILE)
+        body: NameList(type: 'Galaxy',future: bd.getAll("galaxia", Galaxy), rota: RouteGenerator.ROUTE_GALAXY_PROFILE)
       ),
     );
 

@@ -35,6 +35,14 @@ class Api {
     db.collection(collectionName).document(id).delete();
   }
 
+  getbyId(String collectionName, String id) async{
+    DocumentSnapshot doc = await db.collection(collectionName).document(id).get();
+
+    Map<String, dynamic> dados = doc.data;
+
+    return dados;
+  }
+
   getAll(String collectionName, var type) async{
 
     QuerySnapshot querySnapshot = await db.collection(collectionName).orderBy("nome").getDocuments();

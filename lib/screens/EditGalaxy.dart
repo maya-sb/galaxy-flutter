@@ -4,11 +4,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
+import 'package:galaxy_flutter/Api.dart';
 import 'package:galaxy_flutter/RouteGenerator.dart';
 import 'package:galaxy_flutter/models/Galaxy.dart';
 import 'package:galaxy_flutter/widgets/Fields.dart';
 import 'package:galaxy_flutter/widgets/Lists.dart';
 import 'package:galaxy_flutter/widgets/Dialogs.dart';
+import 'package:galaxy_flutter/widgets/Animations.dart';
 
 class EditGalaxy extends StatefulWidget {
   EditGalaxy({this.galaxy});
@@ -26,6 +28,8 @@ class _EditGalaxyState extends State<EditGalaxy> {
   var distanciaController = TextEditingController();
   var numSistemasController = TextEditingController();
 
+  Api bd = Api();
+
   @override
   Widget build(BuildContext context) {
     nomeController.text = widget.galaxy.name;
@@ -38,8 +42,8 @@ class _EditGalaxyState extends State<EditGalaxy> {
         child: Icon(Icons.save, color: Colors.white,),
         onPressed: (){
           if (_formKey.currentState.validate()) {
-            Galaxy galaxy = Galaxy(name: nomeController.text, earthDistance:distanciaController.text, id: widget.galaxy.id, numSystems: widget.galaxy.numSistemas);
-            //galaxy.update();
+            Galaxy galaxy = Galaxy(name: nomeController.text, earthDistance:distanciaController.text, id: widget.galaxy.id, numSystems: widget.galaxy.numSystems);
+            bd.update("galaxia", galaxy);
             Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_GALAXY_PROFILE, arguments: galaxy);
           }
           
@@ -72,7 +76,7 @@ class _EditGalaxyState extends State<EditGalaxy> {
                         width: 150,
                         height: 150,
                             child: FlareActor(
-                                'assets/animations/planetList.flr',
+                                'assets/animations/'+ assets[widget.galaxy.colorId] + 'Galaxy.flr',
                                 animation: 'rotation',
                                 fit: BoxFit.cover,
                               ),
@@ -94,15 +98,14 @@ class _EditGalaxyState extends State<EditGalaxy> {
                         padding: const EdgeInsets.only(top: 25.0),
                         child: IconButton(
                           onPressed: () {
-                            /*
+                            
                              showDialog(context: context, builder :(context){
-                               Galaxy galaxy = Galaxy(id: widget.galaxy.id);
                               return confirmExitRemove(
                                 title: "Deseja remover galáxia permanentemente?", 
-                                action: (){ galaxy.remove(); 
-                                            Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_GALAXIES);});
+                                action: (){ bd.remove("galaxia", widget.galaxy.id); 
+                                  Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_GALAXIES);});
                             });
-                            */
+                            
                           },
                           icon: Icon(Icons.delete, color: Colors.white, size: 25.0),
                         ),

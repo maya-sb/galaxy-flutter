@@ -72,9 +72,9 @@ class RowList extends StatelessWidget {
 }
 
 class NameList extends StatelessWidget {
-  const NameList({this.asset, this.future, this.rota});
+  const NameList({this.type, this.future, this.rota});
 
-  final asset;
+  final String type;
   final future;
   final rota;
 
@@ -108,11 +108,11 @@ class NameList extends StatelessWidget {
                           padding: const EdgeInsets.all(0.0),
                           child: RowList(
                             title: item.name, 
-                            asset: asset, 
+                            asset: 'assets/animations/'+ assets[item.colorId] + type + '.flr', 
                             action: () => Navigator.pushNamed(
                               context, 
                               rota, 
-                              arguments: item)
+                              arguments: item.id)
                           ),
                         );
                       }
