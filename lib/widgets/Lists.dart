@@ -70,3 +70,107 @@ class RowList extends StatelessWidget {
     
   }
 }
+
+class NameList extends StatelessWidget {
+  const NameList({this.asset, this.future, this.rota});
+
+  final asset;
+  final future;
+  final rota;
+
+  @override
+  Widget build(BuildContext context) {
+  return Container(
+          color: Color(0xff380b4c),
+          padding: EdgeInsets.only(top: 20),
+          child: FutureBuilder(
+              future: future,
+              builder: (context, snapshot){
+                switch (snapshot.connectionState) {
+                  case ConnectionState.none:
+                  case ConnectionState.waiting:
+                  return Center(
+                    child:  CircularProgressIndicator()
+                  );
+                  case ConnectionState.active:
+                  case ConnectionState.done:  
+                  try {
+                    if (snapshot.data.length == 0){
+                      return Center(child: Text("Nada por aqui :c", style: TextStyle(color: Colors.white70, fontSize: 25),),);
+                    } else { 
+                    return ListView.builder(
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (context, index) {
+
+                        List itens = snapshot.data;
+                        var item = itens[index];
+                        return Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: RowList(
+                            title: item.name, 
+                            asset: asset, 
+                            action: () => Navigator.pushNamed(
+                              context, 
+                              rota, 
+                              arguments: item)
+                          ),
+                        );
+                      }
+                    );
+                  }
+                  } catch (e){
+                   print(e.toString());
+                  }
+
+                }
+              },          ));
+  }
+}
+
+/* Lista de Galáxias
+Container(
+          color: Color(0xff380b4c),
+          padding: EdgeInsets.only(top: 20),
+          child: FutureBuilder(
+            future: getGalaxies(),
+            builder: (context, snapshot){
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                case ConnectionState.waiting:
+                return Center(
+                  child:  CircularProgressIndicator()
+                );
+                case ConnectionState.active:
+                case ConnectionState.done:  
+
+                  if (snapshot.data.length == 0){
+                    return Center(child: Text("Sem nada por aqui :c", style: TextStyle(color: Colors.white70, fontSize: 25),),);
+                  } else { 
+                  return ListView.builder(
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (context, index) {
+
+                      List<Galaxy> galaxias = snapshot.data;
+                      Galaxy galaxia = galaxias[index];
+                      return Padding(
+                        padding: const EdgeInsets.all(0.0),
+                        child: RowList(
+                          title: galaxia.nome, 
+                          asset: 'assets/animations/planetList.flr', 
+                          action: () => Navigator.pushNamed(
+                            context, 
+                            RouteGenerator.ROUTE_GALAXY_PROFILE, 
+                            arguments: galaxia)
+                        ),
+                      );
+                    }
+                  );
+                 }
+
+              }
+            },          ),
+        ),
+
+
+
+*/

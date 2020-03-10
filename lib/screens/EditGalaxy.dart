@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
+import 'package:galaxy_flutter/RouteGenerator.dart';
 import 'package:galaxy_flutter/models/Galaxy.dart';
 import 'package:galaxy_flutter/widgets/Fields.dart';
 import 'package:galaxy_flutter/widgets/Lists.dart';
@@ -27,9 +28,9 @@ class _EditGalaxyState extends State<EditGalaxy> {
 
   @override
   Widget build(BuildContext context) {
-    nomeController.text = widget.galaxy.nome;
-    distanciaController.text = widget.galaxy.distanciaTerra;
-    numSistemasController.text = widget.galaxy.numSistemas;
+    nomeController.text = widget.galaxy.name;
+    distanciaController.text = widget.galaxy.earthDistance;
+    numSistemasController.text = widget.galaxy.numSystems;
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
@@ -37,9 +38,9 @@ class _EditGalaxyState extends State<EditGalaxy> {
         child: Icon(Icons.save, color: Colors.white,),
         onPressed: (){
           if (_formKey.currentState.validate()) {
-            Galaxy galaxy = Galaxy(nome: nomeController.text, distanciaTerra:distanciaController.text, id: widget.galaxy.id, numSistemas: widget.galaxy.numSistemas);
-            galaxy.update();
-            Navigator.pop(context);
+            Galaxy galaxy = Galaxy(name: nomeController.text, earthDistance:distanciaController.text, id: widget.galaxy.id, numSystems: widget.galaxy.numSistemas);
+            //galaxy.update();
+            Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_GALAXY_PROFILE, arguments: galaxy);
           }
           
       },),
@@ -93,11 +94,15 @@ class _EditGalaxyState extends State<EditGalaxy> {
                         padding: const EdgeInsets.only(top: 25.0),
                         child: IconButton(
                           onPressed: () {
+                            /*
                              showDialog(context: context, builder :(context){
                                Galaxy galaxy = Galaxy(id: widget.galaxy.id);
-                              //return confirmExitRemove(title: "Deseja remover galáxia permanentemente?", action: () => Navigator.pop(context));
-                              return confirmExitRemove(title: "Deseja remover galáxia permanentemente?", action: galaxy.remove);
+                              return confirmExitRemove(
+                                title: "Deseja remover galáxia permanentemente?", 
+                                action: (){ galaxy.remove(); 
+                                            Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_GALAXIES);});
                             });
+                            */
                           },
                           icon: Icon(Icons.delete, color: Colors.white, size: 25.0),
                         ),
@@ -165,12 +170,13 @@ class Info extends StatelessWidget {
                 fontSize: 18.0,
                 keyboardType: TextInputType.number,
             ),), 
-             Padding(
+             /*Padding(
               padding: const EdgeInsets.all(8.0),
               child: OutputField(
                 title: "Nº de Sistemas Planetários", 
                 controller: numSistemasController, 
             ),),
+            */
             
           ],
             ),

@@ -24,9 +24,9 @@ class _GalaxyProfileState extends State<GalaxyProfile> {
 
   @override
   Widget build(BuildContext context) {
-    nomeController.text = widget.galaxy.nome;
-    distanciaController.text = widget.galaxy.distanciaTerra;
-    numSistemasController.text = widget.galaxy.numSistemas;
+    nomeController.text = widget.galaxy.name;
+    distanciaController.text = widget.galaxy.earthDistance;
+    numSistemasController.text = widget.galaxy.numSystems;
     
     return Scaffold(
       body: SingleChildScrollView(

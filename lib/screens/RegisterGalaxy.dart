@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:galaxy_flutter/Api.dart';
 import 'package:galaxy_flutter/widgets/Dialogs.dart';
 import 'package:galaxy_flutter/widgets/Fields.dart';
 import 'package:galaxy_flutter/models/Galaxy.dart';
@@ -21,6 +22,7 @@ class _RegisterGalaxyState extends State<RegisterGalaxy> {
   final _formKey = GlobalKey<FormState>();
   var nomeController = TextEditingController();
   var distanciaController = TextEditingController();
+  Api db = Api();
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +39,8 @@ class _RegisterGalaxyState extends State<RegisterGalaxy> {
           child: Icon(Icons.save, color: Colors.white,),
           onPressed: (){
             if (_formKey.currentState.validate()) {
-              Galaxy galaxy = Galaxy(nome: nomeController.text, distanciaTerra:distanciaController.text, numSistemas: '0');
-              galaxy.register();
+              Galaxy galaxy = Galaxy(name: nomeController.text, earthDistance:distanciaController.text, numSystems: '0');
+              db.insert("galaxia", galaxy);
               Navigator.pop(context);
             }
             }),
