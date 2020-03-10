@@ -24,10 +24,11 @@ class _RegisterGalaxyState extends State<RegisterGalaxy> {
   var distanceController = TextEditingController();
   Api db = Api();
 
-  var allColors = [Colors.pinkAccent[200], Colors.blue[600], Colors.green[400], Colors.amber[700], Colors.deepOrange[500], Colors.grey[500]];
   var selectedColor = 0;
 
   List<Widget> _colorList() {
+    var allColors = [Colors.pinkAccent[200], Colors.blue[600], Colors.green[400], Colors.amber[700], Colors.deepOrange[500], Colors.grey[500]];
+
     List<Widget> colors = []; // this will hold Rows according to available lines
     for (int i = 0; i < 6; i++) {    
       colors.add(

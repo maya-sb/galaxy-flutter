@@ -7,18 +7,20 @@ class PlanetarySystem{
   String age;
   String numStars;
   String numPlanets;
-  Map galaxia;
+  String galaxyId;
+  int colorId;
 
-  PlanetarySystem({this.id, this.name, this.age, this.numStars, this.numPlanets, this.galaxia});
+  PlanetarySystem({this.id, this.name, this.age, this.numStars, this.numPlanets, this.galaxyId, this.colorId});
 
   PlanetarySystem.fromMap(DocumentSnapshot document){
     id = document.documentID;
 
-    this.name = document.data["nome"];
-    this.age = document.data["idade"];
-    this.numStars = document.data["numEstrelas"];
-    this.numPlanets = document.data["numPlanetas"];
-    this.galaxia = document.data["galaxia"];
+    this.name = document.data["name"];
+    this.age = document.data["age"];
+    this.numStars = document.data["numStars"];
+    this.numPlanets = document.data["numPlanets"];
+    this.galaxyId = document.data["galaxyId"];
+    this.colorId = document.data["colorId"];
   }
 
    toMap(){
@@ -27,7 +29,8 @@ class PlanetarySystem{
       "idade":this.age,
       "numEstrelas": this.numStars,
       "numPlanetas": this.numPlanets,
-      "galaxia": this.galaxia};
+      "colorId" : this.colorId,
+      "galaxyId": this.galaxyId};
   }
  
 }

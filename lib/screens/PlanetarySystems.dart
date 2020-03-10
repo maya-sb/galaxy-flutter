@@ -42,7 +42,7 @@ class _PlanetarySystemsState extends State<PlanetarySystems> {
           onPressed: (){
              Navigator.pushNamed(context, RouteGenerator.ROUTE_REGISTER_PLANETARY_SYSTEM);
         },),
-        body: NameList(future: db.getAll("sistema", PlanetarySystem), rota:  RouteGenerator.ROUTE_PLANETARY_SYSTEM_PROFILE)
+        body: NameList(type: 'System', future: db.getAll("system", PlanetarySystem), rota:  RouteGenerator.ROUTE_PLANETARY_SYSTEM_PROFILE)
       ),
     );
 

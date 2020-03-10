@@ -1,7 +1,9 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:galaxy_flutter/Api.dart';
 import 'package:galaxy_flutter/models/PlanetarySystem.dart';
+import 'package:galaxy_flutter/widgets/Animations.dart';
 import 'package:galaxy_flutter/widgets/Dialogs.dart';
 import 'package:galaxy_flutter/widgets/Fields.dart';
 
@@ -18,9 +20,41 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
   }  
 
   final _formKey = GlobalKey<FormState>();
-  var nomeController = TextEditingController();
-  var idadeController = TextEditingController();
-  var galaxiaController = TextEditingController();
+  var nameController = TextEditingController();
+  var ageController = TextEditingController();
+  var galaxyController = TextEditingController();
+
+   Api db = Api();
+
+  var selectedColor = 0;
+  var allColors = [Colors.pinkAccent[200], Colors.blue[600], Colors.green[400], Colors.amber[700], Colors.deepOrange[500], Colors.grey[500]];
+
+  List<Widget> _colorList() {
+
+    List<Widget> colors = []; // this will hold Rows according to available lines
+    for (int i = 0; i < 6; i++) {    
+      colors.add(
+        GestureDetector(
+            onTap: () {
+              setState(() {
+                print("oi");
+                selectedColor = i;
+              });
+            },
+            child: CircleAvatar(
+              backgroundColor: allColors[i],
+              child: selectedColor == i
+                ? Icon(
+                    Icons.check,
+                    color: Colors.white,
+                  )
+                : null
+            ),
+          ),
+      );
+    }
+    return colors;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +71,8 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
           child: Icon(Icons.save, color: Colors.white,),
           onPressed: (){
             if (_formKey.currentState.validate()) {
-              PlanetarySystem system = PlanetarySystem(name: nomeController.text, age:idadeController.text, numStars: '0', numPlanets: '0');
-              //system.register();
+              PlanetarySystem system = PlanetarySystem(name: nameController.text, age:ageController.text, numStars: '0', numPlanets: '0', galaxyId: galaxyController.text);
+              db.insert('system', system);
               Navigator.pop(context);
             }
             }),
@@ -70,7 +104,7 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
                           width: 150,
                           height: 150,
                               child: FlareActor(
-                                  'assets/animations/planetList.flr',
+                                  'assets/animations/'+ assets[selectedColor] +'System.flr',
                                   animation: 'rotation',
                                   fit: BoxFit.cover,
                                 ),
@@ -94,9 +128,23 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
                   child: 
                   Form(
                     key: _formKey,
-                    child: Info(nomeController: nomeController, idadeController: idadeController, galaxiaController: galaxiaController,)),
+                    child: Info(nameController: nameController, ageController: ageController, galaxyController: galaxyController,)),
                 ),
               ),
+               Padding(
+                padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
+                child: Text("Cor", style: TextStyle(color: Colors.pink[800], fontSize: 18),),
+              ),
+              Container(
+                padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: _colorList(),
+                    ),
+                  )        
+              )
             ],
           ),
         ),
@@ -106,11 +154,11 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
 }
 
 class Info extends StatefulWidget {
-  Info({this.nomeController, this.idadeController, this.galaxiaController});
+  Info({this.nameController, this.ageController, this.galaxyController});
 
-  final nomeController;
-  final idadeController;
-  final galaxiaController;
+  final nameController;
+  final ageController;
+  final galaxyController;
 
   @override
   _InfoState createState() => _InfoState();
@@ -118,7 +166,7 @@ class Info extends StatefulWidget {
 
 class _InfoState extends State<Info> {
 
-   String validatorNome (val) {
+   String validatorName (val) {
         if(val.length==0) {
           return "Nome inválido";
         }else{
@@ -126,7 +174,7 @@ class _InfoState extends State<Info> {
         }
     }
 
-    String validatorIdade (val) {
+    String validatorAge (val) {
         if(val.length==0) {
           return "Idade inválida";
         }else{
@@ -135,7 +183,6 @@ class _InfoState extends State<Info> {
     }
 
   int _selectedGender;
-
 
   @override
   Widget build(BuildContext context) {
@@ -147,14 +194,14 @@ class _InfoState extends State<Info> {
           children: <Widget>[
              Padding(
                padding: const EdgeInsets.all(8.0),
-               child: EditField(title: "Nome", controller: widget.nomeController, validator: validatorNome, fontSize: 18.0,),
+               child: EditField(title: "Nome", controller: widget.nameController, validator: validatorName, fontSize: 18.0,),
              ),  
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: EditField(
                 title: "Idade", 
-                controller: widget.idadeController, 
-                validator: validatorIdade, 
+                controller: widget.ageController, 
+                validator: validatorAge, 
                 fontSize: 18.0,
                 keyboardType: TextInputType.number,
             ),), 
