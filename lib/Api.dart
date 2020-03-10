@@ -38,14 +38,14 @@ class Api {
   getbyId(String collectionName, String id) async{
     DocumentSnapshot doc = await db.collection(collectionName).document(id).get();
 
-    Map<String, dynamic> dados = doc.data;
+    Map<String, dynamic> data = doc.data;
 
-    return dados;
+    return data;
   }
 
   getAll(String collectionName, var type) async{
 
-    QuerySnapshot querySnapshot = await db.collection(collectionName).orderBy("nome").getDocuments();
+    QuerySnapshot querySnapshot = await db.collection(collectionName).orderBy("name").getDocuments();
     List list = List();
     var item;
 

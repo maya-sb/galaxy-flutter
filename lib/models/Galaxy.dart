@@ -13,18 +13,18 @@ class Galaxy{
   Galaxy.fromMap(DocumentSnapshot document){
     id = document.documentID;
 
-    this.name = document.data["nome"];
-    this.earthDistance = document.data["distanciaTerra"];
-    this.numSystems = document.data["numSistemas"];
+    this.name = document.data["name"];
+    this.earthDistance = document.data["earthDistance"];
+    this.numSystems = document.data["numSystems"];
     this.colorId = document.data["colorId"];
 
   }
 
    toMap(){
     return {
-      "nome":this.name,
-      "distanciaTerra":this.earthDistance,
-      "numSistemas": this.numSystems,
+      "name":this.name,
+      "earthDistance":this.earthDistance,
+      "numSystems": this.numSystems,
       "colorId": this.colorId};
   }
 }

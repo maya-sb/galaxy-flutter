@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flare_flutter/flare_actor.dart';
-import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:galaxy_flutter/Api.dart';
 import 'package:galaxy_flutter/RouteGenerator.dart';
 import 'package:galaxy_flutter/models/Galaxy.dart';
 import 'package:galaxy_flutter/widgets/Fields.dart';
-import 'package:galaxy_flutter/widgets/Lists.dart';
 import 'package:galaxy_flutter/widgets/Dialogs.dart';
 import 'package:galaxy_flutter/widgets/Animations.dart';
 
@@ -24,21 +21,21 @@ class EditGalaxy extends StatefulWidget {
 class _EditGalaxyState extends State<EditGalaxy> {
   
   final _formKey = GlobalKey<FormState>();
-  var nomeController = TextEditingController();
-  var distanciaController = TextEditingController();
-  var numSistemasController = TextEditingController();
-  int _selecionado = 0;
+  var nameController = TextEditingController();
+  var distanceController = TextEditingController();
+  var numSystemsController = TextEditingController();
+  int _selectedColor = 0;
 
   Api db = Api();
   Future future;
 
   _getGalaxy() async{
 
-    Map<String, dynamic> dados = await db.getbyId("galaxia", widget.id);
-    nomeController.text = dados["nome"];
-    distanciaController.text = dados["distanciaTerra"];
-    numSistemasController.text = dados["numSistemas"];
-    _selecionado = dados["colorId"];
+    Map<String, dynamic> dados = await db.getbyId("galaxy", widget.id);
+    nameController.text = dados["name"];
+    distanceController.text = dados["earthDistance"];
+    numSystemsController.text = dados["numSystems"];
+    _selectedColor = dados["colorId"];
     return widget.id;
   }
 
@@ -57,12 +54,12 @@ class _EditGalaxyState extends State<EditGalaxy> {
         GestureDetector(
             onTap: () {
               setState(() {
-                _selecionado = i;
+                _selectedColor = i;
               });
             },
             child: CircleAvatar(
               backgroundColor: cores[i],
-              child: _selecionado == i
+              child: _selectedColor == i
                 ? Icon(
                     Icons.check,
                     color: Colors.white,
@@ -83,8 +80,8 @@ class _EditGalaxyState extends State<EditGalaxy> {
         child: Icon(Icons.save, color: Colors.white,),
         onPressed: (){
           if (_formKey.currentState.validate()) {
-            Galaxy galaxy = Galaxy(name: nomeController.text, earthDistance:distanciaController.text, id: widget.id, numSystems: numSistemasController.text, colorId: _selecionado);
-            db.update("galaxia", galaxy);
+            Galaxy galaxy = Galaxy(name: nameController.text, earthDistance:distanceController.text, id: widget.id, numSystems: numSystemsController.text, colorId: _selectedColor);
+            db.update("galaxy", galaxy);
             Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_GALAXY_PROFILE, arguments: widget.id);
           }
           
@@ -128,7 +125,7 @@ class _EditGalaxyState extends State<EditGalaxy> {
                                     width: 150,
                                     height: 150,
                                         child: FlareActor(
-                                            'assets/animations/'+ assets[_selecionado] + 'Galaxy.flr',
+                                            'assets/animations/'+ assets[_selectedColor] + 'Galaxy.flr',
                                             animation: 'rotation',
                                             fit: BoxFit.cover,
                                           ),
@@ -154,7 +151,7 @@ class _EditGalaxyState extends State<EditGalaxy> {
                                         showDialog(context: context, builder :(context){
                                           return confirmExitRemove(
                                             title: "Deseja remover galáxia permanentemente?", 
-                                            action: (){ db.remove("galaxia", widget.id); 
+                                            action: (){ db.remove("galaxy", widget.id); 
                                               Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_GALAXIES);});
                                         });
                                         
@@ -170,7 +167,7 @@ class _EditGalaxyState extends State<EditGalaxy> {
                             padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
                             child: Form(
                               key: _formKey, 
-                              child: Info(nomeController: nomeController, distanciaController: distanciaController, numSistemasController: numSistemasController,))),
+                              child: Info(nameController: nameController, distanceController: distanceController, numSystemsController: numSystemsController,))),
                           ),
                         Padding(
                           padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
@@ -197,16 +194,16 @@ class _EditGalaxyState extends State<EditGalaxy> {
 
 
 class Info extends StatelessWidget {
-  Info({this.nomeController, this.distanciaController, this.numSistemasController});
+  Info({this.nameController, this.distanceController, this.numSystemsController});
 
-  final nomeController;
-  final distanciaController;
-  final numSistemasController;
+  final nameController;
+  final distanceController;
+  final numSystemsController;
 
   @override
   Widget build(BuildContext context) {
 
-    String validatorNome (val) {
+    String validatorName (val) {
         if(val.length==0) {
           return "Nome inválido";
         }else{
@@ -214,7 +211,7 @@ class Info extends StatelessWidget {
         }
     }
 
-    String validatorDistancia (val) {
+    String validatorDistance (val) {
         if(val.length==0) {
           return "Distância inválida";
         }else{
@@ -230,14 +227,14 @@ class Info extends StatelessWidget {
           children: <Widget>[
              Padding(
                padding: const EdgeInsets.all(8.0),
-               child: EditField(title: "Nome", controller: nomeController, validator: validatorNome, fontSize: 18.0,),
+               child: EditField(title: "Nome", controller: nameController, validator: validatorName, fontSize: 18.0,),
              ),  
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: EditField(
                 title: "Distância da Terra", 
-                controller: distanciaController, 
-                validator: validatorDistancia, 
+                controller: distanceController, 
+                validator: validatorDistance, 
                 fontSize: 18.0,
                 keyboardType: TextInputType.number,
             ),), 
