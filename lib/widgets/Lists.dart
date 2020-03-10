@@ -94,7 +94,6 @@ class NameList extends StatelessWidget {
                   );
                   case ConnectionState.active:
                   case ConnectionState.done:  
-                  try {
                     if (snapshot.data.length == 0){
                       return Center(child: Text("Nada por aqui :c", style: TextStyle(color: Colors.white70, fontSize: 25),),);
                     } else { 
@@ -118,10 +117,6 @@ class NameList extends StatelessWidget {
                       }
                     );
                   }
-                  } catch (e){
-                   print(e.toString());
-                  }
-
                 }
               },          ));
   }

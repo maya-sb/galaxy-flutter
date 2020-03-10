@@ -11,7 +11,14 @@ class Galaxies extends StatefulWidget {
 
 class _GalaxiesState extends State<Galaxies> {
 
-  Api bd = Api();
+  Api db = Api();
+  var galaxias;
+
+  @override
+  void initState() {
+    super.initState();
+    //galaxias = db.getAll("galaxia", Galaxy);
+  }
 
   @override
   Widget build(BuildContext context) 
@@ -41,7 +48,7 @@ class _GalaxiesState extends State<Galaxies> {
           onPressed: (){
              Navigator.pushNamed(context, RouteGenerator.ROUTE_REGISTER_GALAXY);
         },),
-        body: NameList(type: 'Galaxy',future: bd.getAll("galaxia", Galaxy), rota: RouteGenerator.ROUTE_GALAXY_PROFILE)
+        body: NameList(type: 'Galaxy',future: db.getAll("galaxia", Galaxy), rota: RouteGenerator.ROUTE_GALAXY_PROFILE)
       ),
     );
 

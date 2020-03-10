@@ -13,9 +13,9 @@ import 'package:galaxy_flutter/widgets/Dialogs.dart';
 import 'package:galaxy_flutter/widgets/Animations.dart';
 
 class EditGalaxy extends StatefulWidget {
-  EditGalaxy({this.galaxy});
+  EditGalaxy({this.id});
 
-  final galaxy;
+  final id;
 
   @override
   _EditGalaxyState createState() => _EditGalaxyState();
@@ -27,103 +27,171 @@ class _EditGalaxyState extends State<EditGalaxy> {
   var nomeController = TextEditingController();
   var distanciaController = TextEditingController();
   var numSistemasController = TextEditingController();
+  int _selecionado = 0;
 
-  Api bd = Api();
+  Api db = Api();
+  Future future;
+
+  _getGalaxy() async{
+
+    Map<String, dynamic> dados = await db.getbyId("galaxia", widget.id);
+    nomeController.text = dados["nome"];
+    distanciaController.text = dados["distanciaTerra"];
+    numSistemasController.text = dados["numSistemas"];
+    _selecionado = dados["colorId"];
+    return widget.id;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    future = _getGalaxy();
+  }
+
+  List<Widget> _colorList() {
+    var cores = [Colors.pinkAccent[200], Colors.blue[600], Colors.green[400], Colors.amber[700], Colors.deepOrange[500], Colors.grey[500]];
+
+    List<Widget> colors = []; // this will hold Rows according to available lines
+    for (int i = 0; i < 6; i++) {    
+      colors.add(
+        GestureDetector(
+            onTap: () {
+              setState(() {
+                _selecionado = i;
+              });
+            },
+            child: CircleAvatar(
+              backgroundColor: cores[i],
+              child: _selecionado == i
+                ? Icon(
+                    Icons.check,
+                    color: Colors.white,
+                  )
+                : null
+            ),
+          ),
+      );
+    }
+    return colors;
+  }
 
   @override
   Widget build(BuildContext context) {
-    nomeController.text = widget.galaxy.name;
-    distanciaController.text = widget.galaxy.earthDistance;
-    numSistemasController.text = widget.galaxy.numSystems;
-
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.pink[700],
         child: Icon(Icons.save, color: Colors.white,),
         onPressed: (){
           if (_formKey.currentState.validate()) {
-            Galaxy galaxy = Galaxy(name: nomeController.text, earthDistance:distanciaController.text, id: widget.galaxy.id, numSystems: widget.galaxy.numSystems);
-            bd.update("galaxia", galaxy);
-            Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_GALAXY_PROFILE, arguments: galaxy);
+            Galaxy galaxy = Galaxy(name: nomeController.text, earthDistance:distanciaController.text, id: widget.id, numSystems: numSistemasController.text, colorId: _selecionado);
+            db.update("galaxia", galaxy);
+            Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_GALAXY_PROFILE, arguments: widget.id);
           }
           
       },),
-      body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-             Stack(
-                  children: <Widget>[
-                    Center(
-                      child: ClipPath(
-                        clipper: OvalBottomBorderClipper(),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topRight,
-                              end: Alignment.bottomLeft,
-                              colors: [Colors.pinkAccent[700], Colors.purple[900] ])
+      body: FutureBuilder(
+              future: future,
+              builder: (context, snapshot){
+              switch (snapshot.connectionState){
+                case ConnectionState.none:
+                  case ConnectionState.waiting:
+                  return Center(
+                    child:  Center(child: CircularProgressIndicator())
+                  );
+                  case ConnectionState.active:
+                  case ConnectionState.done:  
+                    return  SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Stack(
+                              children: <Widget>[
+                                Center(
+                                  child: ClipPath(
+                                    clipper: OvalBottomBorderClipper(),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          begin: Alignment.topRight,
+                                          end: Alignment.bottomLeft,
+                                          colors: [Colors.pinkAccent[700], Colors.purple[900] ])
+                                      ),
+                                      height: 180,
+                                      width: 1000,
+                                    ),
+                                  ),
+                                ),
+                                Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 100.0, bottom: 0),
+                                  child: SizedBox(
+                                    width: 150,
+                                    height: 150,
+                                        child: FlareActor(
+                                            'assets/animations/'+ assets[_selecionado] + 'Galaxy.flr',
+                                            animation: 'rotation',
+                                            fit: BoxFit.cover,
+                                          ),
+                                  ),
+                                ),
+                            ),
+                            Padding(
+                                  padding: const EdgeInsets.only(top: 25.0),
+                                  child: IconButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    icon: Icon(Icons.arrow_back, color: Colors.white, size: 25.0),
+                                  ),
+                                ),
+                            Positioned(
+                                    right: 5,
+                                    child: Padding(
+                                    padding: const EdgeInsets.only(top: 25.0),
+                                    child: IconButton(
+                                      onPressed: () {
+                                        
+                                        showDialog(context: context, builder :(context){
+                                          return confirmExitRemove(
+                                            title: "Deseja remover galáxia permanentemente?", 
+                                            action: (){ db.remove("galaxia", widget.id); 
+                                              Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_GALAXIES);});
+                                        });
+                                        
+                                      },
+                                      icon: Icon(Icons.delete, color: Colors.white, size: 25.0),
+                                    ),
+                                  ),
+                            ),
+                            ],
+                        ),
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
+                            child: Form(
+                              key: _formKey, 
+                              child: Info(nomeController: nomeController, distanciaController: distanciaController, numSistemasController: numSistemasController,))),
                           ),
-                          height: 180,
-                          width: 1000,
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
+                          child: Text("Cor", style: TextStyle(color: Colors.pink[800], fontSize: 18),),
                         ),
-                      ),
-                    ),
-                    Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 100.0, bottom: 0),
-                      child: SizedBox(
-                        width: 150,
-                        height: 150,
-                            child: FlareActor(
-                                'assets/animations/'+ assets[widget.galaxy.colorId] + 'Galaxy.flr',
-                                animation: 'rotation',
-                                fit: BoxFit.cover,
+                        Container(
+                          padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                          child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: _colorList(),
                               ),
-                      ),
-                    ),
-                ),
-                Padding(
-                      padding: const EdgeInsets.only(top: 25.0),
-                      child: IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(Icons.arrow_back, color: Colors.white, size: 25.0),
-                      ),
-                    ),
-                Positioned(
-                        right: 5,
-                        child: Padding(
-                        padding: const EdgeInsets.only(top: 25.0),
-                        child: IconButton(
-                          onPressed: () {
-                            
-                             showDialog(context: context, builder :(context){
-                              return confirmExitRemove(
-                                title: "Deseja remover galáxia permanentemente?", 
-                                action: (){ bd.remove("galaxia", widget.galaxy.id); 
-                                  Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_GALAXIES);});
-                            });
-                            
-                          },
-                          icon: Icon(Icons.delete, color: Colors.white, size: 25.0),
+                            )        
                         ),
-                      ),
-                )
-                ],
-            ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
-                child: Form(
-                  key: _formKey, 
-                  child: Info(nomeController: nomeController, distanciaController: distanciaController, numSistemasController: numSistemasController,))),
-              ),
-            ]
-            )
-          )
-    );
+                        ]
+                        )
+          );
+              }
+            }
+    ));
   }
 }
 

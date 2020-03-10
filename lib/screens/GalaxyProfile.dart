@@ -26,6 +26,8 @@ class _GalaxyProfileState extends State<GalaxyProfile> {
 
   Api db = Api();
 
+  Future future;
+
   _getGalaxy() async{
 
     Map<String, dynamic> dados = await db.getbyId("galaxia", widget.id);
@@ -33,19 +35,20 @@ class _GalaxyProfileState extends State<GalaxyProfile> {
     distanciaController.text = dados["distanciaTerra"];
     numSistemasController.text = dados["numSistemas"];
     _selecionado = dados["colorId"];
-    
+    return widget.id;
   }
 
   @override
   void initState() {
     super.initState();
+    future = _getGalaxy();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-              future: _getGalaxy(),
+              future: future,
               builder: (context, snapshot){
               switch (snapshot.connectionState){
                 case ConnectionState.none:
@@ -106,7 +109,7 @@ class _GalaxyProfileState extends State<GalaxyProfile> {
                                     padding: const EdgeInsets.only(top: 25.0),
                                     child: IconButton(
                                       onPressed: () {
-                                        Navigator.pushNamed(context, RouteGenerator.ROUTE_EDIT_GALAXY);
+                                        Navigator.pushNamed(context, RouteGenerator.ROUTE_EDIT_GALAXY, arguments: widget.id);
                                       },
                                       icon: Icon(Icons.edit, color: Colors.white, size: 25.0),
                                     ),
@@ -124,6 +127,7 @@ class _GalaxyProfileState extends State<GalaxyProfile> {
                     ),
                      );
               }
+
            }
           )
         );
