@@ -25,10 +25,10 @@ class PlanetarySystem{
 
    toMap(){
     return {
-      "nome":this.name,
-      "idade":this.age,
-      "numEstrelas": this.numStars,
-      "numPlanetas": this.numPlanets,
+      "name":this.name,
+      "age":this.age,
+      "numStars": this.numStars,
+      "numPlanets": this.numPlanets,
       "colorId" : this.colorId,
       "galaxyId": this.galaxyId};
   }
