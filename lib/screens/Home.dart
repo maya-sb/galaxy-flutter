@@ -32,10 +32,10 @@ class _HomeState extends State<Home> {
 
 
   List<Widget> _tiles = const <Widget>[
-    const _Card(title: 'Galáxias',asset: 'assets/svg/orbit.svg', type:'Galaxias'),
-    const _Card(title: 'Planetas',asset: 'assets/svg/uranus.svg', type: 'Planetas',),
-    const _Card(title:'  Sistemas\nPlanetários', asset: 'assets/svg/galaxy.svg', type: 'Sistemas'),
-    const _Card(title:'Satélites', asset: 'assets/svg/moon2.svg'),
+    const _Card(title: 'Galáxias',asset: 'assets/svg/orbit.svg', type:'Galaxies'),
+    const _Card(title: 'Planetas',asset: 'assets/svg/uranus.svg', type: 'Planets',),
+    const _Card(title:'  Sistemas\nPlanetários', asset: 'assets/svg/galaxy.svg', type: 'Systems'),
+    const _Card(title:'Satélites', asset: 'assets/svg/moon2.svg', type: 'Satellites',),
     const _Card(title:'Estrelas', asset: 'assets/svg/stars.svg'),
     //const _Card(title:'Buracos \n Negros', asset:'assets/svg/blackhole.svg')
   ];
@@ -97,12 +97,14 @@ class _Card extends StatelessWidget {
           decoration: box,
           child: InkWell(
             onTap: () {
-              if (type == 'Planetas'){
+              if (type == 'Planets'){
                 Navigator.pushNamed(context, RouteGenerator.ROUTE_PLANETAS);
-              }else if(type == 'Galaxias'){
+              }else if(type == 'Galaxies'){
                 Navigator.pushNamed(context, RouteGenerator.ROUTE_GALAXIES);
-              }else if(type == 'Sistemas'){
+              }else if(type == 'Systems'){
                 Navigator.pushNamed(context, RouteGenerator.ROUTE_PLANETARY_SYSTEMS);
+              }else if(type == 'Satellites'){
+                Navigator.pushNamed(context, RouteGenerator.ROUTE_SATELLITES);
               }
             },
             child: Center(

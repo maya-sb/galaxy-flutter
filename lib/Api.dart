@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:galaxy_flutter/models/Galaxy.dart';
 import 'package:galaxy_flutter/models/PlanetarySystem.dart';
+import 'package:galaxy_flutter/models/Satellite.dart';
+import 'package:galaxy_flutter/models/SatelliteGas.dart';
 
 class Api {
 
@@ -58,14 +60,65 @@ class Api {
           case PlanetarySystem:
             item = PlanetarySystem.fromMap(doc);
             break;
+          case Satellite:
+            item = Satellite.fromMap(doc);
+            break;
         }
-        
+
         list.add(item);
       }    
 
     return list;
 
   }
+
+  getWhere(String collectionName, var type, String field, String value) async{
+
+    QuerySnapshot querySnapshot = await db.collection(collectionName).whereEqualTo(field,value).orderBy("amount").getDocuments();
+    
+    List list = List();
+    var item;
+
+    for(DocumentSnapshot doc in querySnapshot.documents){
+
+        switch(type){
+          case SatelliteGas:
+            item = SatelliteGas.fromMap(doc);
+            break;
+        }
+
+        list.add(item);
+      }    
+
+    return list;
+
+  }
+
+/*
+  getComposition(var type, String id) async{
+
+    //QuerySnapshot querySnapshot = await db.collection("satelliteGas").whereEqualTo("satelliteGas",id).orderBy("amount").getDocuments();
+    QuerySnapshot querySnapshot = await db.collection("satelliteGas").whereEqualTo("satelliteId",id).getDocuments();
+
+    List list = List();
+    var item;
+
+    for(DocumentSnapshot doc in querySnapshot.documents){
+
+      item = SatelliteGas.fromMap(doc);
+
+
+
+        list.add(item);
+    }    
+
+    return list;
+
+  }
+  */
+
+
+
 
 
 }

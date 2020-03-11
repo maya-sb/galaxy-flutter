@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class Galaxy{
 
   String id;
@@ -10,7 +8,7 @@ class Galaxy{
 
   Galaxy({this.id, this.name, this.earthDistance, this.numSystems, this.colorId});
 
-  Galaxy.fromMap(DocumentSnapshot document){
+  Galaxy.fromMap(var document){
     id = document.documentID;
 
     this.name = document.data["name"];

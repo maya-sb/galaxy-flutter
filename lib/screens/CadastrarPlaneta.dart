@@ -96,7 +96,7 @@ class _CadastrarPlanetaState extends State<CadastrarPlaneta> {
               Container(
                 padding: EdgeInsets.only(left: 15, right: 10),
                 height: 180, 
-                child: HorizontalList(lista: gases, tipo:"Gas", editable: true)),  
+                child: HorizontalList(list: gases, type:"Gas", editable: true)),  
               Padding(
                 padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
                 child: Text("Satélites", style: TextStyle(color: Colors.pink[800], fontSize: 18),),
@@ -104,7 +104,7 @@ class _CadastrarPlanetaState extends State<CadastrarPlaneta> {
               Container(
                 padding: EdgeInsets.only(left:15, right: 10),
                 height: 180, 
-                child: HorizontalList(lista: satelites, tipo:"Satelite", editable: true)),  
+                child: HorizontalList(list: satelites, type:"Satelite", editable: true)),  
               Padding(
                 padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
                 child: Text("Estrelas", style: TextStyle(color: Colors.pink[800], fontSize: 18),),
@@ -112,7 +112,7 @@ class _CadastrarPlanetaState extends State<CadastrarPlaneta> {
               Container(
                 padding: EdgeInsets.only(left:15, right: 10),
                 height: 180, 
-                child: HorizontalList(lista: estrelas, tipo:"Estrela", editable: true,)),   
+                child: HorizontalList(list: estrelas, type:"Estrela", editable: true,)),   
                
             ],
           ),

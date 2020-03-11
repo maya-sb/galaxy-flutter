@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class PlanetarySystem{
 
   String id;
@@ -12,7 +10,7 @@ class PlanetarySystem{
 
   PlanetarySystem({this.id, this.name, this.age, this.numStars, this.numPlanets, this.galaxyId, this.colorId});
 
-  PlanetarySystem.fromMap(DocumentSnapshot document){
+  PlanetarySystem.fromMap(var document){
     id = document.documentID;
 
     this.name = document.data["name"];
