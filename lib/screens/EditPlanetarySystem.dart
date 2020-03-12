@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class EditPlanetarySystem extends StatefulWidget {
-  EditPlanetarySystem({this.system});
+  EditPlanetarySystem({this.id});
 
-  final system;
+  final id;
 
   @override
   _EditPlanetarySystemState createState() => _EditPlanetarySystemState();

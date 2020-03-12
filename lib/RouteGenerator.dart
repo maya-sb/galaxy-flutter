@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:galaxy_flutter/screens/EditGalaxy.dart';
+import 'package:galaxy_flutter/screens/EditSatellite.dart';
 import 'package:galaxy_flutter/screens/EditarPlaneta.dart';
 import 'package:galaxy_flutter/screens/GalaxyProfile.dart';
 import 'package:galaxy_flutter/screens/Home.dart';
@@ -7,6 +8,9 @@ import 'package:galaxy_flutter/screens/Login.dart';
 import 'package:galaxy_flutter/screens/PlanetProfile.dart';
 import 'package:galaxy_flutter/screens/Planetas.dart';
 import 'package:galaxy_flutter/screens/RegisterGalaxy.dart';
+import 'package:galaxy_flutter/screens/RegisterSatellite.dart';
+import 'package:galaxy_flutter/screens/SatelliteProfile.dart';
+import 'package:galaxy_flutter/screens/Satellites.dart';
 import 'package:galaxy_flutter/screens/Signup.dart';
 import 'package:galaxy_flutter/screens/CadastrarPlaneta.dart';
 import 'package:galaxy_flutter/screens/Galaxies.dart';
@@ -33,6 +37,10 @@ class RouteGenerator {
   static const String ROUTE_REGISTER_PLANETARY_SYSTEM = "/registerPlanetarySystem";
   static const String ROUTE_PLANETARY_SYSTEM_PROFILE = "/planetarySystemProfile";
   static const String ROUTE_EDIT_PLANETARY_SYSTEM = "/editPlanetarySystem";
+  static const String ROUTE_SATELLITES = "/satellites";
+  static const String ROUTE_REGISTER_SATELLITE = "/registerSatellite";
+  static const String ROUTE_SATELLITE_PROFILE = "satelliteProfile";
+  static const String ROUTE_EDIT_SATELLITE = "/editSatellite";
 
   static Route<dynamic> generateRoute(RouteSettings settings){
     final arguments = settings.arguments;
@@ -81,11 +89,23 @@ class RouteGenerator {
           builder: (_) => RegisterPlanetarySystem());
       case ROUTE_PLANETARY_SYSTEM_PROFILE:
         return MaterialPageRoute(
-          builder: (_) => PlanetarySystemProfile(system: arguments));
+          builder: (_) => PlanetarySystemProfile(id: arguments));
       case ROUTE_EDIT_PLANETARY_SYSTEM:
         return MaterialPageRoute(
-          builder: (_) => EditPlanetarySystem(system: arguments));
-      
+          builder: (_) => EditPlanetarySystem(id: arguments));
+      case ROUTE_SATELLITES:
+        return MaterialPageRoute(
+          builder: (_) => Satellites());
+      case ROUTE_REGISTER_SATELLITE:
+        return MaterialPageRoute(
+          builder: (_) => RegisterSatellite());
+      case ROUTE_SATELLITE_PROFILE:
+        return MaterialPageRoute(
+          builder: (_) => SatelliteProfile(id: arguments));
+      case ROUTE_EDIT_SATELLITE:
+        return MaterialPageRoute(
+          builder: (_) => EditSatellite(id: arguments));
+
     }
     
   }

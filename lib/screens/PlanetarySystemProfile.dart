@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class PlanetarySystemProfile extends StatefulWidget {
-  PlanetarySystemProfile({this.system});
+  PlanetarySystemProfile({this.id});
 
-  final system;
+  final id;
 
   @override
   _PlanetarySystemProfileState createState() => _PlanetarySystemProfileState();

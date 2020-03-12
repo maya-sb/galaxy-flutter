@@ -2,17 +2,20 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:galaxy_flutter/Api.dart';
+import 'package:galaxy_flutter/models/Satellite.dart';
+import 'package:galaxy_flutter/models/SatelliteGas.dart';
 import 'package:galaxy_flutter/widgets/Animations.dart';
 import 'package:galaxy_flutter/widgets/Dialogs.dart';
 import 'package:galaxy_flutter/widgets/Fields.dart';
-import 'package:galaxy_flutter/models/Galaxy.dart';
+import 'package:galaxy_flutter/models/Gas.dart';
+import 'package:galaxy_flutter/widgets/Lists.dart';
 
-class RegisterGalaxy extends StatefulWidget {
+class RegisterSatellite extends StatefulWidget {
   @override
-  _RegisterGalaxyState createState() => _RegisterGalaxyState();
+  _RegisterSatelliteState createState() => _RegisterSatelliteState();
 }
 
-class _RegisterGalaxyState extends State<RegisterGalaxy> {
+class _RegisterSatelliteState extends State<RegisterSatellite> {
 
   _discardChanges(){
     Navigator.pop(context);
@@ -21,10 +24,15 @@ class _RegisterGalaxyState extends State<RegisterGalaxy> {
 
   final _formKey = GlobalKey<FormState>();
   var nameController = TextEditingController();
-  var distanceController = TextEditingController();
+  var sizeController = TextEditingController();
+  var massController = TextEditingController();
+
   Api db = Api();
 
   var selectedColor = 0;
+  
+  List<SatelliteGas> composition = [];
+  List<Gas> gases = [];
 
   List<Widget> _colorList() {
     var allColors = [Colors.pinkAccent[200], Colors.blue[600], Colors.green[400], Colors.amber[700], Colors.deepOrange[500], Colors.grey[500]];
@@ -55,10 +63,10 @@ class _RegisterGalaxyState extends State<RegisterGalaxy> {
 
   @override
   Widget build(BuildContext context) {
-     return WillPopScope(
+    return WillPopScope(
         onWillPop: () async {
         showDialog(context: context, builder: (context) {
-            return confirmExitRemove(title: "Descartar Galáxia", content: "Sair da tela descartará informações ainda não salvas. Tem certeza que deseja voltar?", action: _discardChanges);
+            return confirmExitRemove(title: "Descartar Satélite", content: "Sair da tela descartará informações ainda não salvas. Tem certeza que deseja voltar?", action: _discardChanges);
           });
          return false;
        },
@@ -68,8 +76,8 @@ class _RegisterGalaxyState extends State<RegisterGalaxy> {
           child: Icon(Icons.save, color: Colors.white,),
           onPressed: (){
             if (_formKey.currentState.validate()) {
-              Galaxy galaxy = Galaxy(name: nameController.text, earthDistance:distanceController.text, numSystems: '0', colorId: selectedColor);
-              db.insert("galaxy", galaxy);
+              Satellite satellite = Satellite(name: nameController.text, size: sizeController.text, mass: massController.text, colorId: selectedColor);
+              db.insert("satellite", satellite);
               Navigator.pop(context);
             }
             }),
@@ -101,7 +109,7 @@ class _RegisterGalaxyState extends State<RegisterGalaxy> {
                           width: 150,
                           height: 150,
                               child: FlareActor(
-                                 'assets/animations/'+ assets[selectedColor] +'Galaxy.flr',
+                                 'assets/animations/'+ assets[selectedColor] +'Planet.flr',
                                   animation: 'rotation',
                                   fit: BoxFit.cover,
                                 ),
@@ -112,7 +120,7 @@ class _RegisterGalaxyState extends State<RegisterGalaxy> {
                         padding: const EdgeInsets.only(top: 25.0),
                         child: IconButton(
                           onPressed: () { showDialog(context: context, builder: (context) {
-                            return confirmExitRemove(title: "Descartar Galáxia", content: "Sair da tela descartará informações ainda não salvas. Tem certeza que deseja voltar?", action: _discardChanges);
+                            return confirmExitRemove(title: "Descartar Satélite", content: "Sair da tela descartará informações ainda não salvas. Tem certeza que deseja voltar?", action: _discardChanges);
                           }); },
                           icon: Icon(Icons.arrow_back, color: Colors.white, size: 25.0),
                         ),
@@ -125,7 +133,7 @@ class _RegisterGalaxyState extends State<RegisterGalaxy> {
                   child: 
                   Form(
                     key: _formKey,
-                    child: Info(nameController: nameController, distanceController: distanceController)),
+                    child: Info(nameController: nameController, sizeController: sizeController, massController: massController,)),
                 ),
               ),
               Padding(
@@ -142,20 +150,29 @@ class _RegisterGalaxyState extends State<RegisterGalaxy> {
                     ),
                   )        
               ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,),
+                child: Text("Composição", style: TextStyle(color: Colors.pink[800], fontSize: 18),),
+              ), 
+              Container(
+                padding: EdgeInsets.only(left: 15, right: 10),
+                height: 180, 
+                child: HorizontalList(list: composition, type:"Gas", editable: true)),  
             ],
           ),
         ),
       ),
     );
-    
   }
 }
 
+
 class Info extends StatelessWidget {
-  Info({this.nameController, this.distanceController});
+  Info({this.nameController, this.sizeController, this.massController});
 
   final nameController;
-  final distanceController;
+  final sizeController;
+  final massController;
 
   @override
   Widget build(BuildContext context) {
@@ -168,9 +185,17 @@ class Info extends StatelessWidget {
         }
     }
 
-    String validatorDistance (val) {
+    String validatorSize (val) {
         if(val.length==0) {
-          return "Distância inválida";
+          return "Tamanho inválido";
+        }else{
+          return null;
+        }
+    }
+
+    String validatorMass (val) {
+        if(val.length==0) {
+          return "Massa inválida";
         }else{
           return null;
         }
@@ -189,13 +214,21 @@ class Info extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: EditField(
-                title: "Distância da Terra", 
-                controller: distanceController, 
-                validator: validatorDistance, 
+                title: "Tamanho", 
+                controller: sizeController, 
+                validator: validatorSize, 
                 fontSize: 18.0,
                 keyboardType: TextInputType.number,
             ),), 
-            
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: EditField(
+                title: "Massa", 
+                controller: massController, 
+                validator: validatorSize, 
+                fontSize: 18.0,
+                keyboardType: TextInputType.number,
+            ),),
           ],
             ),
           margin: const EdgeInsets.symmetric(
@@ -214,4 +247,3 @@ class Info extends StatelessWidget {
     );
   }
 }
-

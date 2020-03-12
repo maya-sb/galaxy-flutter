@@ -4,11 +4,11 @@ import 'package:galaxy_flutter/widgets/Animations.dart';
 
 class HorizontalList extends StatefulWidget {
 
-    final tipo;
-    final lista;
+    final type;
+    final list;
     final editable;
 
-    const HorizontalList({Key key, this.lista, this.tipo, this.editable}): super(key:key);
+    const HorizontalList({Key key, this.list, this.type, this.editable}): super(key:key);
 
   @override
   _HorizontalListState createState() => _HorizontalListState();
@@ -21,15 +21,15 @@ class _HorizontalListState extends State<HorizontalList> {
     return ListView.builder(
       shrinkWrap: true,
       scrollDirection: Axis.horizontal,
-      itemCount: widget.lista.length,
+      itemCount: widget.list.length,
       itemBuilder: (context, index) {
         var card;
-        if (widget.tipo == "Satelite"){
-          card = OrbitingCard(title: widget.lista[index], svg:'assets/svg/moon2.svg', editable: widget.editable);
-        }else if(widget.tipo == "Gas"){
-          card = GasCard(title: widget.lista[index], index: index, editable: widget.editable);
-        }else if(widget.tipo == "Estrela"){
-          card = OrbitingCard(title: widget.lista[index], svg:'assets/svg/star4.svg', editable: widget.editable);
+        if (widget.type == "Satellite"){
+          card = OrbitingCard(title: widget.list[index], svg:'assets/svg/moon2.svg', editable: widget.editable);
+        }else if(widget.type == "Gas"){
+          card = GasCard(title: widget.list[index], index: index, editable: widget.editable);
+        }else if(widget.type == "Star"){
+          card = OrbitingCard(title: widget.list[index], svg:'assets/svg/star4.svg', editable: widget.editable);
         }
 
         if (widget.editable == true && index == 0){
@@ -72,14 +72,15 @@ class RowList extends StatelessWidget {
 }
 
 class NameList extends StatelessWidget {
-  const NameList({this.type, this.future, this.rota});
+  const NameList({this.type, this.future, this.route});
 
   final String type;
   final future;
-  final rota;
+  final route;
 
   @override
   Widget build(BuildContext context) {
+
   return Container(
           color: Color(0xff380b4c),
           padding: EdgeInsets.only(top: 20),
@@ -94,13 +95,12 @@ class NameList extends StatelessWidget {
                   );
                   case ConnectionState.active:
                   case ConnectionState.done:  
-                    if (snapshot.data.length == 0){
+                    if (snapshot.data == null || snapshot.data == []){
                       return Center(child: Text("Nada por aqui :c", style: TextStyle(color: Colors.white70, fontSize: 25),),);
-                    } else { 
+                    } else {
                     return ListView.builder(
                       itemCount: snapshot.data.length,
                       itemBuilder: (context, index) {
-
                         List itens = snapshot.data;
                         var item = itens[index];
                         return Padding(
@@ -110,7 +110,7 @@ class NameList extends StatelessWidget {
                             asset: 'assets/animations/'+ assets[item.colorId] + type + '.flr', 
                             action: () => Navigator.pushNamed(
                               context, 
-                              rota, 
+                              route, 
                               arguments: item.id)
                           ),
                         );

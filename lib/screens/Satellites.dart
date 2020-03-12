@@ -2,30 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:galaxy_flutter/Api.dart';
 import 'package:galaxy_flutter/RouteGenerator.dart';
 import 'package:galaxy_flutter/models/PlanetarySystem.dart';
+import 'package:galaxy_flutter/models/Satellite.dart';
 import 'package:galaxy_flutter/widgets/Lists.dart';
 
-class PlanetarySystems extends StatefulWidget {
-
+class Satellites extends StatefulWidget {
   @override
-  _PlanetarySystemsState createState() => _PlanetarySystemsState();
+  _SatellitesState createState() => _SatellitesState();
 }
 
-class _PlanetarySystemsState extends State<PlanetarySystems> {
+class _SatellitesState extends State<Satellites> {
 
   Api db = Api();
 
   @override
-  Widget build(BuildContext context) 
-
-  {
-    return WillPopScope(
+  Widget build(BuildContext context) {
+    return  WillPopScope(
        onWillPop: () async {
          Navigator.pushNamedAndRemoveUntil(context, RouteGenerator.ROUTE_HOME, (_) => false);
          return false;
        },
        child: Scaffold(
          appBar: AppBar(
-          title: Text("Sistemas Planetários", style: TextStyle(color: Colors.white)),
+          title: Text("Satélites", style: TextStyle(color: Colors.white)),
           iconTheme: IconThemeData(color: Colors.white),
           backgroundColor: Colors.transparent,
           actions: <Widget>[
@@ -40,11 +38,10 @@ class _PlanetarySystemsState extends State<PlanetarySystems> {
           child: Icon(Icons.add,color: Colors.pink[700],),
           backgroundColor: Colors.white,
           onPressed: (){
-             Navigator.pushNamed(context, RouteGenerator.ROUTE_REGISTER_PLANETARY_SYSTEM);
+             Navigator.pushNamed(context, RouteGenerator.ROUTE_REGISTER_SATELLITE);
         },),
-        body: NameList(type: 'System', future: db.getAll("system", PlanetarySystem), route:  RouteGenerator.ROUTE_PLANETARY_SYSTEM_PROFILE)
+        body: NameList(type: 'Planet', future: db.getAll("satellite", Satellite), route: RouteGenerator.ROUTE_SATELLITE_PROFILE)
       ),
     );
-
-}
+  }
 }

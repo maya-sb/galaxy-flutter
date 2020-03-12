@@ -87,7 +87,7 @@ class _PlanetState extends State<Planet> {
             Container(
               padding: EdgeInsets.only(left: 15),
               height: 180, 
-              child: HorizontalList(lista: gases, tipo:"Gas", editable: false)),  
+              child: HorizontalList(list: gases, type:"Gas", editable: false)),  
             Padding(
               padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
               child: Text("Satélites", style: TextStyle(color: Colors.pink[800], fontSize: 18),),
@@ -95,7 +95,7 @@ class _PlanetState extends State<Planet> {
             Container(
               padding: EdgeInsets.only(),
               height: 180, 
-              child: HorizontalList(lista: satelites, tipo:"Satelite", editable: false)
+              child: HorizontalList(list: satelites, type:"Satelite", editable: false)
             ), 
             Padding(
               padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
@@ -104,7 +104,7 @@ class _PlanetState extends State<Planet> {
             Container(
               padding: EdgeInsets.only(left:15),
               height: 180, 
-              child: HorizontalList(lista: estrelas, tipo:"Estrela", editable: false)
+              child: HorizontalList(list: estrelas, type:"Estrela", editable: false)
             ),
 
             Padding(

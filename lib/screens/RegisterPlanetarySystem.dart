@@ -1,9 +1,13 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:galaxy_flutter/Api.dart';
 import 'package:galaxy_flutter/models/PlanetarySystem.dart';
+import 'package:galaxy_flutter/widgets/Animations.dart';
 import 'package:galaxy_flutter/widgets/Dialogs.dart';
 import 'package:galaxy_flutter/widgets/Fields.dart';
+import 'package:galaxy_flutter/models/Galaxy.dart';
+import '../RouteGenerator.dart';
 
 class RegisterPlanetarySystem extends StatefulWidget {
   @override
@@ -18,12 +22,74 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
   }  
 
   final _formKey = GlobalKey<FormState>();
-  var nomeController = TextEditingController();
-  var idadeController = TextEditingController();
-  var galaxiaController = TextEditingController();
+  var nameController = TextEditingController();
+  var ageController = TextEditingController();
+  var galaxyController = TextEditingController();
+
+  Api db = Api();
+
+  var galaxyList;
+
+  @override
+  void initState() {
+    super.initState();
+    //galaxyList = loadGalaxyList();
+  }
+
+  var galaxySelected;
+
+  loadGalaxyList() async{
+
+    var galaxies= await db.getAll("galaxy", Galaxy);
+    List<DropdownMenuItem<String>> items = [];
+
+    for (Galaxy item in galaxies){
+      items.add(DropdownMenuItem(
+        child: Text(item.name,  style: TextStyle(
+                                color: Colors.purple[700],
+                                fontFamily: "Poppins",
+                                fontSize: 18.0,)),
+        value: item.id,
+      ));
+    }
+
+    return items;
+  }
+
+  var selectedColor = 0;
+  var allColors = [Colors.pinkAccent[200], Colors.blue[600], Colors.green[400], Colors.amber[700], Colors.deepOrange[500], Colors.grey[500]];
+
+  List<Widget> _colorList() {
+
+    List<Widget> colors = []; // this will hold Rows according to available lines
+    for (int i = 0; i < 6; i++) {    
+      colors.add(
+        GestureDetector(
+            onTap: () {
+              setState(() {
+                selectedColor = i;
+              });
+            },
+            child: CircleAvatar(
+              backgroundColor: allColors[i],
+              child: selectedColor == i
+                ? Icon(
+                    Icons.check,
+                    color: Colors.white,
+                  )
+                : null
+            ),
+          ),
+      );
+    }
+    return colors;
+  }
 
   @override
   Widget build(BuildContext context) {
+
+    galaxyList = loadGalaxyList();
+
     return WillPopScope(
         onWillPop: () async {
         showDialog(context: context, builder: (context) {
@@ -37,8 +103,8 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
           child: Icon(Icons.save, color: Colors.white,),
           onPressed: (){
             if (_formKey.currentState.validate()) {
-              PlanetarySystem system = PlanetarySystem(name: nomeController.text, age:idadeController.text, numStars: '0', numPlanets: '0');
-              //system.register();
+              PlanetarySystem system = PlanetarySystem(name: nameController.text, age:ageController.text, numStars: '0', numPlanets: '0', galaxyId: galaxyController.text, colorId: selectedColor);
+              db.insert('system', system);
               Navigator.pop(context);
             }
             }),
@@ -70,7 +136,7 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
                           width: 150,
                           height: 150,
                               child: FlareActor(
-                                  'assets/animations/planetList.flr',
+                                  'assets/animations/'+ assets[selectedColor] +'System.flr',
                                   animation: 'rotation',
                                   fit: BoxFit.cover,
                                 ),
@@ -81,7 +147,7 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
                         padding: const EdgeInsets.only(top: 25.0),
                         child: IconButton(
                           onPressed: () { showDialog(context: context, builder: (context) {
-                            return confirmExitRemove(title: "Descartar Galáxia", content: "Sair da tela descartará informações ainda não salvas. Tem certeza que deseja voltar?", action: _discardChanges);
+                            return confirmExitRemove(title: "Descartar Sistema Planetário", content: "Sair da tela descartará informações ainda não salvas. Tem certeza que deseja voltar?", action: _discardChanges);
                           }); },
                           icon: Icon(Icons.arrow_back, color: Colors.white, size: 25.0),
                         ),
@@ -94,9 +160,23 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
                   child: 
                   Form(
                     key: _formKey,
-                    child: Info(nomeController: nomeController, idadeController: idadeController, galaxiaController: galaxiaController,)),
+                    child: Info(nameController: nameController, ageController: ageController, galaxyController: galaxyController, galaxyList: galaxyList,)),
                 ),
               ),
+               Padding(
+                padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
+                child: Text("Cor", style: TextStyle(color: Colors.pink[800], fontSize: 18),),
+              ),
+              Container(
+                padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: _colorList(),
+                    ),
+                  )        
+              )
             ],
           ),
         ),
@@ -106,11 +186,12 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
 }
 
 class Info extends StatefulWidget {
-  Info({this.nomeController, this.idadeController, this.galaxiaController});
+  Info({this.nameController, this.ageController, this.galaxyController, this.galaxyList});
 
-  final nomeController;
-  final idadeController;
-  final galaxiaController;
+  final nameController;
+  final ageController;
+  final galaxyController;
+  final galaxyList;
 
   @override
   _InfoState createState() => _InfoState();
@@ -118,7 +199,7 @@ class Info extends StatefulWidget {
 
 class _InfoState extends State<Info> {
 
-   String validatorNome (val) {
+   String validatorName (val) {
         if(val.length==0) {
           return "Nome inválido";
         }else{
@@ -126,7 +207,7 @@ class _InfoState extends State<Info> {
         }
     }
 
-    String validatorIdade (val) {
+    String validatorAge (val) {
         if(val.length==0) {
           return "Idade inválida";
         }else{
@@ -134,8 +215,15 @@ class _InfoState extends State<Info> {
         }
     }
 
-  int _selectedGender;
+    String validatorGalaxy (val){
+      if (val == null){
+        return "Escolha uma galáxia";
+      }else{
+        return val;
+      }
+    }
 
+  String _selectedGalaxy;
 
   @override
   Widget build(BuildContext context) {
@@ -147,138 +235,123 @@ class _InfoState extends State<Info> {
           children: <Widget>[
              Padding(
                padding: const EdgeInsets.all(8.0),
-               child: EditField(title: "Nome", controller: widget.nomeController, validator: validatorNome, fontSize: 18.0,),
+               child: EditField(title: "Nome", controller: widget.nameController, validator: validatorName, fontSize: 18.0,),
              ),  
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: EditField(
                 title: "Idade", 
-                controller: widget.idadeController, 
-                validator: validatorIdade, 
+                controller: widget.ageController, 
+                validator: validatorAge, 
                 fontSize: 18.0,
                 keyboardType: TextInputType.number,
             ),), 
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: InputDecorator(
-                  decoration: InputDecoration(
-                  //labelStyle: textStyle,
-                  labelStyle: TextStyle(color: Colors.purple[700], fontSize: 18.0),
-                  errorStyle: TextStyle(color: Colors.redAccent, fontSize: 16.0),
-                  //hintText: 'Please select expense',
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: new BorderRadius.circular(25.0),
-                    borderSide: BorderSide(
-                      color: Colors.purple[700],
-                      width: 3
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: new BorderRadius.circular(25.0),
-                    borderSide: BorderSide(
-                      color: Colors.purple[700],
-                      width: 1.5
-                    ),
-                  ),
-                  ),
-                  isEmpty: _selectedGender == 0,
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButtonFormField(
-                      items: loadGenderList(),
-                      hint: Text("Selecione o gênero"),
-                      isDense: true,
-                      isExpanded: false,
-                      value: _selectedGender,
-                      onChanged: (newValue) {
-                        setState(() {
-                          _selectedGender = newValue;
-                        });
-                      },
-                )
-                  )))
-                /*child: DropdownButton(hint: new Text('Select Gender'),
-                  items: loadGenderList(),
-                  value: _selectedGender,
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedGender = value;
-                    });},
-                  isExpanded: true,),)
-                */
+              child: FutureBuilder(
+                    future: widget.galaxyList,
+                    builder: (context, snapshot){
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.none:
+                        case ConnectionState.waiting:
+                        return Center(
+                          child:  CircularProgressIndicator()
+                        );
+                        case ConnectionState.active:
+                        case ConnectionState.done:  
+                          if (snapshot.data.length == 0){
+                            return Center(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                Text("Não há galáxias cadastradas.",
+                                    style: TextStyle(
+                                      color: Colors.purple[700],
+                                      fontFamily: "Poppins",
+                                      fontSize: 16.0,),),
+                                Row(mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Text("Por favor, primeiro ", 
+                                    style: TextStyle(
+                                      color: Colors.purple[700],
+                                      fontFamily: "Poppins",
+                                      fontSize: 16.0,),),
+                                    GestureDetector(
+                                      child: Text("cadastre uma galáxia.", 
+                                        style: TextStyle(
+                                          color: Colors.pink[700],
+                                          fontFamily: "Poppins",
+                                          fontSize: 16.0,),),
+                                        onTap: () {
+                                          Navigator.pushNamed(context, RouteGenerator.ROUTE_REGISTER_GALAXY);
+                                        },
+                                      ),
+                                ],)
+                              
+                                      /*
+                                GestureDetector(
+                                  child: Text("\nCadastrar Galáxia", 
+                                    style: TextStyle(
+                                        color: Colors.pink[700],
+                                        fontFamily: "Poppins",
+                                        fontSize: 18.0,)),
+                                  onTap: () {
+                                    Navigator.pushNamed(context, RouteGenerator.ROUTE_REGISTER_GALAXY);
+                                  }),
+                                  */
+                              ],
+                              ),
+                            );
+                           
+                          }else{ 
+                            return DropdownButtonFormField(
+                                items: snapshot.data,
+                                validator: (String value) {
+                                  if (value?.isEmpty ?? true) {
+                                    return 'Selecione uma galáxia';
+                                  }
+                                },
+                                //decoration: InputDecoration.collapsed(hintText: ''),
+                                decoration: InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: new BorderRadius.circular(25.0),
+                                    borderSide: BorderSide(
+                                      color: Colors.purple[700],
+                                      width: 1.5
+                                    ),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius: new BorderRadius.circular(25.0),
+                                    borderSide: BorderSide(
+                                      color: Colors.pink[700],
+                                      width: 1.5
+                                    ),
+                                  )
+                                ),
+                                hint: Text("Selecione a galáxia",  style: TextStyle(
+                                                                    color: Colors.purple[700],
+                                                                    fontFamily: "Poppins",
+                                                                    fontSize: 18.0,)),
+                                style: TextStyle(
+                                  color: Colors.purple[700],
+                                  fontFamily: "Poppins",
+                                  fontSize: 18.0,),
+                                iconSize: 25,
+                                isExpanded: true,
+                                value: _selectedGalaxy,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    _selectedGalaxy = newValue;
+                                    widget.galaxyController.text = newValue;
+                                  });
+                                        },
+                              );
+                            }
 
-              /*
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                padding: EdgeInsets.fromLTRB(10.0, 6.3, 10.0, 6.3),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25.0),
-                  border: Border.all(color: Colors.purple[700], width: 1.5)
-                  ),
-                child: DropdownButton<String>(
-                  value: dropdownValue,
-                  icon: Icon(Icons.arrow_downward, color: Colors.white,),
-                  iconSize: 24,
-                  elevation: 16,
-                  isExpanded: true,
-                  style: TextStyle(
-                    color: Colors.purple[700],
-                    fontFamily: "Poppins",
-                    fontSize: 18.0,
-                  ),
-                  onChanged: (String newValue) {
-                    setState(() {
-                      dropdownValue = newValue;
-                    });
-                  },
-                  underline: Container(color: Colors.purple[700],),
-                  items: <String>['Selecione a galáxia','One', 'Two', 'Free', 'Four']
-                    .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem(
-                        value: value,
-                        child: Text(value),
-                      );
-                    })
-                    .toList(),
-                ),
-              ),
-              */
-            
-          ],
-            ),
-          margin: const EdgeInsets.symmetric(
-           vertical: 10.0,
-           horizontal: 10.0,
-         ),
-          width: 500.0,
-          decoration: BoxDecoration(
-            color: Color(0xff380b4c),
-            shape: BoxShape.rectangle,
-            borderRadius: new BorderRadius.circular(8.0),
-            boxShadow: [new BoxShadow(
-            color: Color(0xff280538),
-            blurRadius: 20.0,)],
-          ),
-    );
+                    }
+                    }
+                    
+                  )
+                  )]));
   }
-}
-
-
-loadGenderList() {
-
-    List<DropdownMenuItem<int>> genderList = [];
-
-    genderList = [];
-    genderList.add(new DropdownMenuItem(
-      child: new Text('Male'),
-      value: 0,
-    ));
-    genderList.add(new DropdownMenuItem(
-      child: new Text('Female'),
-      value: 1,
-    ));
-    genderList.add(new DropdownMenuItem(
-      child: new Text('Other'),
-      value: 2,
-    ));
-    return genderList;
 }
