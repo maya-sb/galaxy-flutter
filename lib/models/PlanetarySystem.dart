@@ -3,8 +3,8 @@ class PlanetarySystem{
   String id;
   String name;
   String age;
-  String numStars;
-  String numPlanets;
+  int numStars;
+  int numPlanets;
   String galaxyId;
   int colorId;
 

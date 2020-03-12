@@ -119,7 +119,7 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
             }
 
             if (_formKey.currentState.validate()) {
-              PlanetarySystem system = PlanetarySystem(name: nameController.text, age:ageController.text, numStars: '0', numPlanets: '0', galaxyId: galaxyController.text, colorId: selectedColor);
+              PlanetarySystem system = PlanetarySystem(name: nameController.text, age:ageController.text, numStars: 0, numPlanets: 0, galaxyId: galaxyController.text, colorId: selectedColor);
               //TODO Transações
               db.insert('system', system);
               await updateGalaxy(galaxyController.text);
