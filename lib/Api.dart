@@ -33,6 +33,10 @@ class Api {
     db.collection(collectionName).document(object.id).updateData(object.toMap());
   }
 
+  updateField(String collectionName, String id, String field, dynamic value){
+      db.collection(collectionName).document(id).updateData({field:value});
+  }
+
   remove(String collectionName, String id){
     db.collection(collectionName).document(id).delete();
   }

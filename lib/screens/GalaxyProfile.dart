@@ -31,7 +31,7 @@ class _GalaxyProfileState extends State<GalaxyProfile> {
     Map<String, dynamic> data = await db.getbyId("galaxy", widget.id);
     nameController.text = data["name"];
     distanceController.text = data["earthDistance"];
-    numSystemsController.text = data["numSystems"];
+    numSystemsController.text = data["numSystems"].toString();
     _selectedColor = data["colorId"];
     return widget.id;
   }

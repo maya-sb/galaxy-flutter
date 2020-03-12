@@ -68,7 +68,7 @@ class _RegisterGalaxyState extends State<RegisterGalaxy> {
           child: Icon(Icons.save, color: Colors.white,),
           onPressed: (){
             if (_formKey.currentState.validate()) {
-              Galaxy galaxy = Galaxy(name: nameController.text, earthDistance:distanceController.text, numSystems: '0', colorId: selectedColor);
+              Galaxy galaxy = Galaxy(name: nameController.text, earthDistance:distanceController.text, numSystems: 0, colorId: selectedColor);
               db.insert("galaxy", galaxy);
               Navigator.pop(context);
             }

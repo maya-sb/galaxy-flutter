@@ -38,6 +38,16 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
 
   var galaxySelected;
 
+  updateGalaxy(String id) async{
+    var data = await db.getbyId('galaxy', id);
+
+    if (data != null){
+      int numSystems = data['numSystems'];
+      print(numSystems);
+      await db.updateField('galaxy', id, 'numSystems', numSystems+1);
+    }
+  }
+
   loadGalaxyList() async{
 
     var galaxies= await db.getAll("galaxy", Galaxy);
@@ -101,10 +111,12 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.pink[700],
           child: Icon(Icons.save, color: Colors.white,),
-          onPressed: (){
+          onPressed: () async{
             if (_formKey.currentState.validate()) {
               PlanetarySystem system = PlanetarySystem(name: nameController.text, age:ageController.text, numStars: '0', numPlanets: '0', galaxyId: galaxyController.text, colorId: selectedColor);
+              //TODO Transações
               db.insert('system', system);
+              await updateGalaxy(galaxyController.text);
               Navigator.pop(context);
             }
             }),
