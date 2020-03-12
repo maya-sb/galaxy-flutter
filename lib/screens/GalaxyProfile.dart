@@ -2,8 +2,10 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:galaxy_flutter/Api.dart';
+import 'package:galaxy_flutter/models/PlanetarySystem.dart';
 import 'package:galaxy_flutter/widgets/Animations.dart';
 import 'package:galaxy_flutter/widgets/Fields.dart';
+import 'package:galaxy_flutter/widgets/Lists.dart';
 import '../RouteGenerator.dart';
 
 class GalaxyProfile extends StatefulWidget {
@@ -121,6 +123,34 @@ class _GalaxyProfileState extends State<GalaxyProfile> {
                           child: Info(nameController: nameController, distanceController: distanceController, numSystemsController: numSystemsController,),
                         ),
                       ),
+                      numSystemsController.text == '0' 
+                      ? Container()
+                      : Padding(
+                          padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
+                          child: Text("Sistemas Planetários", style: TextStyle(color: Colors.purple[700], fontSize: 19),),
+                        ),      
+                      FutureBuilder(
+                        //future: db.getAll('system', PlanetarySystem),
+                        future: db.getWhere('system', PlanetarySystem, 'galaxyId', widget.id),
+                        builder: (context, snapshot){
+                          switch (snapshot.connectionState) {
+                              case ConnectionState.none:
+                              case ConnectionState.waiting:
+                                return Center(
+                                  child:  Center(child: CircularProgressIndicator())
+                                );
+                              case ConnectionState.active:
+                              case ConnectionState.done:  
+                                return Container(
+                                  padding: EdgeInsets.only(left:15),
+                                  height: 180, 
+                                  child: HorizontalList(list: snapshot.data, type:"System", editable: false)
+                                );
+                            }
+                          
+                        }
+                      ), 
+
                       ]
                     ),
                      );

@@ -18,7 +18,11 @@ class _HorizontalListState extends State<HorizontalList> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+
+    if (widget.list == null){
+      return Container();
+    }else{
+      return ListView.builder(
       shrinkWrap: true,
       scrollDirection: Axis.horizontal,
       itemCount: widget.list.length,
@@ -30,6 +34,8 @@ class _HorizontalListState extends State<HorizontalList> {
           card = GasCard(title: widget.list[index], index: index, editable: widget.editable);
         }else if(widget.type == "Star"){
           card = OrbitingCard(title: widget.list[index], svg:'assets/svg/star4.svg', editable: widget.editable);
+        }else if(widget.type == "System"){
+          card = OrbitingCard(title: widget.list[index].name, svg:'assets/svg/galaxy.svg', editable: widget.editable);
         }
 
         if (widget.editable == true && index == 0){
@@ -39,6 +45,9 @@ class _HorizontalListState extends State<HorizontalList> {
         }
       } ,
     );
+    }
+
+    
   }
 }
 
@@ -96,7 +105,6 @@ class NameList extends StatelessWidget {
                   case ConnectionState.active:
                   case ConnectionState.done:  
                     if (snapshot.hasError){
-                      print(snapshot.error);
                       return Center(child: Column(
                          mainAxisAlignment: MainAxisAlignment.center,
                          children: <Widget>[
