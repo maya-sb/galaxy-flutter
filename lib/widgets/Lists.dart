@@ -18,7 +18,11 @@ class _HorizontalListState extends State<HorizontalList> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+
+    if (widget.list == null){
+      return Container();
+    }else{
+      return ListView.builder(
       shrinkWrap: true,
       scrollDirection: Axis.horizontal,
       itemCount: widget.list.length,
@@ -30,6 +34,8 @@ class _HorizontalListState extends State<HorizontalList> {
           card = GasCard(title: widget.list[index], index: index, editable: widget.editable);
         }else if(widget.type == "Star"){
           card = OrbitingCard(title: widget.list[index], svg:'assets/svg/star4.svg', editable: widget.editable);
+        }else if(widget.type == "System"){
+          card = OrbitingCard(title: widget.list[index].name, svg:'assets/svg/galaxy.svg', editable: widget.editable);
         }
 
         if (widget.editable == true && index == 0){
@@ -39,6 +45,9 @@ class _HorizontalListState extends State<HorizontalList> {
         }
       } ,
     );
+    }
+
+    
   }
 }
 
@@ -95,7 +104,15 @@ class NameList extends StatelessWidget {
                   );
                   case ConnectionState.active:
                   case ConnectionState.done:  
-                    if (snapshot.data == null || snapshot.data == []){
+                    if (snapshot.hasError){
+                      return Center(child: Column(
+                         mainAxisAlignment: MainAxisAlignment.center,
+                         children: <Widget>[
+                           Text("Algo de errado aconteceu.", style: TextStyle(color: Colors.white70, fontSize: 20),),
+                           Text("Tente novamente mais tarde.", style: TextStyle(color: Colors.white70, fontSize: 20),),
+                         ],
+                       ),);                    }else{
+                    if (snapshot.data.length == 0){
                       return Center(child: Text("Nada por aqui :c", style: TextStyle(color: Colors.white70, fontSize: 25),),);
                     } else {
                     return ListView.builder(
@@ -118,54 +135,7 @@ class NameList extends StatelessWidget {
                     );
                   }
                 }
+                }
               },          ));
   }
 }
-
-/* Lista de Galáxias
-Container(
-          color: Color(0xff380b4c),
-          padding: EdgeInsets.only(top: 20),
-          child: FutureBuilder(
-            future: getGalaxies(),
-            builder: (context, snapshot){
-              switch (snapshot.connectionState) {
-                case ConnectionState.none:
-                case ConnectionState.waiting:
-                return Center(
-                  child:  CircularProgressIndicator()
-                );
-                case ConnectionState.active:
-                case ConnectionState.done:  
-
-                  if (snapshot.data.length == 0){
-                    return Center(child: Text("Sem nada por aqui :c", style: TextStyle(color: Colors.white70, fontSize: 25),),);
-                  } else { 
-                  return ListView.builder(
-                    itemCount: snapshot.data.length,
-                    itemBuilder: (context, index) {
-
-                      List<Galaxy> galaxias = snapshot.data;
-                      Galaxy galaxia = galaxias[index];
-                      return Padding(
-                        padding: const EdgeInsets.all(0.0),
-                        child: RowList(
-                          title: galaxia.nome, 
-                          asset: 'assets/animations/planetList.flr', 
-                          action: () => Navigator.pushNamed(
-                            context, 
-                            RouteGenerator.ROUTE_GALAXY_PROFILE, 
-                            arguments: galaxia)
-                        ),
-                      );
-                    }
-                  );
-                 }
-
-              }
-            },          ),
-        ),
-
-
-
-*/

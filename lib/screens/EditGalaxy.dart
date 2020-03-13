@@ -80,7 +80,7 @@ class _EditGalaxyState extends State<EditGalaxy> {
         child: Icon(Icons.save, color: Colors.white,),
         onPressed: (){
           if (_formKey.currentState.validate()) {
-            Galaxy galaxy = Galaxy(name: nameController.text, earthDistance:distanceController.text, id: widget.id, numSystems: numSystemsController.text, colorId: _selectedColor);
+            Galaxy galaxy = Galaxy(name: nameController.text, earthDistance:distanceController.text, id: widget.id, numSystems: int.parse(numSystemsController.text), colorId: _selectedColor);
             db.update("galaxy", galaxy);
             Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_GALAXY_PROFILE, arguments: widget.id);
           }
@@ -150,8 +150,11 @@ class _EditGalaxyState extends State<EditGalaxy> {
                                         
                                         showDialog(context: context, builder :(context){
                                           return confirmExitRemove(
+                                            content: "A remoção da galáxia implica na remoção dos sistemas planetários pertencentes a ela.",
                                             title: "Deseja remover galáxia permanentemente?", 
-                                            action: (){ db.remove("galaxy", widget.id); 
+                                            action: (){ 
+                                              db.deleteOnCascade('system', 'galaxyId', widget.id);
+                                              db.delete("galaxy", widget.id); 
                                               Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_GALAXIES);});
                                         });
                                         
@@ -238,14 +241,6 @@ class Info extends StatelessWidget {
                 fontSize: 18.0,
                 keyboardType: TextInputType.number,
             ),), 
-             /*Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: OutputField(
-                title: "Nº de Sistemas Planetários", 
-                controller: numSistemasController, 
-            ),),
-            */
-            
           ],
             ),
           margin: const EdgeInsets.symmetric(

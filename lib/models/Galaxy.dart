@@ -3,7 +3,7 @@ class Galaxy{
   String id;
   String name;
   String earthDistance;
-  String numSystems;
+  int numSystems;
   int colorId;
 
   Galaxy({this.id, this.name, this.earthDistance, this.numSystems, this.colorId});

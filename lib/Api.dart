@@ -33,8 +33,28 @@ class Api {
     db.collection(collectionName).document(object.id).updateData(object.toMap());
   }
 
-  remove(String collectionName, String id){
+  updateField(String collectionName, String id, String field, dynamic value){
+      db.collection(collectionName).document(id).updateData({field:value});
+  }
+
+  delete(String collectionName, String id){
     db.collection(collectionName).document(id).delete();
+  }
+
+  deleteOnCascade(String collectionName, String field, String value) async{
+
+    await db.collection(collectionName)
+    .where(field, isEqualTo: value)
+    .getDocuments()
+    .then((snapshot){
+
+      for(DocumentSnapshot doc in snapshot.documents){
+        String id = doc.documentID;
+        delete(collectionName, id);
+      }
+
+    });
+   
   }
 
   getbyId(String collectionName, String id) async{
@@ -74,8 +94,8 @@ class Api {
 
   getWhere(String collectionName, var type, String field, String value) async{
 
-    QuerySnapshot querySnapshot = await db.collection(collectionName).whereEqualTo(field,value).orderBy("amount").getDocuments();
-    
+    QuerySnapshot querySnapshot = await db.collection(collectionName).where(field, isEqualTo: value).getDocuments();
+
     List list = List();
     var item;
 
@@ -85,6 +105,8 @@ class Api {
           case SatelliteGas:
             item = SatelliteGas.fromMap(doc);
             break;
+          case PlanetarySystem:
+            item = PlanetarySystem.fromMap(doc);
         }
 
         list.add(item);

@@ -24,7 +24,7 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
   final _formKey = GlobalKey<FormState>();
   var nameController = TextEditingController();
   var ageController = TextEditingController();
-  var galaxyController = TextEditingController();
+  var galaxyController = TextEditingController(text: " ");
 
   Api db = Api();
 
@@ -37,6 +37,15 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
   }
 
   var galaxySelected;
+
+  updateGalaxy(String id) async{
+    var data = await db.getbyId('galaxy', id);
+
+    if (data != null){
+      int numSystems = data['numSystems'];
+      await db.updateField('galaxy', id, 'numSystems', numSystems+1);
+    }
+  }
 
   loadGalaxyList() async{
 
@@ -101,10 +110,19 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.pink[700],
           child: Icon(Icons.save, color: Colors.white,),
-          onPressed: (){
+          onPressed: () async{
+
+            if(galaxyController.text == " "){
+              setState((){
+                galaxyController.text = "";
+              });
+            }
+
             if (_formKey.currentState.validate()) {
-              PlanetarySystem system = PlanetarySystem(name: nameController.text, age:ageController.text, numStars: '0', numPlanets: '0', galaxyId: galaxyController.text, colorId: selectedColor);
+              PlanetarySystem system = PlanetarySystem(name: nameController.text, age:ageController.text, numStars: 0, numPlanets: 0, galaxyId: galaxyController.text, colorId: selectedColor);
+              //TODO Transações
               db.insert('system', system);
+              await updateGalaxy(galaxyController.text);
               Navigator.pop(context);
             }
             }),
@@ -227,6 +245,7 @@ class _InfoState extends State<Info> {
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
           padding: EdgeInsets.all(10),
           child: Column(
@@ -260,46 +279,50 @@ class _InfoState extends State<Info> {
                         case ConnectionState.active:
                         case ConnectionState.done:  
                           if (snapshot.data.length == 0){
-                            return Center(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                Text("Não há galáxias cadastradas.",
-                                    style: TextStyle(
-                                      color: Colors.purple[700],
-                                      fontFamily: "Poppins",
-                                      fontSize: 16.0,),),
-                                Row(mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Text("Por favor, primeiro ", 
-                                    style: TextStyle(
-                                      color: Colors.purple[700],
-                                      fontFamily: "Poppins",
-                                      fontSize: 16.0,),),
-                                    GestureDetector(
-                                      child: Text("cadastre uma galáxia.", 
-                                        style: TextStyle(
-                                          color: Colors.pink[700],
-                                          fontFamily: "Poppins",
-                                          fontSize: 16.0,),),
-                                        onTap: () {
-                                          Navigator.pushNamed(context, RouteGenerator.ROUTE_REGISTER_GALAXY);
-                                        },
-                                      ),
-                                ],)
-                              
-                                      /*
-                                GestureDetector(
-                                  child: Text("\nCadastrar Galáxia", 
-                                    style: TextStyle(
-                                        color: Colors.pink[700],
-                                        fontFamily: "Poppins",
-                                        fontSize: 18.0,)),
-                                  onTap: () {
-                                    Navigator.pushNamed(context, RouteGenerator.ROUTE_REGISTER_GALAXY);
-                                  }),
-                                  */
-                              ],
+                            return Container(
+                              decoration:  BoxDecoration(
+                                //color: Colors.white,
+                                border: Border.all(color: 
+                                widget.galaxyController.text.length == 0 
+                                ? Colors.pink[700]
+                                : Colors.purple[700]
+                                ),
+                                shape: BoxShape.rectangle,
+                                borderRadius: new BorderRadius.circular(25.0),
+                            ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Center(
+                                  child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                      Text("Não há galáxias cadastradas.",
+                                          style: TextStyle(
+                                            color: Colors.purple[700],
+                                            fontFamily: "Poppins",
+                                            fontSize: 16.0,),),
+                                      Row(mainAxisAlignment: MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Text("Por favor, primeiro ", 
+                                          style: TextStyle(
+                                            color: Colors.purple[700],
+                                            fontFamily: "Poppins",
+                                            fontSize: 16.0,),),
+                                          GestureDetector(
+                                            child: Text("cadastre uma galáxia.", 
+                                              style: TextStyle(
+                                                color: Colors.pink[700],
+                                                fontFamily: "Poppins",
+                                                fontSize: 16.0,),),
+                                              onTap: () {
+                                                Navigator.pushNamed(context, RouteGenerator.ROUTE_REGISTER_GALAXY);
+                                              },
+                                            ),
+                                      ],)
+
+                                    ],
+                                    ),
+                                ),
                               ),
                             );
                            
