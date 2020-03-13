@@ -91,7 +91,7 @@ class _PlanetarySystemProfileState extends State<PlanetarySystemProfile> {
                                     height: 150,
                                         child: FlareActor(
                                             //'assets/animations/pinkPlanet.flr',
-                                            'assets/animations/'+ assets[_selectedColor] + 'Galaxy.flr',
+                                            'assets/animations/'+ assets[_selectedColor] + 'System.flr',
                                             animation: 'rotation',
                                             fit: BoxFit.cover,
                                           ),
