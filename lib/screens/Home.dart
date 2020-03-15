@@ -36,7 +36,7 @@ class _HomeState extends State<Home> {
     const _Card(title: 'Planetas',asset: 'assets/svg/uranus.svg', type: 'Planets',),
     const _Card(title:'  Sistemas\nPlanetários', asset: 'assets/svg/galaxy.svg', type: 'Systems'),
     const _Card(title:'Satélites', asset: 'assets/svg/moon2.svg', type: 'Satellites',),
-    const _Card(title:'Estrelas', asset: 'assets/svg/stars.svg'),
+    const _Card(title:'Estrelas', asset: 'assets/svg/stars.svg', type: 'Stars'),
     //const _Card(title:'Buracos \n Negros', asset:'assets/svg/blackhole.svg')
   ];
 
@@ -105,6 +105,8 @@ class _Card extends StatelessWidget {
                 Navigator.pushNamed(context, RouteGenerator.ROUTE_PLANETARY_SYSTEMS);
               }else if(type == 'Satellites'){
                 Navigator.pushNamed(context, RouteGenerator.ROUTE_SATELLITES);
+              }else if(type == 'Stars'){
+                Navigator.pushNamed(context, RouteGenerator.ROUTE_STARS);
               }
             },
             child: Center(
