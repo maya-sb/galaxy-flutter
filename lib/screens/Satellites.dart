@@ -40,7 +40,7 @@ class _SatellitesState extends State<Satellites> {
           onPressed: (){
              Navigator.pushNamed(context, RouteGenerator.ROUTE_REGISTER_SATELLITE);
         },),
-        body: NameList(type: 'Planet', future: db.getAll("satellite", Satellite), route: RouteGenerator.ROUTE_SATELLITE_PROFILE)
+        body: NameList(type: 'Satelite', future: db.getAll("satellite", Satellite), route: RouteGenerator.ROUTE_SATELLITE_PROFILE)
       ),
     );
   }

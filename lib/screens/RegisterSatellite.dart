@@ -1,9 +1,11 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:galaxy_flutter/Api.dart';
 import 'package:galaxy_flutter/models/Satellite.dart';
 import 'package:galaxy_flutter/models/SatelliteGas.dart';
+import 'package:galaxy_flutter/screens/AddGasDialog.dart';
 import 'package:galaxy_flutter/widgets/Animations.dart';
 import 'package:galaxy_flutter/widgets/Dialogs.dart';
 import 'package:galaxy_flutter/widgets/Fields.dart';
@@ -31,8 +33,22 @@ class _RegisterSatelliteState extends State<RegisterSatellite> {
 
   var selectedColor = 0;
   
-  List<SatelliteGas> composition = [];
+  //List<SatelliteGas> composition = [];
   List<Gas> gases = [];
+  List selectedGases = [];
+
+  Future _openAddGasDialog() async {
+    var gas = await Navigator.of(context).push(MaterialPageRoute(
+        builder: (BuildContext context) {
+          return AddGasDialog();
+        },
+      fullscreenDialog: true
+      ));
+
+    if (gas != null){
+      return gas;
+    }
+  }
 
   List<Widget> _colorList() {
     var allColors = [Colors.pinkAccent[200], Colors.blue[600], Colors.green[400], Colors.amber[700], Colors.deepOrange[500], Colors.grey[500]];
@@ -63,6 +79,7 @@ class _RegisterSatelliteState extends State<RegisterSatellite> {
 
   @override
   Widget build(BuildContext context) {
+
     return WillPopScope(
         onWillPop: () async {
         showDialog(context: context, builder: (context) {
@@ -76,9 +93,18 @@ class _RegisterSatelliteState extends State<RegisterSatellite> {
           child: Icon(Icons.save, color: Colors.white,),
           onPressed: (){
             if (_formKey.currentState.validate()) {
+            
               Satellite satellite = Satellite(name: nameController.text, size: sizeController.text, mass: massController.text, colorId: selectedColor);
-              db.insert("satellite", satellite);
+              var id = db.set('satellite', satellite);
+
+              for (var gas in selectedGases){
+                SatelliteGas satelliteGas = SatelliteGas(gasId: gas["gasId"], satelliteId: id, amount: gas["amount"]);
+                var idSatelliteGas = id+"-"+gas["gasId"];
+                db.setId('satelliteGas', satelliteGas, idSatelliteGas);
+              }
+
               Navigator.pop(context);
+
             }
             }),
         body: SingleChildScrollView(
@@ -109,7 +135,7 @@ class _RegisterSatelliteState extends State<RegisterSatellite> {
                           width: 150,
                           height: 150,
                               child: FlareActor(
-                                 'assets/animations/'+ assets[selectedColor] +'Planet.flr',
+                                 'assets/animations/'+ assets[selectedColor] +'Satelite.flr',
                                   animation: 'rotation',
                                   fit: BoxFit.cover,
                                 ),
@@ -138,7 +164,7 @@ class _RegisterSatelliteState extends State<RegisterSatellite> {
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
-                child: Text("Cor", style: TextStyle(color: Colors.pink[800], fontSize: 18),),
+                child: Text("Cor", style: TextStyle(color: Colors.purple[800], fontSize: 18),),
               ),
               Container(
                 padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
@@ -152,12 +178,104 @@ class _RegisterSatelliteState extends State<RegisterSatellite> {
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,),
-                child: Text("Composição", style: TextStyle(color: Colors.pink[800], fontSize: 18),),
+                child: Text("Composição", style: TextStyle(color: Colors.purple[800], fontSize: 18),),
               ), 
-              Container(
-                padding: EdgeInsets.only(left: 15, right: 10),
-                height: 180, 
-                child: HorizontalList(list: composition, type:"Gas", editable: true)),  
+                Container(
+                  padding: EdgeInsets.only(left: 15, right: 10),
+                  height: 180,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: selectedGases.length+1,
+                    itemBuilder: (context, index) {
+                      if (index == 0){
+                        return Container(
+                          padding: EdgeInsets.all(10),
+                          child: InkWell(
+                              onTap: () async{
+                                var gas = await _openAddGasDialog();
+                                if(gas != null) { 
+                                  setState(() {
+                                  selectedGases.add(gas);
+                                });}
+                              },
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: Center(child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: Text("+", style: TextStyle(color: Color(0xff380b4c), fontSize: 60),),
+                                ),
+                              ],
+                            )),
+                          ),
+                          margin: const EdgeInsets.symmetric(
+                          vertical: 10.0,
+                          horizontal: 5.0,
+                        ),
+                          width: 140.0,
+                          decoration: BoxDecoration(
+                            color: Colors.white70,
+                            shape: BoxShape.rectangle,
+                            borderRadius: new BorderRadius.circular(8.0),
+                        ),
+                      );
+
+                      } else { 
+                        return Stack(
+                          children: [
+                            Container(
+                            padding: EdgeInsets.all(10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.all(0),
+                                  child: Text(selectedGases[index-1]['name'], style: TextStyle(color: Color(0xff380b4c), fontSize: 16),),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox.fromSize(
+                                      child: SvgPicture.asset('assets/svg/ventoso.svg'),
+                                      size: Size(45.0, 45.0),
+                                    ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(0),
+                                  child: Text(selectedGases[index-1]['amount'] + '%', style: TextStyle(color: Color(0xff380b4c), fontSize: 16),),
+                                ),
+                              ],
+                            ),
+                            margin: const EdgeInsets.symmetric(
+                            vertical: 10.0,
+                            horizontal: 5.0,
+                          ),
+                            width: 140.0,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.rectangle,
+                              borderRadius: new BorderRadius.circular(8.0),
+                          ),
+                          ),
+                           Positioned(top: 7, right: 0, child: IconButton(
+                            icon: Icon(Icons.clear,color:Color(0xff380b4c),), 
+                            onPressed: (){
+                                setState(() {
+                                  selectedGases.removeAt(index-1);
+                                });
+                              }
+                              ))
+                          ]
+                      );
+                        //return GasCard(title: widget.list[index-1], index: index, editable: widget.editable);
+                      }
+                      
+                    } ,
+                  )
+                  //child: HorizontalList(list: selectedGases, editable: true, isGas: true,)
+                ),
+              
             ],
           ),
         ),

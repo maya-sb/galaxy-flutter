@@ -84,7 +84,7 @@ class _PlanetState extends State<Planet> {
               padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,),
               child: Text("Composição", style: TextStyle(color: Colors.pink[800], fontSize: 18),),
             ), 
-            Container(
+            /*Container(
               padding: EdgeInsets.only(left: 15),
               height: 180, 
               child: HorizontalList(list: gases, type:"Gas", editable: false)),  
@@ -106,6 +106,8 @@ class _PlanetState extends State<Planet> {
               height: 180, 
               child: HorizontalList(list: estrelas, type:"Estrela", editable: false)
             ),
+
+            */
 
             Padding(
               padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),

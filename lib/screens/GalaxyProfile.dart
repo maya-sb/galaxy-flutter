@@ -144,7 +144,7 @@ class _GalaxyProfileState extends State<GalaxyProfile> {
                                 return Container(
                                   padding: EdgeInsets.only(left:15),
                                   height: 180, 
-                                  child: HorizontalList(list: snapshot.data, type:"System", editable: false)
+                                  child: HorizontalList(list: snapshot.data, asset: 'assets/svg/galaxy.svg',editable: false)
                                 );
                             }
                           
