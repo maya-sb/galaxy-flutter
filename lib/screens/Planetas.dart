@@ -12,7 +12,7 @@ class _PlanetasState extends State<Planetas> {
   // TODO Vai ser uma lista de objetos
  
   var planets = ["Marte","Via láctea","Sistema Solar","Saturno","Netuno","Mercúrio"];
-  var cores = ["pinkSatelite.flr","pinkGalaxy.flr","pinkSystem.flr","greenPlanet.flr","bluePlanet.flr","greyPlanet.flr"];
+  var cores = ["pinkStar.flr","pinkGalaxy.flr","pinkSystem.flr","greenPlanet.flr","bluePlanet.flr","greyPlanet.flr"];
 
   @override
   Widget build(BuildContext context) {
