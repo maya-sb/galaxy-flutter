@@ -21,7 +21,7 @@ class Satellite{
     return {
       "name":this.name,
       "size":this.size,
-      "weight": this.mass,
+      "mass": this.mass,
       "colorId": this.colorId};
   }
 }

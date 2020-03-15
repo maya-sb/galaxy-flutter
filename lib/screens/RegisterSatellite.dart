@@ -33,7 +33,6 @@ class _RegisterSatelliteState extends State<RegisterSatellite> {
 
   var selectedColor = 0;
   
-  //List<SatelliteGas> composition = [];
   List<Gas> gases = [];
   List selectedGases = [];
 

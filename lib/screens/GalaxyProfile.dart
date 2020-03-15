@@ -130,7 +130,6 @@ class _GalaxyProfileState extends State<GalaxyProfile> {
                           child: Text("Sistemas Planetários", style: TextStyle(color: Colors.purple[700], fontSize: 19),),
                         ),      
                       FutureBuilder(
-                        //future: db.getAll('system', PlanetarySystem),
                         future: db.getWhere('system', PlanetarySystem, 'galaxyId', widget.id),
                         builder: (context, snapshot){
                           switch (snapshot.connectionState) {

@@ -71,8 +71,8 @@ class Api {
   }
 
   getbyId(String collectionName, String id) async{
+    
     DocumentSnapshot doc = await db.collection(collectionName).document(id).get();
-
     Map<String, dynamic> data = doc.data;
 
     return data;
