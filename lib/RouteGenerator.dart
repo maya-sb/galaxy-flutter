@@ -11,6 +11,7 @@ import 'package:galaxy_flutter/screens/RegisterGalaxy.dart';
 import 'package:galaxy_flutter/screens/RegisterSatellite.dart';
 import 'package:galaxy_flutter/screens/SatelliteProfile.dart';
 import 'package:galaxy_flutter/screens/Satellites.dart';
+import 'package:galaxy_flutter/screens/Stars.dart';
 import 'package:galaxy_flutter/screens/Signup.dart';
 import 'package:galaxy_flutter/screens/CadastrarPlaneta.dart';
 import 'package:galaxy_flutter/screens/Galaxies.dart';
@@ -41,6 +42,8 @@ class RouteGenerator {
   static const String ROUTE_REGISTER_SATELLITE = "/registerSatellite";
   static const String ROUTE_SATELLITE_PROFILE = "satelliteProfile";
   static const String ROUTE_EDIT_SATELLITE = "/editSatellite";
+  static const String ROUTE_STARS = "/stars";
+
 
   static Route<dynamic> generateRoute(RouteSettings settings){
     final arguments = settings.arguments;
@@ -105,6 +108,9 @@ class RouteGenerator {
       case ROUTE_EDIT_SATELLITE:
         return MaterialPageRoute(
           builder: (_) => EditSatellite(id: arguments));
+      case ROUTE_STARS:
+        return MaterialPageRoute(
+          builder: (_) => Stars());
 
     }
     
