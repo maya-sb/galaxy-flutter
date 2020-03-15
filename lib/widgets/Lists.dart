@@ -4,11 +4,12 @@ import 'package:galaxy_flutter/widgets/Animations.dart';
 
 class HorizontalList extends StatefulWidget {
 
-    final type;
     final list;
     final editable;
+    final asset;
+    final isGas;
 
-    const HorizontalList({Key key, this.list, this.type, this.editable}): super(key:key);
+    const HorizontalList({Key key, this.list, this.editable, this.asset, this.isGas: false}): super(key:key);
 
   @override
   _HorizontalListState createState() => _HorizontalListState();
@@ -25,24 +26,21 @@ class _HorizontalListState extends State<HorizontalList> {
       return ListView.builder(
       shrinkWrap: true,
       scrollDirection: Axis.horizontal,
-      itemCount: widget.list.length,
+      itemCount: widget.isGas ? widget.list.length+1 : widget.list.length,
       itemBuilder: (context, index) {
-        var card;
-        if (widget.type == "Satellite"){
-          card = OrbitingCard(title: widget.list[index], svg:'assets/svg/moon2.svg', editable: widget.editable);
-        }else if(widget.type == "Gas"){
-          card = GasCard(title: widget.list[index], index: index, editable: widget.editable);
-        }else if(widget.type == "Star"){
-          card = OrbitingCard(title: widget.list[index], svg:'assets/svg/star4.svg', editable: widget.editable);
-        }else if(widget.type == "System"){
-          card = OrbitingCard(title: widget.list[index].name, svg:'assets/svg/galaxy.svg', editable: widget.editable);
-        }
 
         if (widget.editable == true && index == 0){
           return CardAdd();
-        }else{
-          return card;
+
+        } else { 
+          if (widget.isGas){
+            return GasCard(title: widget.list[index-1], index: index, editable: widget.editable);
+          }else{
+            return OrbitingCard(title: widget.list[index].name, svg:widget.asset, editable: widget.editable);
+          }
+           
         }
+        
       } ,
     );
     }
@@ -50,8 +48,6 @@ class _HorizontalListState extends State<HorizontalList> {
     
   }
 }
-
-
 class RowList extends StatelessWidget {
   const RowList({this.title, this.asset, this.action});
 

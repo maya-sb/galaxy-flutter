@@ -273,9 +273,6 @@ class _InfoState extends State<Info> {
                       switch (snapshot.connectionState) {
                         case ConnectionState.none:
                         case ConnectionState.waiting:
-                        return Center(
-                          child:  CircularProgressIndicator()
-                        );
                         case ConnectionState.active:
                         case ConnectionState.done:  
                           if (snapshot.data.length == 0){
@@ -361,6 +358,7 @@ class _InfoState extends State<Info> {
                                   fontSize: 18.0,),
                                 iconSize: 25,
                                 isExpanded: true,
+                                isDense: true,
                                 value: _selectedGalaxy,
                                 onChanged: (newValue) {
                                   setState(() {

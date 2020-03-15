@@ -34,6 +34,7 @@ dependencies:
   intl: ^0.16.1
   flutter_masked_text: ^0.8.0
   flutter_material_color_picker: ^1.0.5
+  collection: any
 
 dev_dependencies:
   flutter_test:

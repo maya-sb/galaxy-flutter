@@ -109,7 +109,11 @@ class GasCard extends StatelessWidget {
     );
   }
 }
+
 class CardAdd extends StatelessWidget {
+  const CardAdd({this.isGas:false});
+
+  final isGas;
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +122,13 @@ class CardAdd extends StatelessWidget {
           child: InkWell(
               onTap: (){
                 showDialog(context: context, builder: (context){
-                    return addHorizontalList(list: ["Sol", "Sol", "Sol", "Sol", "Sol", "Sol", "Sol", "Marte", "Vênus", "Sol", "Terra"],title: "Adicionar Satélite", create: () => null, save: () => null,);
+
+                    if (this.isGas){
+
+                    }else{
+                      return addHorizontalList(list: ["Sol", "Sol", "Sol", "Sol", "Sol", "Sol", "Sol", "Marte", "Vênus", "Sol", "Terra"],title: "Adicionar Satélite", create: () => null, save: () => null,);
+                    }
+
                 });
               },
               borderRadius: BorderRadius.circular(8.0),

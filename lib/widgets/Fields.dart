@@ -11,7 +11,8 @@ class EditField extends StatefulWidget {
     this.validator,
     this.fontSize: 18,
     this.isPassword: false,
-    this.keyboardType: TextInputType.text
+    this.keyboardType: TextInputType.text,
+    this.textColor: Colors.white
 
   });
 
@@ -21,6 +22,7 @@ class EditField extends StatefulWidget {
   final double fontSize;
   final bool isPassword;
   final TextInputType keyboardType;
+  final Color textColor;
 
   @override
   _EditFieldState createState() => _EditFieldState();
@@ -97,7 +99,7 @@ class _EditFieldState extends State<EditField> {
       keyboardType: widget.keyboardType,
       style: TextStyle(
         fontFamily: "Poppins",
-        color: Colors.white,
+        color: widget.textColor,
         fontSize: widget.fontSize,
       ),
     );

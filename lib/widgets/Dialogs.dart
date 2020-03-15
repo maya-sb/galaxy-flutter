@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:galaxy_flutter/models/Gas.dart';
+import 'package:galaxy_flutter/models/SatelliteGas.dart';
 
 class confirmExitRemove extends StatelessWidget {
   const confirmExitRemove({this.title, this.action, this.content: ''});
@@ -23,6 +25,24 @@ class confirmExitRemove extends StatelessWidget {
     ],);
   }
 }
+
+class addGasHorizontalList extends StatefulWidget {
+  @override
+  _addGasHorizontalListState createState() => _addGasHorizontalListState();
+}
+
+class _addGasHorizontalListState extends State<addGasHorizontalList> {
+  @override
+  Widget build(BuildContext context) {
+
+    SatelliteGas gas;
+
+    return Container(
+      
+    );
+  }
+}
+
 
 class addHorizontalList extends StatefulWidget {
   addHorizontalList({this.title, this.list, this.create, this.save});

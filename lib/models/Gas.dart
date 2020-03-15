@@ -15,4 +15,6 @@ class Gas{
       "name":this.name};
    }
 
+    bool operator == (m) => m is Gas && id == m.id;
+
 }

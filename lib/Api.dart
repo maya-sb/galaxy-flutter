@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:galaxy_flutter/models/Galaxy.dart';
+import 'package:galaxy_flutter/models/Gas.dart';
 import 'package:galaxy_flutter/models/PlanetarySystem.dart';
 import 'package:galaxy_flutter/models/Satellite.dart';
 import 'package:galaxy_flutter/models/SatelliteGas.dart';
@@ -23,6 +25,17 @@ class Api {
 
     return _db;
 
+  }
+
+  set(String collectionName, var object){
+    var ref = db.collection(collectionName).document();
+    var id = ref.documentID;
+    db.collection(collectionName).document(id).setData(object.toMap());
+    return id;
+  }
+
+  setId(String collectionName, var object, var id){
+    db.collection(collectionName).document(id).setData(object.toMap());
   }
 
   insert(String collectionName, var object){
@@ -83,6 +96,8 @@ class Api {
           case Satellite:
             item = Satellite.fromMap(doc);
             break;
+          case Gas: 
+            item = Gas.fromMap(doc);
         }
 
         list.add(item);
@@ -116,28 +131,43 @@ class Api {
 
   }
 
-/*
-  getComposition(var type, String id) async{
 
-    //QuerySnapshot querySnapshot = await db.collection("satelliteGas").whereEqualTo("satelliteGas",id).orderBy("amount").getDocuments();
-    QuerySnapshot querySnapshot = await db.collection("satelliteGas").whereEqualTo("satelliteId",id).getDocuments();
+  /*
+  getComposition(String id) async{
 
+    Map resul;
+
+    //QuerySnapshot querySnapshot = await db.collection('satelliteGas').where(firestore.FieldPath.documentId, isGreaterThanOrEqual: id).getDocuments();
+    //QuerySnapshot querySnapshot = await db.collection('satelliteGas').where(firestore.FieldPath.documentId, isEqual: "BwWY69DKGA36beFcdEsv-FDtGEMhc59SzLSv7Ghvy").getDocuments();
+    try {
+    //TODO LIKE
+    //QuerySnapshot querySnapshot = await db.collection('satelliteGas').where(firestore.FieldPath.documentId, isGreaterThanOrEqualTo: id).getDocuments();
+    
     List list = List();
     var item;
 
+
     for(DocumentSnapshot doc in querySnapshot.documents){
 
+    
       item = SatelliteGas.fromMap(doc);
-
-
-
-        list.add(item);
-    }    
+      list.add(item);
+    
+    }
 
     return list;
+    
+    
+    }catch (e){
+      print(e.toString());
+    }
+    //QuerySnapshot querySnapshot = await db.collection("satelliteGas").whereEqualTo("satelliteGas",id).orderBy("amount").getDocuments();
+    //QuerySnapshot querySnapshot = await db.collection("satelliteGas").whereEqualTo("satelliteId",id).getDocuments();
+
 
   }
   */
+  
 
 
 

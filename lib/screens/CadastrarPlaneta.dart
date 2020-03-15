@@ -89,7 +89,7 @@ class _CadastrarPlanetaState extends State<CadastrarPlaneta> {
                   child: Info(),
                 ),
               ),
-              Padding(
+              /*Padding(
                 padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,),
                 child: Text("Composição", style: TextStyle(color: Colors.pink[800], fontSize: 18),),
               ), 
@@ -113,7 +113,7 @@ class _CadastrarPlanetaState extends State<CadastrarPlaneta> {
                 padding: EdgeInsets.only(left:15, right: 10),
                 height: 180, 
                 child: HorizontalList(list: estrelas, type:"Estrela", editable: true,)),   
-               
+               */
             ],
           ),
         ),
