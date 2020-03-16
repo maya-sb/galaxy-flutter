@@ -6,14 +6,14 @@ import 'package:galaxy_flutter/screens/GalaxyProfile.dart';
 import 'package:galaxy_flutter/screens/Home.dart';
 import 'package:galaxy_flutter/screens/Login.dart';
 import 'package:galaxy_flutter/screens/PlanetProfile.dart';
-import 'package:galaxy_flutter/screens/Planetas.dart';
+import 'package:galaxy_flutter/screens/Planets.dart';
 import 'package:galaxy_flutter/screens/RegisterGalaxy.dart';
 import 'package:galaxy_flutter/screens/RegisterSatellite.dart';
 import 'package:galaxy_flutter/screens/SatelliteProfile.dart';
 import 'package:galaxy_flutter/screens/Satellites.dart';
 import 'package:galaxy_flutter/screens/Stars.dart';
 import 'package:galaxy_flutter/screens/Signup.dart';
-import 'package:galaxy_flutter/screens/CadastrarPlaneta.dart';
+import 'package:galaxy_flutter/screens/RegisterPlanet.dart';
 import 'package:galaxy_flutter/screens/Galaxies.dart';
 import 'package:galaxy_flutter/screens/PlanetarySystems.dart';
 import 'package:galaxy_flutter/screens/RegisterPlanetarySystem.dart';
@@ -26,10 +26,10 @@ class RouteGenerator {
   static const String ROUTE_LOGIN = "/login";
   static const String ROUTE_SIGNUP = "/signup";
   static const String ROUTE_HOME = "/home";
-  static const String ROUTE_PLANETAS = "/planetas";
-  static const String ROUTE_PLANET = "/planet";
-  static const String ROUTE_EDITAR_PLANETA = "/editarPlaneta";
-  static const String ROUTE_CADASTRAR_PLANETA = "/cadastrarPlaneta";
+  static const String ROUTE_PLANETS = "/planets";
+  static const String ROUTE_PLANET_PROFILE = "/planetProfile";
+  static const String ROUTE_EDIT_PLANET = "/editPlaneta";
+  static const String ROUTE_REGISTER_PLANET = "/registerPlaneta";
   static const String ROUTE_GALAXIES = "/galaxies";
   static const String ROUTE_REGISTER_GALAXY = "/registerGalaxy";
   static const String ROUTE_GALAXY_PROFILE = "/galaxyProfile";
@@ -60,18 +60,18 @@ class RouteGenerator {
       case ROUTE_HOME:
         return MaterialPageRoute(
           builder: (context) => Home());
-      case ROUTE_PLANETAS:
+      case ROUTE_PLANETS:
         return MaterialPageRoute(
-          builder: (context) => Planetas());
-      case ROUTE_PLANET:
+          builder: (context) => Planets());
+      case ROUTE_PLANET_PROFILE:
         return MaterialPageRoute(
           builder: (context) => Planet());
-      case ROUTE_EDITAR_PLANETA:
+      case ROUTE_EDIT_PLANET:
         return MaterialPageRoute(
           builder: (_) => EditarPlaneta());
-      case ROUTE_CADASTRAR_PLANETA:
+      case ROUTE_REGISTER_PLANET:
         return MaterialPageRoute(
-          builder: (_) => CadastrarPlaneta());
+          builder: (_) => RegisterPlanet());
       case ROUTE_GALAXIES:
         return MaterialPageRoute(
           builder: (_) => Galaxies());

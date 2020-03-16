@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:galaxy_flutter/models/Galaxy.dart';
 import 'package:galaxy_flutter/models/Gas.dart';
+import 'package:galaxy_flutter/models/Planet.dart';
 import 'package:galaxy_flutter/models/PlanetarySystem.dart';
 import 'package:galaxy_flutter/models/Satellite.dart';
 import 'package:galaxy_flutter/models/SatelliteGas.dart';
@@ -97,6 +98,10 @@ class Api {
             break;
           case Gas: 
             item = Gas.fromMap(doc);
+            break;
+          case Planet:
+            item = Planet.fromMap(doc);
+          
         }
 
         list.add(item);

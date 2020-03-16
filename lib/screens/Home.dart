@@ -98,7 +98,7 @@ class _Card extends StatelessWidget {
           child: InkWell(
             onTap: () {
               if (type == 'Planets'){
-                Navigator.pushNamed(context, RouteGenerator.ROUTE_PLANETAS);
+                Navigator.pushNamed(context, RouteGenerator.ROUTE_PLANETS);
               }else if(type == 'Galaxies'){
                 Navigator.pushNamed(context, RouteGenerator.ROUTE_GALAXIES);
               }else if(type == 'Systems'){

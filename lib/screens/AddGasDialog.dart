@@ -28,8 +28,6 @@ class _AddGasDialogState extends State<AddGasDialog> {
 
   loadGasesList() async{
 
-    print("socorro");
-
     var gases = await db.getAll("gas", Gas);
     List<DropdownMenuItem<Gas>> items = [];
 

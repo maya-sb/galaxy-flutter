@@ -64,7 +64,7 @@ class _PlanetState extends State<Planet> {
                       padding: const EdgeInsets.only(top: 25.0),
                       child: IconButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, RouteGenerator.ROUTE_PLANETAS);
+                          Navigator.pushNamed(context, RouteGenerator.ROUTE_PLANETS);
                         },
                         icon: Icon(Icons.arrow_back, color: Colors.white, size: 25.0),
                       ),
@@ -75,7 +75,7 @@ class _PlanetState extends State<Planet> {
                         padding: const EdgeInsets.only(top: 25.0),
                         child: IconButton(
                           onPressed: () {
-                             Navigator.pushNamed(context, RouteGenerator.ROUTE_EDITAR_PLANETA);
+                             Navigator.pushNamed(context, RouteGenerator.ROUTE_EDIT_PLANET);
                           },
                           icon: Icon(Icons.edit, color: Colors.white, size: 25.0),
                         ),
