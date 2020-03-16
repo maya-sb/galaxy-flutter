@@ -1,11 +1,12 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:galaxy_flutter/Api.dart';
 import 'package:galaxy_flutter/models/Gas.dart';
 import 'package:galaxy_flutter/widgets/Fields.dart';
 
 class AddGasDialog extends StatefulWidget {
-  AddGasDialog();
+  AddGasDialog(this.listId);
+
+  final List listId;
 
   @override
   _AddGasDialogState createState() => _AddGasDialogState();
@@ -27,19 +28,26 @@ class _AddGasDialogState extends State<AddGasDialog> {
 
   loadGasesList() async{
 
+    print("socorro");
+
     var gases = await db.getAll("gas", Gas);
     List<DropdownMenuItem<Gas>> items = [];
 
+
     for (Gas item in gases){
-      items.add(new DropdownMenuItem(
+
+      if (!widget.listId.contains(item.id)){
+        items.add(new DropdownMenuItem(
         child: Text(item.name,  style: TextStyle(
                                 color: Colors.purple[700],
                                 fontFamily: "Poppins",
                                 fontSize: 18.0,)),
         //value: item.id,
         value: item,  
-      ));
+        ));
+      }
     }
+
     Gas newGas = Gas(id: 'NEW', name: 'NEW');
     items.add(new DropdownMenuItem(
         child: Text("Cadastrar Novo",  style: TextStyle(

@@ -3,7 +3,6 @@ import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:galaxy_flutter/widgets/Dialogs.dart';
 import 'package:galaxy_flutter/widgets/Fields.dart';
-import 'package:galaxy_flutter/widgets/Lists.dart';
 
 class CadastrarPlaneta extends StatefulWidget {
   @override

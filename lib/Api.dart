@@ -67,7 +67,6 @@ class Api {
       }
 
     });
-   
   }
 
   getbyId(String collectionName, String id) async{

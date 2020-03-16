@@ -25,8 +25,6 @@ class _EditPlanetarySystemState extends State<EditPlanetarySystem> {
   var ageController = TextEditingController();
   var galaxyController = TextEditingController();
   int _selectedColor = 0;
-  String _galaxyId;
-  Future _nameGalaxy;
 
   Api db = Api();
   Future future;

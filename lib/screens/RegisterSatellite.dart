@@ -32,14 +32,14 @@ class _RegisterSatelliteState extends State<RegisterSatellite> {
   Api db = Api();
 
   var selectedColor = 0;
-  
-  List<Gas> gases = [];
   List selectedGases = [];
+
+  var listId = [];
 
   Future _openAddGasDialog() async {
     var gas = await Navigator.of(context).push(MaterialPageRoute(
         builder: (BuildContext context) {
-          return AddGasDialog();
+          return AddGasDialog(listId);
         },
       fullscreenDialog: true
       ));
@@ -196,6 +196,7 @@ class _RegisterSatelliteState extends State<RegisterSatellite> {
                                 if(gas != null) { 
                                   setState(() {
                                   selectedGases.add(gas);
+                                  listId.add(gas["gasId"]);
                                 });}
                               },
                               borderRadius: BorderRadius.circular(8.0),
@@ -261,6 +262,7 @@ class _RegisterSatelliteState extends State<RegisterSatellite> {
                             icon: Icon(Icons.clear,color:Color(0xff380b4c),), 
                             onPressed: (){
                                 setState(() {
+                                  listId.removeWhere((item) => item == selectedGases[index-1]["gasId"]);
                                   selectedGases.removeAt(index-1);
                                 });
                               }
