@@ -46,6 +46,7 @@ class _SatelliteProfileState extends State<SatelliteProfile> {
   _getGases() async{
     List items = await db.getWhere('satelliteGas', SatelliteGas, 'satelliteId', widget.id);
     List gases = [];
+ 
     var gas;
     for (SatelliteGas sg in items){
       gas = await db.getbyId('gas', sg.gasId);
@@ -217,15 +218,12 @@ class _SatelliteProfileState extends State<SatelliteProfile> {
   }
 }
 
-
-
 class Info extends StatelessWidget {
-  Info({this.nameController, this.sizeController, this.massController, this.components});
+  Info({this.nameController, this.sizeController, this.massController});
 
   final nameController;
   final sizeController;
   final massController;
-  final components;
 
   @override
   Widget build(BuildContext context) {

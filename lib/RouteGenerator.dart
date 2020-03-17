@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:galaxy_flutter/screens/EditGalaxy.dart';
 import 'package:galaxy_flutter/screens/EditSatellite.dart';
-import 'package:galaxy_flutter/screens/EditarPlaneta.dart';
+import 'package:galaxy_flutter/screens/EditPlanet.dart';
 import 'package:galaxy_flutter/screens/GalaxyProfile.dart';
 import 'package:galaxy_flutter/screens/Home.dart';
 import 'package:galaxy_flutter/screens/Login.dart';
@@ -28,7 +28,7 @@ class RouteGenerator {
   static const String ROUTE_HOME = "/home";
   static const String ROUTE_PLANETS = "/planets";
   static const String ROUTE_PLANET_PROFILE = "/planetProfile";
-  static const String ROUTE_EDIT_PLANET = "/editPlaneta";
+  static const String ROUTE_EDIT_PLANET = "/editPlanet";
   static const String ROUTE_REGISTER_PLANET = "/registerPlaneta";
   static const String ROUTE_GALAXIES = "/galaxies";
   static const String ROUTE_REGISTER_GALAXY = "/registerGalaxy";
@@ -65,10 +65,10 @@ class RouteGenerator {
           builder: (context) => Planets());
       case ROUTE_PLANET_PROFILE:
         return MaterialPageRoute(
-          builder: (context) => Planet());
+          builder: (context) => PlanetProfile(id: arguments));
       case ROUTE_EDIT_PLANET:
         return MaterialPageRoute(
-          builder: (_) => EditarPlaneta());
+          builder: (_) => EditPlanet(id: arguments));
       case ROUTE_REGISTER_PLANET:
         return MaterialPageRoute(
           builder: (_) => RegisterPlanet());

@@ -17,7 +17,6 @@ class RegisterPlanet extends StatefulWidget {
 
 class _RegisterPlanetState extends State<RegisterPlanet> {
 
-
   _discardChanges(){
     Navigator.pop(context);
     Navigator.pop(context);
