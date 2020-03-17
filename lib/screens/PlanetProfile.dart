@@ -68,155 +68,161 @@ class _PlanetProfileState extends State<PlanetProfile > {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: FutureBuilder(
-              future: future,
-              builder: (context, snapshot){
-              switch (snapshot.connectionState){
-                case ConnectionState.none:
-                  case ConnectionState.waiting:
-                  return Center(
-                    child:  Center(child: CircularProgressIndicator())
-                  );
-                  case ConnectionState.active:
-                  case ConnectionState.done:  
-                    return  SingleChildScrollView(
-                      child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                      Stack(
-                            children: <Widget>[
-                                Center(
-                                  child: ClipPath(
-                                    clipper: OvalBottomBorderClipper(),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          begin: Alignment.topRight,
-                                          end: Alignment.bottomLeft,
-                                          colors: [Colors.pinkAccent[700], Colors.purple[900] ])
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pushNamed(context, RouteGenerator.ROUTE_PLANETS);
+         return false;
+       },
+      child: Scaffold(
+        body: FutureBuilder(
+                future: future,
+                builder: (context, snapshot){
+                switch (snapshot.connectionState){
+                  case ConnectionState.none:
+                    case ConnectionState.waiting:
+                    return Center(
+                      child:  Center(child: CircularProgressIndicator())
+                    );
+                    case ConnectionState.active:
+                    case ConnectionState.done:  
+                      return  SingleChildScrollView(
+                        child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                        Stack(
+                              children: <Widget>[
+                                  Center(
+                                    child: ClipPath(
+                                      clipper: OvalBottomBorderClipper(),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                            begin: Alignment.topRight,
+                                            end: Alignment.bottomLeft,
+                                            colors: [Colors.pinkAccent[700], Colors.purple[900] ])
+                                        ),
+                                        height: 180,
+                                        width: 1000,
                                       ),
-                                      height: 180,
-                                      width: 1000,
                                     ),
                                   ),
-                                ),
-                                Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 100.0, bottom: 0),
-                                  child: SizedBox(
-                                    width: 150,
-                                    height: 150,
-                                        child: FlareActor(
-                                            //'assets/animations/pinkPlanet.flr',
-                                            'assets/animations/'+ assets[_selectedColor] + 'Planet.flr',
-                                            animation: 'rotation',
-                                            fit: BoxFit.cover,
-                                          ),
+                                  Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 100.0, bottom: 0),
+                                    child: SizedBox(
+                                      width: 150,
+                                      height: 150,
+                                          child: FlareActor(
+                                              //'assets/animations/pinkPlanet.flr',
+                                              'assets/animations/'+ assets[_selectedColor] + 'Planet.flr',
+                                              animation: 'rotation',
+                                              fit: BoxFit.cover,
+                                            ),
+                                    ),
                                   ),
-                                ),
-                          ),
-                          Padding(
-                                  padding: const EdgeInsets.only(top: 25.0),
-                                  child: IconButton(
-                                    onPressed: () {
-                                      Navigator.pushNamed(context, RouteGenerator.ROUTE_PLANETS);
-                                    },
-                                    icon: Icon(Icons.arrow_back, color: Colors.white, size: 25.0),
-                                  ),
-                                ),
-                          Positioned(
-                                    right: 5,
-                                    child: Padding(
+                            ),
+                            Padding(
                                     padding: const EdgeInsets.only(top: 25.0),
                                     child: IconButton(
                                       onPressed: () {
-                                        Navigator.pushNamed(context, RouteGenerator.ROUTE_EDIT_PLANET, arguments: widget.id);
+                                        Navigator.pushNamed(context, RouteGenerator.ROUTE_PLANETS);
                                       },
-                                      icon: Icon(Icons.edit, color: Colors.white, size: 25.0),
+                                      icon: Icon(Icons.arrow_back, color: Colors.white, size: 25.0),
                                     ),
                                   ),
-                          )
-                            ],
-                      ),
-                      Center(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
-                          child: Info(nameController: nameController, sizeController: sizeController, massController: massController, rotationController: rotationController,)
-                      )
-                      ),
-                      Padding(
-                          padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
-                          child: Text("Composição", style: TextStyle(color: Colors.purple[700], fontSize: 19),),
-                        ),      
-                      FutureBuilder(
-                        future: gases,
-                        builder: (context, snapshot){
-                          switch (snapshot.connectionState) {
-                              case ConnectionState.none:
-                              case ConnectionState.waiting:
-                                return Center(
-                                  child:  Center(child: CircularProgressIndicator())
-                                );
-                              case ConnectionState.active:
-                              case ConnectionState.done: 
-                                  return Container(
-                                    padding: EdgeInsets.only(left: 15, right: 10),
-                                    height: 180,
-                                    child: ListView.builder(
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount: snapshot.data.length,
-                                      itemBuilder: (context, index) {                       
-                                          return Container(
-                                              padding: EdgeInsets.all(10),
-                                              child: Column(
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                children: <Widget>[
-                                                  Padding(
-                                                    padding: const EdgeInsets.all(0),
-                                                    child: Text(snapshot.data[index]['name'], style: TextStyle(color: Color(0xff380b4c), fontSize: 16),),
-                                                  ),
-                                                  Padding(
-                                                    padding: const EdgeInsets.all(8.0),
-                                                    child: SizedBox.fromSize(
-                                                        child: SvgPicture.asset('assets/svg/ventoso.svg'),
-                                                        size: Size(45.0, 45.0),
-                                                      ),
-                                                  ),
-                                                  Padding(
-                                                    padding: const EdgeInsets.all(0),
-                                                    child: Text(snapshot.data[index]['amount'] + '%', style: TextStyle(color: Color(0xff380b4c), fontSize: 16),),
-                                                  ),
-                                                ],
-                                              ),
-                                              margin: const EdgeInsets.symmetric(
-                                              vertical: 10.0,
-                                              horizontal: 5.0,
-                                            ),
-                                              width: 140.0,
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                shape: BoxShape.rectangle,
-                                                borderRadius: new BorderRadius.circular(8.0),
-                                            ),
-                                          );
-                                      } ,
-                                    )
-                                    //child: HorizontalList(list: selectedGases, editable: true, isGas: true,)
+                            Positioned(
+                                      right: 5,
+                                      child: Padding(
+                                      padding: const EdgeInsets.only(top: 25.0),
+                                      child: IconButton(
+                                        onPressed: () {
+                                          Navigator.pushNamed(context, RouteGenerator.ROUTE_EDIT_PLANET, arguments: widget.id);
+                                        },
+                                        icon: Icon(Icons.edit, color: Colors.white, size: 25.0),
+                                      ),
+                                    ),
+                            )
+                              ],
+                        ),
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
+                            child: Info(nameController: nameController, sizeController: sizeController, massController: massController, rotationController: rotationController,)
+                        )
+                        ),
+                        Padding(
+                            padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
+                            child: Text("Composição", style: TextStyle(color: Colors.purple[700], fontSize: 19),),
+                          ),      
+                        FutureBuilder(
+                          future: gases,
+                          builder: (context, snapshot){
+                            switch (snapshot.connectionState) {
+                                case ConnectionState.none:
+                                case ConnectionState.waiting:
+                                  return Center(
+                                    child:  Center(child: CircularProgressIndicator())
                                   );
+                                case ConnectionState.active:
+                                case ConnectionState.done: 
+                                    return Container(
+                                      padding: EdgeInsets.only(left: 15, right: 10),
+                                      height: 180,
+                                      child: ListView.builder(
+                                        shrinkWrap: true,
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: snapshot.data.length,
+                                        itemBuilder: (context, index) {                       
+                                            return Container(
+                                                padding: EdgeInsets.all(10),
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: <Widget>[
+                                                    Padding(
+                                                      padding: const EdgeInsets.all(0),
+                                                      child: Text(snapshot.data[index]['name'], style: TextStyle(color: Color(0xff380b4c), fontSize: 16),),
+                                                    ),
+                                                    Padding(
+                                                      padding: const EdgeInsets.all(8.0),
+                                                      child: SizedBox.fromSize(
+                                                          child: SvgPicture.asset('assets/svg/ventoso.svg'),
+                                                          size: Size(45.0, 45.0),
+                                                        ),
+                                                    ),
+                                                    Padding(
+                                                      padding: const EdgeInsets.all(0),
+                                                      child: Text(snapshot.data[index]['amount'] + '%', style: TextStyle(color: Color(0xff380b4c), fontSize: 16),),
+                                                    ),
+                                                  ],
+                                                ),
+                                                margin: const EdgeInsets.symmetric(
+                                                vertical: 10.0,
+                                                horizontal: 5.0,
+                                              ),
+                                                width: 140.0,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  shape: BoxShape.rectangle,
+                                                  borderRadius: new BorderRadius.circular(8.0),
+                                              ),
+                                            );
+                                        } ,
+                                      )
+                                      //child: HorizontalList(list: selectedGases, editable: true, isGas: true,)
+                                    );
 
-                            }
-                          
-                        }
-                      ), 
-                      ]
-                    ),
-                     );
-              }
+                              }
+                            
+                          }
+                        ), 
+                        ]
+                      ),
+                       );
+                }
 
-           }
-          )
+             }
+            )
+      ),
     );
   }
 }

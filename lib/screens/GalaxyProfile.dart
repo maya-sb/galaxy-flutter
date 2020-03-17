@@ -46,118 +46,124 @@ class _GalaxyProfileState extends State<GalaxyProfile> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: FutureBuilder(
-              future: future,
-              builder: (context, snapshot){
-              switch (snapshot.connectionState){
-                case ConnectionState.none:
-                  case ConnectionState.waiting:
-                  return Center(
-                    child:  Center(child: CircularProgressIndicator())
-                  );
-                  case ConnectionState.active:
-                  case ConnectionState.done:  
-                    return  SingleChildScrollView(
-                      child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                      Stack(
-                            children: <Widget>[
-                                Center(
-                                  child: ClipPath(
-                                    clipper: OvalBottomBorderClipper(),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          begin: Alignment.topRight,
-                                          end: Alignment.bottomLeft,
-                                          colors: [Colors.pinkAccent[700], Colors.purple[900] ])
+    return WillPopScope(
+       onWillPop: () async {
+        Navigator.pushNamed(context, RouteGenerator.ROUTE_GALAXIES);
+         return false;
+       },
+      child: Scaffold(
+        body: FutureBuilder(
+                future: future,
+                builder: (context, snapshot){
+                switch (snapshot.connectionState){
+                  case ConnectionState.none:
+                    case ConnectionState.waiting:
+                    return Center(
+                      child:  Center(child: CircularProgressIndicator())
+                    );
+                    case ConnectionState.active:
+                    case ConnectionState.done:  
+                      return  SingleChildScrollView(
+                        child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                        Stack(
+                              children: <Widget>[
+                                  Center(
+                                    child: ClipPath(
+                                      clipper: OvalBottomBorderClipper(),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                            begin: Alignment.topRight,
+                                            end: Alignment.bottomLeft,
+                                            colors: [Colors.pinkAccent[700], Colors.purple[900] ])
+                                        ),
+                                        height: 180,
+                                        width: 1000,
                                       ),
-                                      height: 180,
-                                      width: 1000,
                                     ),
                                   ),
-                                ),
-                                Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 100.0, bottom: 0),
-                                  child: SizedBox(
-                                    width: 150,
-                                    height: 150,
-                                        child: FlareActor(
-                                            //'assets/animations/pinkPlanet.flr',
-                                            'assets/animations/'+ assets[_selectedColor] + 'Galaxy.flr',
-                                            animation: 'rotation',
-                                            fit: BoxFit.cover,
-                                          ),
+                                  Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 100.0, bottom: 0),
+                                    child: SizedBox(
+                                      width: 150,
+                                      height: 150,
+                                          child: FlareActor(
+                                              //'assets/animations/pinkPlanet.flr',
+                                              'assets/animations/'+ assets[_selectedColor] + 'Galaxy.flr',
+                                              animation: 'rotation',
+                                              fit: BoxFit.cover,
+                                            ),
+                                    ),
                                   ),
-                                ),
-                          ),
-                          Padding(
-                                  padding: const EdgeInsets.only(top: 25.0),
-                                  child: IconButton(
-                                    onPressed: () {
-                                      Navigator.pushNamed(context, RouteGenerator.ROUTE_GALAXIES);
-                                    },
-                                    icon: Icon(Icons.arrow_back, color: Colors.white, size: 25.0),
-                                  ),
-                                ),
-                          Positioned(
-                                    right: 5,
-                                    child: Padding(
+                            ),
+                            Padding(
                                     padding: const EdgeInsets.only(top: 25.0),
                                     child: IconButton(
                                       onPressed: () {
-                                        Navigator.pushNamed(context, RouteGenerator.ROUTE_EDIT_GALAXY, arguments: widget.id);
+                                        Navigator.pushNamed(context, RouteGenerator.ROUTE_GALAXIES);
                                       },
-                                      icon: Icon(Icons.edit, color: Colors.white, size: 25.0),
+                                      icon: Icon(Icons.arrow_back, color: Colors.white, size: 25.0),
                                     ),
                                   ),
-                          )
-                            ],
-                      ),
-                      Center(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
-                          child: Info(nameController: nameController, distanceController: distanceController, numSystemsController: numSystemsController,),
+                            Positioned(
+                                      right: 5,
+                                      child: Padding(
+                                      padding: const EdgeInsets.only(top: 25.0),
+                                      child: IconButton(
+                                        onPressed: () {
+                                          Navigator.pushNamed(context, RouteGenerator.ROUTE_EDIT_GALAXY, arguments: widget.id);
+                                        },
+                                        icon: Icon(Icons.edit, color: Colors.white, size: 25.0),
+                                      ),
+                                    ),
+                            )
+                              ],
                         ),
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
+                            child: Info(nameController: nameController, distanceController: distanceController, numSystemsController: numSystemsController,),
+                          ),
+                        ),
+                        numSystemsController.text == '0' 
+                        ? Container()
+                        : Padding(
+                            padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
+                            child: Text("Sistemas Planetários", style: TextStyle(color: Colors.purple[700], fontSize: 19),),
+                          ),      
+                        FutureBuilder(
+                          future: db.getWhere('system', PlanetarySystem, 'galaxyId', widget.id),
+                          builder: (context, snapshot){
+                            switch (snapshot.connectionState) {
+                                case ConnectionState.none:
+                                case ConnectionState.waiting:
+                                  return Center(
+                                    child:  Center(child: CircularProgressIndicator())
+                                  );
+                                case ConnectionState.active:
+                                case ConnectionState.done:  
+                                  return Container(
+                                    padding: EdgeInsets.only(left:15),
+                                    height: 180, 
+                                    child: HorizontalList(list: snapshot.data, asset: 'assets/svg/galaxy.svg',editable: false)
+                                  );
+                              }
+                            
+                          }
+                        ), 
+
+                        ]
                       ),
-                      numSystemsController.text == '0' 
-                      ? Container()
-                      : Padding(
-                          padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
-                          child: Text("Sistemas Planetários", style: TextStyle(color: Colors.purple[700], fontSize: 19),),
-                        ),      
-                      FutureBuilder(
-                        future: db.getWhere('system', PlanetarySystem, 'galaxyId', widget.id),
-                        builder: (context, snapshot){
-                          switch (snapshot.connectionState) {
-                              case ConnectionState.none:
-                              case ConnectionState.waiting:
-                                return Center(
-                                  child:  Center(child: CircularProgressIndicator())
-                                );
-                              case ConnectionState.active:
-                              case ConnectionState.done:  
-                                return Container(
-                                  padding: EdgeInsets.only(left:15),
-                                  height: 180, 
-                                  child: HorizontalList(list: snapshot.data, asset: 'assets/svg/galaxy.svg',editable: false)
-                                );
-                            }
-                          
-                        }
-                      ), 
+                       );
+                }
 
-                      ]
-                    ),
-                     );
-              }
-
-           }
-          )
-        );
+             }
+            )
+          ),
+    );
   }
 }
 
