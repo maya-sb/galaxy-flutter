@@ -33,4 +33,7 @@ class Star{
       "death": this.death,
       "colorId": this.colorId};
   }
+
+    bool operator == (m) => m is Star && id == m.id;
+
 }

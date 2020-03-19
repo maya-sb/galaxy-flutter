@@ -1,57 +1,105 @@
-import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:galaxy_flutter/Api.dart';
 import 'package:galaxy_flutter/RouteGenerator.dart';
-import 'package:galaxy_flutter/models/Satellite.dart';
-import 'package:galaxy_flutter/models/SatelliteGas.dart';
+import 'package:galaxy_flutter/models/Planet.dart';
+import 'package:galaxy_flutter/models/PlanetGas.dart';
+import 'package:galaxy_flutter/models/PlanetSystemPlanetary.dart';
+import 'package:galaxy_flutter/models/PlanetarySystem.dart';
 import 'package:galaxy_flutter/screens/AddGasDialog.dart';
 import 'package:galaxy_flutter/widgets/Animations.dart';
-import 'package:galaxy_flutter/widgets/Dialogs.dart';
 import 'package:galaxy_flutter/widgets/Fields.dart';
+import 'package:galaxy_flutter/widgets/Dialogs.dart';
 
-class EditSatellite extends StatefulWidget {
-  EditSatellite({this.id});
+class EditPlanet extends StatefulWidget {
+  EditPlanet({this.id});
 
   final id;
-  
+
   @override
-  _EditSatelliteState createState() => _EditSatelliteState();
+  _EditPlanetState createState() => _EditPlanetState();
 }
 
-class _EditSatelliteState extends State<EditSatellite> {
-
+class _EditPlanetState extends State<EditPlanet> {
 
   Future selectedGases;
   final _formKey = GlobalKey<FormState>();
   var nameController = TextEditingController();
   var sizeController = TextEditingController();
   var massController = TextEditingController();
+  var rotationController = TextEditingController();
 
   Api db = Api();
 
   var selectedColor = 0;
-  var dadosSatelite;
+  var dadosPlanet;
   var apagados = [];
   var adicionados = [];
   var listId = [];
 
-  _getSatellite() async{
+  Future selectedSystems;
+  var deletedSystems = [];
+  var addedSystems = [];
+  var listIdSystems = [];
 
-    Map<String, dynamic> data = await db.getbyId("satellite", widget.id);
+  updateSystem(String id, String op) async{
+    var data = await db.getbyId('system', id);
+
+    if (data != null){
+      int numPlanets = data['numPlanets'];
+      if (op == "+"){
+        await db.updateField('system', id, 'numPlanets', numPlanets+1);
+      }else{
+        await db.updateField('system', id, 'numPlanets', numPlanets-1);
+      }
+    }
+  }
+
+  _getSystems() async{
+    List items = await db.getWhere('planetSystemPlanetary', PlanetSystemPlanetary, 'planetId', widget.id);
+    List systems = [];
+
+    var system;
+    for (PlanetSystemPlanetary psp in items){
+      system = await db.getbyId('system', psp.systemId);
+      systems.add({"name": system["name"], "systemId": psp.systemId, "id": psp.id});
+    }
+
+    return systems;
+  }
+
+
+  var systems;
+
+  getSystems(var systemsBanco){
+    systems = systemsBanco;
+    if (systemsBanco != null){
+      for (var system in systemsBanco){
+      listIdSystems.add(system["systemId"]);
+    }
+    }
+    return systems;
+  }
+
+
+   _getPlanet() async{
+
+    Map<String, dynamic> data = await db.getbyId("planet", widget.id);
     nameController.text = data["name"];
     sizeController.text = data["size"];
     massController.text = data["mass"];
+    rotationController.text = data["rotationSpeed"];
     selectedColor = data["colorId"];
     return widget.id;
   }
 
   _getGases() async{
-    List items = await db.getWhere('satelliteGas', SatelliteGas, 'satelliteId', widget.id);
+    List items = await db.getWhere('planetGas', PlanetGas, 'planetId', widget.id);
     List gases = [];
     var gas;
-    for (SatelliteGas sg in items){
+    for (PlanetGas sg in items){
       gas = await db.getbyId('gas', sg.gasId);
       gases.add({"name": gas["name"], "amount": sg.amount, "id": sg.id, "gasId": sg.gasId});
     }
@@ -113,39 +161,52 @@ class _EditSatelliteState extends State<EditSatellite> {
   @override
   void initState() {
     super.initState();
-    dadosSatelite = _getSatellite();
+    dadosPlanet = _getPlanet();
     selectedGases = _getGases();
+    selectedSystems = _getSystems();
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.pink[700],
           child: Icon(Icons.save, color: Colors.white,),
-          onPressed: (){
+          onPressed: () async{
             if (_formKey.currentState.validate()) {
             
-              Satellite satellite = Satellite(id: widget.id, name: nameController.text, size: sizeController.text, mass: massController.text, colorId: selectedColor);
-              db.update("satellite", satellite);
+              Planet planet = Planet(id: widget.id, name: nameController.text, size: sizeController.text, mass: massController.text, rotationSpeed: rotationController.text, colorId: selectedColor);
+              db.update("planet", planet);
                 
-              for (var satId in apagados){
-                db.delete('satelliteGas', satId);
+              for (var plaId in apagados){
+                db.delete('planetGas', plaId);
               }
 
               for (var gas in adicionados){
-                SatelliteGas satelliteGas = SatelliteGas(gasId: gas["gasId"], satelliteId: widget.id, amount: gas["amount"]);
-                var idSatelliteGas = widget.id+"-"+gas["gasId"];
-                db.setId('satelliteGas', satelliteGas, idSatelliteGas);
+                PlanetGas planetGas = PlanetGas(gasId: gas["gasId"], planetId: widget.id, amount: gas["amount"]);
+                var idPlanetGas = widget.id+"-"+gas["gasId"];
+                db.setId('planetGas', planetGas, idPlanetGas);
               }
 
-              Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_SATELLITE_PROFILE, arguments: widget.id);
+              for (var plaId in deletedSystems){
+                var systemId = plaId.split("-")[0];
+                await updateSystem(systemId, "-");
+                db.delete('planetSystemPlanetary', plaId);
+              }
+
+              for (var system in addedSystems){
+                PlanetSystemPlanetary planetSystem = PlanetSystemPlanetary(planetId: widget.id, systemId: system["id"]);
+                var idplanetSystem = system["id"]+"-"+widget.id;
+                db.setId('planetSystemPlanetary', planetSystem, idplanetSystem);
+                await updateSystem(system["id"], "+");
+              }
+
+              Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_PLANET_PROFILE, arguments: widget.id);
 
             }
             }),
         body: FutureBuilder(
-            future: dadosSatelite,
+            future: dadosPlanet,
             builder: (context,snapshot){
 
               switch(snapshot.connectionState){
@@ -184,7 +245,7 @@ class _EditSatelliteState extends State<EditSatellite> {
                                   width: 150,
                                   height: 150,
                                       child: FlareActor(
-                                        'assets/animations/'+ assets[selectedColor] +'Satelite.flr',
+                                        'assets/animations/'+ assets[selectedColor] +'Planet.flr',
                                           animation: 'rotation',
                                           fit: BoxFit.cover,
                                         ),
@@ -209,11 +270,17 @@ class _EditSatelliteState extends State<EditSatellite> {
                                         
                                         showDialog(context: context, builder :(context){
                                           return confirmExitRemove(
-                                            title: "Deseja remover satélite permanentemente?", 
-                                            action: (){ 
-                                              db.deleteOnCascade('satelliteGas', 'satelliteId', widget.id);
-                                              db.delete("satellite", widget.id); 
-                                              Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_SATELLITES);});
+                                            title: "Deseja remover planeta permanentemente?", 
+                                            action: () async{
+
+                                              for (var sysId in listIdSystems){
+                                                await updateSystem(sysId, "-");
+                                              }
+
+                                              db.deleteOnCascade('planetSystemPlanetary', 'planetId', widget.id);
+                                              db.deleteOnCascade('planetGas', 'planetId', widget.id);
+                                              db.delete("planet", widget.id); 
+                                              Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_PLANETS);});
                                         });
                                         
                                       },
@@ -229,7 +296,7 @@ class _EditSatelliteState extends State<EditSatellite> {
                               child: 
                               Form(
                                 key: _formKey,
-                                child: Info(nameController: nameController, sizeController: sizeController, massController: massController,)),
+                                child: Info(nameController: nameController, sizeController: sizeController, massController: massController, rotationController: rotationController)),
                             ),
                           ),
                           Padding(
@@ -340,7 +407,7 @@ class _EditSatelliteState extends State<EditSatellite> {
                                           ),
                                             width: 140.0,
                                             decoration: BoxDecoration(
-                                              color: Colors.white,
+                                              color: Colors.white70,
                                               shape: BoxShape.rectangle,
                                               borderRadius: new BorderRadius.circular(8.0),
                                           ),
@@ -378,6 +445,139 @@ class _EditSatelliteState extends State<EditSatellite> {
                                 }
                             },
                             ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20.0, bottom: 10.0, top: 10.0),
+                            child: Text("Sistemas Planetários", style: TextStyle(color: Colors.purple[800], fontSize: 18),),
+                          ), 
+                          FutureBuilder(
+                            future: selectedSystems,
+                            builder: (context, snapshot){
+
+                              switch (snapshot.connectionState){
+                                case ConnectionState.none:
+                                case ConnectionState.active:
+                                case ConnectionState.waiting:
+                                case ConnectionState.done:
+                                  var aux = getSystems(snapshot.data);
+                                  
+                                  if (aux == null){
+                                    return Container(); 
+                                  }
+
+                                  return Container(
+                                  padding: EdgeInsets.only(left: 15, right: 10),
+                                  height: 180,
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: systems.length+1,
+                                    itemBuilder: (context, index) {
+                                      if (index == 0){
+                                        return Container(
+                                          padding: EdgeInsets.all(10),
+                                          child: InkWell(
+                                              onTap: () async{
+                                               
+                                                var system = await showDialog(context: context, builder: (context) {
+                                                    return SelectDialog(db.getAll('system', PlanetarySystem), "Adicionar Sistema Planetário",listIdSystems,"sistema");
+                                                });
+
+                                                if(system!= null) { 
+                                                  setState(() {
+                                                  addedSystems.add(system);
+                                                  systems.add(system);
+                                                  listIdSystems.add(system["id"]);
+                                                });}
+
+                                              },
+                                              borderRadius: BorderRadius.circular(8.0),
+                                              child: Center(child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: <Widget>[
+                                                Padding(
+                                                  padding: EdgeInsets.all(10),
+                                                  child: Text("+", style: TextStyle(color: Color(0xff380b4c), fontSize: 60),),
+                                                ),
+                                              ],
+                                            )),
+                                          ),
+                                          margin: const EdgeInsets.symmetric(
+                                          vertical: 10.0,
+                                          horizontal: 5.0,
+                                        ),
+                                          width: 140.0,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white70,
+                                            shape: BoxShape.rectangle,
+                                            borderRadius: new BorderRadius.circular(8.0),
+                                        ),
+                                      );
+
+                                      } else { 
+                                        return Stack(
+                                          children: [
+                                            Container(
+                                            padding: EdgeInsets.all(10),
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: <Widget>[
+                                                Padding(
+                                                  padding: const EdgeInsets.all(0),
+                                                  child: Text(systems[index-1]['name'], style: TextStyle(color: Color(0xff380b4c), fontSize: 16),),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  child: SizedBox.fromSize(
+                                                      child: SvgPicture.asset('assets/svg/galaxy.svg'),
+                                                      size: Size(70.0, 70.0),
+                                                    ),
+                                                ),
+                                              ],
+                                            ),
+                                            margin: const EdgeInsets.symmetric(
+                                            vertical: 10.0,
+                                            horizontal: 5.0,
+                                          ),
+                                            width: 140.0,
+                                            decoration: BoxDecoration(
+                                              color: Colors.white70,
+                                              shape: BoxShape.rectangle,
+                                              borderRadius: new BorderRadius.circular(8.0),
+                                          ),
+                                          ),
+                                          Positioned(top: 7, right: 0, child: IconButton(
+                                            icon: Icon(Icons.clear,color:Color(0xff380b4c),), 
+                                            onPressed: (){
+                                                setState(() {
+                                                  var indexPlanet;
+                                                  for (int i=0; i<addedSystems.length; i++){
+                                                    if(addedSystems[i]["id"] == systems[index-1]["systemId"]){
+                                                      indexPlanet = i;
+                                                      break;
+                                                    }
+                                                  }
+                                                  if (indexPlanet != null){
+                                                    addedSystems.removeAt(indexPlanet);
+                                                  }else{
+                                                    deletedSystems.add(systems[index-1]["id"]);
+                                                  }
+                                                  listIdSystems.removeWhere((item) => item == systems[index-1]["systemId"]);
+                                                 systems.removeAt(index-1);                  
+                                                });
+                                              }
+                                              ))
+                                          ]
+                                      );
+                                        //return GasCard(title: widget.list[index-1], index: index, editable: widget.editable);
+                                      }
+                                      
+                                    } ,
+                                  )
+                                  //child: HorizontalList(list: selectedGases, editable: true, isGas: true,)
+                                );
+                                }
+                            },
+                            ),
                           
                         ],
                       ),
@@ -393,16 +593,18 @@ class _EditSatelliteState extends State<EditSatellite> {
 }
 
 class Info extends StatelessWidget {
-  Info({this.nameController, this.sizeController, this.massController});
+  Info({this.nameController, this.sizeController, this.massController, this.rotationController});
 
   final nameController;
   final sizeController;
   final massController;
+  final rotationController;
 
   @override
   Widget build(BuildContext context) {
 
-    String validatorName (val) {
+    
+    String validatorNome (val) {
         if(val.length==0) {
           return "Nome inválido";
         }else{
@@ -426,6 +628,14 @@ class Info extends StatelessWidget {
         }
     }
 
+     String validatorRotation (val) {
+        if(val.length==0) {
+          return "Velocidade inválida";
+        }else{
+          return null;
+        }
+    }
+
     return Container(
           padding: EdgeInsets.all(10),
           child: Column(
@@ -434,26 +644,21 @@ class Info extends StatelessWidget {
           children: <Widget>[
              Padding(
                padding: const EdgeInsets.all(8.0),
-               child: EditField(title: "Nome", controller: nameController, validator: validatorName, fontSize: 18.0,),
+               child: EditField(title: "Nome", controller: nameController, validator: validatorNome, fontSize: 18.0,),
              ),  
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: EditField(
-                title: "Tamanho", 
-                controller: sizeController, 
-                validator: validatorSize, 
-                fontSize: 18.0,
-                keyboardType: TextInputType.number,
-            ),), 
+              child: EditField(title: "Tamanho", controller: sizeController, validator: validatorSize, fontSize: 18.0, keyboardType: TextInputType.number),
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: EditField(
-                title: "Massa", 
-                controller: massController, 
-                validator: validatorMass, 
-                fontSize: 18.0,
-                keyboardType: TextInputType.number,
-            ),),
+              child: EditField(title: "Massa", controller: massController, validator: validatorMass, fontSize: 18.0, keyboardType: TextInputType.number ,),
+            ),
+            Padding(
+               padding: const EdgeInsets.all(8.0),
+               child: EditField(title: "Velocidade de Rotação", controller: rotationController, validator: validatorRotation, fontSize: 18.0, keyboardType: TextInputType.number),
+            ),   
+            
           ],
             ),
           margin: const EdgeInsets.symmetric(

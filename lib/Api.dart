@@ -1,11 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:galaxy_flutter/models/Galaxy.dart';
 import 'package:galaxy_flutter/models/Gas.dart';
+import 'package:galaxy_flutter/models/Planet.dart';
+import 'package:galaxy_flutter/models/PlanetGas.dart';
+import 'package:galaxy_flutter/models/PlanetSystemPlanetary.dart';
 import 'package:galaxy_flutter/models/PlanetarySystem.dart';
 import 'package:galaxy_flutter/models/Satellite.dart';
 import 'package:galaxy_flutter/models/Star.dart';
 import 'package:galaxy_flutter/models/SatelliteGas.dart';
+import 'package:galaxy_flutter/models/StarSystemPlanetary.dart';
 
 class Api {
 
@@ -68,15 +71,19 @@ class Api {
       }
 
     });
-   
   }
 
   getbyId(String collectionName, String id) async{
+    
     DocumentSnapshot doc = await db.collection(collectionName).document(id).get();
-
     Map<String, dynamic> data = doc.data;
 
     return data;
+  }
+
+  getdocbyId(String collectionName, String id) async{
+    DocumentSnapshot doc = await db.collection(collectionName).document(id).get();
+    return doc;
   }
 
   getAll(String collectionName, var type) async{
@@ -102,6 +109,10 @@ class Api {
             break;
           case Gas: 
             item = Gas.fromMap(doc);
+            break;
+          case Planet:
+            item = Planet.fromMap(doc);
+          
         }
 
         list.add(item);
@@ -131,6 +142,15 @@ class Api {
             item = Star.fromMap(doc);
             break;
           
+          case PlanetGas:
+            item = PlanetGas.fromMap(doc);
+            break;
+          case PlanetSystemPlanetary:
+            item = PlanetSystemPlanetary.fromMap(doc);
+            break;
+          case StarSystemPlanetary:
+            item = StarSystemPlanetary.fromMap(doc);
+            break;
         }
 
         list.add(item);
@@ -149,7 +169,6 @@ class Api {
     //QuerySnapshot querySnapshot = await db.collection('satelliteGas').where(firestore.FieldPath.documentId, isGreaterThanOrEqual: id).getDocuments();
     //QuerySnapshot querySnapshot = await db.collection('satelliteGas').where(firestore.FieldPath.documentId, isEqual: "BwWY69DKGA36beFcdEsv-FDtGEMhc59SzLSv7Ghvy").getDocuments();
     try {
-    //TODO LIKE
     //QuerySnapshot querySnapshot = await db.collection('satelliteGas').where(firestore.FieldPath.documentId, isGreaterThanOrEqualTo: id).getDocuments();
     
     List list = List();

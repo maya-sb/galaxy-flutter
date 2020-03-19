@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:galaxy_flutter/Api.dart';
 import 'package:galaxy_flutter/RouteGenerator.dart';
+import 'package:galaxy_flutter/models/Planet.dart';
+import 'package:galaxy_flutter/models/PlanetSystemPlanetary.dart';
 import 'package:galaxy_flutter/widgets/Animations.dart';
 import 'package:galaxy_flutter/widgets/Fields.dart';
+import 'package:galaxy_flutter/widgets/Lists.dart';
 
 class PlanetarySystemProfile extends StatefulWidget {
   PlanetarySystemProfile({this.id});
@@ -24,7 +27,7 @@ class _PlanetarySystemProfileState extends State<PlanetarySystemProfile> {
   var galaxyController = TextEditingController();
   int _selectedColor = 0;
   String _galaxyId;
-  Future _nameGalaxy;
+  var planets;
 
   Api db = Api();
 
@@ -42,112 +45,157 @@ class _PlanetarySystemProfileState extends State<PlanetarySystemProfile> {
     return widget.id;
   }
 
+
+  _getPlanets() async{
+    List items = await db.getWhere('planetSystemPlanetary', PlanetSystemPlanetary, 'systemId', widget.id);
+    List planets = [];
+
+    if (items != null){
+      var planet;
+      for (PlanetSystemPlanetary psp in items){
+        planet = await db.getdocbyId('planet', psp.planetId);
+        planets.add(Planet.fromMap(planet));
+      }
+    }
+    return planets;
+  }
+
   @override
   void initState() {
     super.initState();
     future = _getSystem();
+    planets = _getPlanets();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: FutureBuilder(
-              future: future,
-              builder: (context, snapshot){
-              switch (snapshot.connectionState){
-                case ConnectionState.none:
-                  case ConnectionState.waiting:
-                  return Center(
-                    child:  Center(child: CircularProgressIndicator())
-                  );
-                  case ConnectionState.active:
-                  case ConnectionState.done:  
-                    return  SingleChildScrollView(
-                      child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                      Stack(
-                            children: <Widget>[
-                                Center(
-                                  child: ClipPath(
-                                    clipper: OvalBottomBorderClipper(),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          begin: Alignment.topRight,
-                                          end: Alignment.bottomLeft,
-                                          colors: [Colors.pinkAccent[700], Colors.purple[900] ])
+    return WillPopScope(
+       onWillPop: () async {
+        Navigator.pushNamed(context, RouteGenerator.ROUTE_PLANETARY_SYSTEMS);
+         return false;
+       },
+      child: Scaffold(
+        body: FutureBuilder(
+                future: future,
+                builder: (context, snapshot){
+                switch (snapshot.connectionState){
+                  case ConnectionState.none:
+                    case ConnectionState.waiting:
+                    return Center(
+                      child:  Center(child: CircularProgressIndicator())
+                    );
+                    case ConnectionState.active:
+                    case ConnectionState.done:  
+                      return  SingleChildScrollView(
+                        child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                        Stack(
+                              children: <Widget>[
+                                  Center(
+                                    child: ClipPath(
+                                      clipper: OvalBottomBorderClipper(),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                            begin: Alignment.topRight,
+                                            end: Alignment.bottomLeft,
+                                            colors: [Colors.pinkAccent[700], Colors.purple[900] ])
+                                        ),
+                                        height: 180,
+                                        width: 1000,
                                       ),
-                                      height: 180,
-                                      width: 1000,
                                     ),
                                   ),
-                                ),
-                                Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 100.0, bottom: 0),
-                                  child: SizedBox(
-                                    width: 150,
-                                    height: 150,
-                                        child: FlareActor(
-                                            //'assets/animations/pinkPlanet.flr',
-                                            'assets/animations/'+ assets[_selectedColor] + 'System.flr',
-                                            animation: 'rotation',
-                                            fit: BoxFit.cover,
-                                          ),
+                                  Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 100.0, bottom: 0),
+                                    child: SizedBox(
+                                      width: 150,
+                                      height: 150,
+                                          child: FlareActor(
+                                              //'assets/animations/pinkPlanet.flr',
+                                              'assets/animations/'+ assets[_selectedColor] + 'System.flr',
+                                              animation: 'rotation',
+                                              fit: BoxFit.cover,
+                                            ),
+                                    ),
                                   ),
-                                ),
-                          ),
-                          Padding(
-                                  padding: const EdgeInsets.only(top: 25.0),
-                                  child: IconButton(
-                                    onPressed: () {
-                                      Navigator.pushNamed(context, RouteGenerator.ROUTE_PLANETARY_SYSTEMS);
-                                    },
-                                    icon: Icon(Icons.arrow_back, color: Colors.white, size: 25.0),
-                                  ),
-                                ),
-                          Positioned(
-                                    right: 5,
-                                    child: Padding(
+                            ),
+                            Padding(
                                     padding: const EdgeInsets.only(top: 25.0),
                                     child: IconButton(
                                       onPressed: () {
-                                        Navigator.pushNamed(context, RouteGenerator.ROUTE_EDIT_PLANETARY_SYSTEM, arguments: widget.id);
+                                        Navigator.pushNamed(context, RouteGenerator.ROUTE_PLANETARY_SYSTEMS);
                                       },
-                                      icon: Icon(Icons.edit, color: Colors.white, size: 25.0),
+                                      icon: Icon(Icons.arrow_back, color: Colors.white, size: 25.0),
                                     ),
                                   ),
-                          )
-                            ],
-                      ),
-                      Center(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
-                          child: FutureBuilder(
-                            future: db.getbyId('galaxy', _galaxyId),
-                            builder: (context, snapshot){
-                              switch(snapshot.connectionState){
+                            Positioned(
+                                      right: 5,
+                                      child: Padding(
+                                      padding: const EdgeInsets.only(top: 25.0),
+                                      child: IconButton(
+                                        onPressed: () {
+                                          Navigator.pushNamed(context, RouteGenerator.ROUTE_EDIT_PLANETARY_SYSTEM, arguments: widget.id);
+                                        },
+                                        icon: Icon(Icons.edit, color: Colors.white, size: 25.0),
+                                      ),
+                                    ),
+                            )
+                              ],
+                        ),
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
+                            child: FutureBuilder(
+                              future: db.getbyId('galaxy', _galaxyId),
+                              builder: (context, snapshot){
+                                switch(snapshot.connectionState){
+                                  case ConnectionState.none:
+                                  case ConnectionState.waiting:
+                                    return Center(child: CircularProgressIndicator());
+                                  case ConnectionState.active:
+                                  case ConnectionState.done:  
+                                    galaxyController.text = snapshot.data["name"];
+                                    return Info(nameController: nameController, ageController: ageController, numStarsController: numStarsController, numPlanetsController: numPlanetsController, galaxyController: galaxyController,);
+                                }
+                              },
+                              
+                          ),
+                        ),),
+                          numPlanetsController.text == '0' 
+                        ? Container()
+                        : Padding(
+                            padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
+                            child: Text("Planetas", style: TextStyle(color: Colors.purple[700], fontSize: 19),),
+                          ),      
+                        FutureBuilder(
+                          future: planets,
+                          builder: (context, snapshot){
+                            switch (snapshot.connectionState) {
                                 case ConnectionState.none:
                                 case ConnectionState.waiting:
-                                  return Center(child: CircularProgressIndicator());
                                 case ConnectionState.active:
                                 case ConnectionState.done:  
-                                  galaxyController.text = snapshot.data["name"];
-                                  return Info(nameController: nameController, ageController: ageController, numStarsController: numStarsController, numPlanetsController: numPlanetsController, galaxyController: galaxyController,);
+                                  return Container(
+                                    padding: EdgeInsets.only(left:15),
+                                    height: 180, 
+                                    child: HorizontalList(list: snapshot.data, asset: 'assets/svg/uranus.svg',editable: false)
+                                  );
                               }
-                            },
-                            
-                        ),
-                      ),)
-                      ]
-                    ),
-                     );
-              }
+                          }
+                        ), 
 
-           }
-          )
-        );
+                        ]
+                      ),
+                       );
+                }
+
+             }
+            )
+          ),
+    );
   }
 }
 

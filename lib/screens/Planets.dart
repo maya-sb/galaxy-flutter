@@ -1,28 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:galaxy_flutter/Api.dart';
 import 'package:galaxy_flutter/RouteGenerator.dart';
-import 'package:galaxy_flutter/models/Satellite.dart';
 import 'package:galaxy_flutter/widgets/Lists.dart';
+import 'package:galaxy_flutter/models/Planet.dart';
 
-class Satellites extends StatefulWidget {
+class Planets extends StatefulWidget {
   @override
-  _SatellitesState createState() => _SatellitesState();
+  _PlanetsState createState() => _PlanetsState();
 }
 
-class _SatellitesState extends State<Satellites> {
+class _PlanetsState extends State<Planets> {
 
   Api db = Api();
+  var galaxies;
 
   @override
-  Widget build(BuildContext context) {
-    return  WillPopScope(
+  Widget build(BuildContext context) 
+
+  {
+    return WillPopScope(
        onWillPop: () async {
          Navigator.pushNamedAndRemoveUntil(context, RouteGenerator.ROUTE_HOME, (_) => false);
          return false;
        },
        child: Scaffold(
          appBar: AppBar(
-          title: Text("Satélites", style: TextStyle(color: Colors.white)),
+          title: Text("Planetas", style: TextStyle(color: Colors.white)),
           iconTheme: IconThemeData(color: Colors.white),
           backgroundColor: Colors.transparent,
           actions: <Widget>[
@@ -37,10 +40,11 @@ class _SatellitesState extends State<Satellites> {
           child: Icon(Icons.add,color: Colors.pink[700],),
           backgroundColor: Colors.white,
           onPressed: (){
-             Navigator.pushNamed(context, RouteGenerator.ROUTE_REGISTER_SATELLITE);
+             Navigator.pushNamed(context, RouteGenerator.ROUTE_REGISTER_PLANET);
         },),
-        body: NameList(type: 'Satelite', future: db.getAll("satellite", Satellite), route: RouteGenerator.ROUTE_SATELLITE_PROFILE)
+        body: NameList(type: 'Planet', future: db.getAll("planet", Planet), route: RouteGenerator.ROUTE_PLANET_PROFILE)
       ),
     );
-  }
+
+}
 }

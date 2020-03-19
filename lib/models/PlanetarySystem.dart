@@ -30,5 +30,7 @@ class PlanetarySystem{
       "colorId" : this.colorId,
       "galaxyId": this.galaxyId};
   }
+
+  bool operator == (m) => m is PlanetarySystem && id == m.id;
  
 }

@@ -34,7 +34,7 @@ class _EditGalaxyState extends State<EditGalaxy> {
     Map<String, dynamic> dados = await db.getbyId("galaxy", widget.id);
     nameController.text = dados["name"];
     distanceController.text = dados["earthDistance"];
-    numSystemsController.text = dados["numSystems"];
+    numSystemsController.text = dados["numSystems"].toString();
     _selectedColor = dados["colorId"];
     return widget.id;
   }

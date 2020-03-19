@@ -1,20 +1,21 @@
-class Satellite{
+class Planet{
 
   String id;
   String name;
   String size;
   String mass;
+  String rotationSpeed;
   int colorId;
 
-  Satellite({this.id, this.name, this.size, this.mass, this.colorId});
+  Planet({this.id, this.name, this.size, this.mass, this.rotationSpeed, this.colorId});
 
-  Satellite.fromMap(var document){
+  Planet.fromMap(var document){
     id = document.documentID;
     this.name = document.data["name"];
     this.size = document.data["size"];
     this.mass = document.data["mass"];
+    this.rotationSpeed = document.data["rotationSpeed"];
     this.colorId = document.data["colorId"];
-
   }
 
    toMap(){
@@ -22,6 +23,10 @@ class Satellite{
       "name":this.name,
       "size":this.size,
       "mass": this.mass,
+      "rotationSpeed": this.rotationSpeed,
       "colorId": this.colorId};
   }
+
+  bool operator == (m) => m is Planet && id == m.id;
+
 }
