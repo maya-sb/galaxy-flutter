@@ -4,19 +4,21 @@ class Star{
   String name;
   String idade;
   String size;
-  String distancia;
-  String tipo;
+  String distance;
+  String type;
+  bool death = false;
   int colorId;
 
-  Star({this.id, this.name, this.idade, this.size, this.distancia, this.tipo, this.colorId});
+  Star({this.id, this.name, this.idade, this.size, this.distance, this.type, this.colorId});
 
   Star.fromMap(var document){
     id = document.documentID;
     this.name = document.data["name"];
     this.idade = document.data["idade"];
     this.size = document.data["size"];
-    this.distancia = document.data["distancia"];
-    this.tipo = document.data["tipo"];
+    this.distance = document.data["distance"];
+    this.type = document.data["type"];
+    this.death = document.data["death"];
     this.colorId = document.data["colorId"];
 
   }
@@ -26,8 +28,9 @@ class Star{
       "name":this.name,
       "idade":this.idade,
       "size": this.size,
-      "distancia": this.distancia,
-      "tipo": this.tipo,
+      "distance": this.distance,
+      "type": this.type,
+      "death": this.death,
       "colorId": this.colorId};
   }
 }

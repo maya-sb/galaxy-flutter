@@ -4,6 +4,7 @@ import 'package:galaxy_flutter/models/Galaxy.dart';
 import 'package:galaxy_flutter/models/Gas.dart';
 import 'package:galaxy_flutter/models/PlanetarySystem.dart';
 import 'package:galaxy_flutter/models/Satellite.dart';
+import 'package:galaxy_flutter/models/Star.dart';
 import 'package:galaxy_flutter/models/SatelliteGas.dart';
 
 class Api {
@@ -96,6 +97,9 @@ class Api {
           case Satellite:
             item = Satellite.fromMap(doc);
             break;
+          case Star:
+            item = Star.fromMap(doc);
+            break;
           case Gas: 
             item = Gas.fromMap(doc);
         }
@@ -107,7 +111,7 @@ class Api {
 
   }
 
-  getWhere(String collectionName, var type, String field, String value) async{
+  getWhere(String collectionName, var type, String field, var value) async{
 
     QuerySnapshot querySnapshot = await db.collection(collectionName).where(field, isEqualTo: value).getDocuments();
 
@@ -122,6 +126,11 @@ class Api {
             break;
           case PlanetarySystem:
             item = PlanetarySystem.fromMap(doc);
+            break;
+          case Star:
+            item = Star.fromMap(doc);
+            break;
+          
         }
 
         list.add(item);
