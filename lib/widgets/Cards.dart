@@ -1,3 +1,4 @@
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:galaxy_flutter/widgets/Dialogs.dart';
@@ -45,6 +46,53 @@ class OrbitingCard extends StatelessWidget {
             showDialog(context: context, builder :(context){ 
               return confirmExitRemove(title: "Tem certeza que deseja remover?", action: () => Navigator.pop(context));},);},),) 
         : Positioned(top: 7, right: 0, child: SizedBox.shrink(),)
+        ]
+    );
+  }
+}
+
+class OrbitCard extends StatelessWidget {
+  const OrbitCard({this.title, this.asset});
+
+  final title;
+  final asset;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+        children: [
+          Container(
+          padding: EdgeInsets.all(10),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              this.asset != null ?
+              SizedBox.fromSize(
+                  child: FlareActor(
+                                  this.asset,
+                                  animation: 'rotation',
+                                  fit: BoxFit.cover,
+                                ),
+                  size: Size(80.0, 80.0),
+                ) : Container(height: 80.0, width: 80.0,),
+                this.title != null ?
+                 Padding(
+                padding: const EdgeInsets.only(top: 10.0),
+                child: Text(title, style: TextStyle(color: Color(0xff380b4c), fontSize: 16),),
+              ) : Container(padding: EdgeInsets.only(top:30.0),)
+            ],
+          ),
+          margin: const EdgeInsets.symmetric(
+           vertical: 10.0,
+           horizontal: 5.0,
+         ),
+          width: 116.0,
+          decoration: BoxDecoration(
+            color: Colors.white70,
+            shape: BoxShape.rectangle,
+            borderRadius: new BorderRadius.circular(8.0),
+        ),
+        ),
         ]
     );
   }

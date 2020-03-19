@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:galaxy_flutter/models/Galaxy.dart';
 import 'package:galaxy_flutter/models/Gas.dart';
 import 'package:galaxy_flutter/models/Planet.dart';
@@ -38,8 +39,33 @@ class Api {
     return id;
   }
 
-  setId(String collectionName, var object, var id){
-    db.collection(collectionName).document(id).setData(object.toMap());
+ setId(String collectionName, var object, var id, {var context}) async{
+
+    db.collection(collectionName).document(id).get().then((documentSnapshot){
+      if (documentSnapshot.exists){
+        showDialog(
+                  context: context,
+                  builder: (context){
+                  return AlertDialog(
+                    shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                    title: Text("Erro ao cadastrar órbita"),
+                    content: Text("Essa órbita já existe."),
+                    contentPadding: EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 0.0),
+                    actions: <Widget>[
+                      FlatButton(child: Text("Ok"),onPressed: (){
+                        Navigator.pop(context);
+                      },)
+                    ],
+                  );
+                  }
+                );
+      }else{
+        db.collection(collectionName).document(id).setData(object.toMap());
+        if (context!=null) {Navigator.pop(context);}
+      }
+    }
+    );
   }
 
   insert(String collectionName, var object){

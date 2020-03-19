@@ -2,8 +2,12 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:galaxy_flutter/Api.dart';
+import 'package:galaxy_flutter/models/Orbit.dart';
 import 'package:galaxy_flutter/models/Planet.dart';
 import 'package:galaxy_flutter/models/Satellite.dart';
+import 'package:galaxy_flutter/models/Star.dart';
+import 'package:galaxy_flutter/widgets/Animations.dart';
+import 'package:galaxy_flutter/widgets/Cards.dart';
 import 'package:galaxy_flutter/widgets/Dialogs.dart';
 
 class RegisterOrbit extends StatefulWidget {
@@ -32,17 +36,25 @@ class _RegisterOrbitState extends State<RegisterOrbit> {
   loadList(String collectionName, var type) async{
 
     var list = await db.getAll(collectionName, type);
-    List<DropdownMenuItem<String>> items = [];
+    List<DropdownMenuItem> items = [];
 
+     items.add(DropdownMenuItem(
+        child: Text("Nenhum",  style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: "Poppins",
+                                fontSize: 18.0,)),
+        value: Planet(id: "", name:"Nenhum"),
+      ));
     for (var item in list){
       items.add(DropdownMenuItem(
         child: Text(item.name,  style: TextStyle(
-                                color: Colors.purple[700],
+                                color: Colors.white,
                                 fontFamily: "Poppins",
                                 fontSize: 18.0,)),
-        value: item.id,
+        value: item,
       ));
     }
+   
 
     return items;
   }
@@ -52,7 +64,7 @@ class _RegisterOrbitState extends State<RegisterOrbit> {
     super.initState();
     planetList = loadList('planet', Planet);
     satelliteList = loadList('satellite', Satellite);
-    starList = loadList('planet', Planet);
+    starList = loadList('star', Star);
   }
 
   @override
@@ -68,11 +80,12 @@ class _RegisterOrbitState extends State<RegisterOrbit> {
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.pink[700],
           child: Icon(Icons.save, color: Colors.white,),
-          onPressed: (){
+          onPressed: () async{
             if (_formKey.currentState.validate()) {
-              //TODO cadastrar órbita
 
-              Navigator.pop(context);
+              Orbit orbit = Orbit(satelliteId: satelliteController.text, planetId: planetController.text, starId: starController.text);
+              var id = satelliteController.text+"-"+planetController.text+"-"+starController.text;
+              db.setId('orbit', orbit, id, context: context);
             }
             }),
         body: SingleChildScrollView(
@@ -103,7 +116,7 @@ class _RegisterOrbitState extends State<RegisterOrbit> {
                           width: 150,
                           height: 150,
                               child: FlareActor(
-                                 'assets/animations/pinkGalaxy.flr',
+                                 'assets/animations/pinkSystem.flr',
                                   animation: 'rotation',
                                   fit: BoxFit.cover,
                                 ),
@@ -179,50 +192,71 @@ class _InfoState extends State<Info> {
                             case ConnectionState.active:
                             case ConnectionState.done:  
                             if (snapshot.hasData){
-                               return DropdownButtonFormField(
-                                    items: snapshot.data,
-                                    validator: (var value) {
-                                      if (value?.isEmpty ?? true) {
-                                        return 'Selecione um planeta';
-                                      }
-                                      return null;
-                                    },
-                                    //decoration: InputDecoration.collapsed(hintText: ''),
-                                    decoration: InputDecoration(
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: new BorderRadius.circular(25.0),
-                                        borderSide: BorderSide(
-                                          color: Colors.purple[700],
-                                          width: 1.5
+                               return Theme(
+                                  data: Theme.of(context).copyWith(
+                                  canvasColor: Color(0xff380b4c)),
+                                  child: DropdownButtonFormField(
+                                      items: snapshot.data,
+                                      validator: (var value) {
+                                        if (value == null) {
+                                          return 'Selecione um planeta';
+                                        }else{
+                                          if (value.name == "Nenhum"){
+                                            var cont = 3;
+                                            if (widget.planetController.text == ""){
+                                              cont--;
+                                            }
+                                            if (widget.starController.text == ""){
+                                              cont--;
+                                            }
+                                            if (widget.satelliteController.text == ""){
+                                              cont--;
+                                            }
+                                            if(cont<2){
+                                              return "Selecione pelo menos dois elementos";
+                                            }
+                                          }else{
+                                           return null; 
+                                          }
+                                        }
+                                      },
+                                      //decoration: InputDecoration.collapsed(hintText: ''),
+                                      decoration: InputDecoration(
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius: new BorderRadius.circular(25.0),
+                                          borderSide: BorderSide(
+                                            color: Colors.purple[700],
+                                            width: 1.5
+                                          ),
                                         ),
+                                        errorBorder: OutlineInputBorder(
+                                          borderRadius: new BorderRadius.circular(25.0),
+                                          borderSide: BorderSide(
+                                            color: Colors.pink[700],
+                                            width: 1.5
+                                          ),
+                                        )
                                       ),
-                                      errorBorder: OutlineInputBorder(
-                                        borderRadius: new BorderRadius.circular(25.0),
-                                        borderSide: BorderSide(
-                                          color: Colors.pink[700],
-                                          width: 1.5
-                                        ),
-                                      )
+                                      hint: Text("Selecione o planeta",  style: TextStyle(
+                                                                          color: Colors.purple[700],
+                                                                          fontFamily: "Poppins",
+                                                                          fontSize: 18.0,)),
+                                      style: TextStyle(
+                                        color: Colors.purple[700],
+                                        fontFamily: "Poppins",
+                                        fontSize: 18.0,),
+                                      iconSize: 25,
+                                      isExpanded: true,
+                                      isDense: true,
+                                      value: selectedPlanet,
+                                      onChanged: (newValue) {
+                                        setState(() {
+                                          selectedPlanet = newValue;
+                                          widget.planetController.text = newValue.id;
+                                        });
+                                              },
                                     ),
-                                    hint: Text("Selecione o planeta",  style: TextStyle(
-                                                                        color: Colors.purple[700],
-                                                                        fontFamily: "Poppins",
-                                                                        fontSize: 18.0,)),
-                                    style: TextStyle(
-                                      color: Colors.purple[700],
-                                      fontFamily: "Poppins",
-                                      fontSize: 18.0,),
-                                    iconSize: 25,
-                                    isExpanded: true,
-                                    isDense: true,
-                                    value: selectedPlanet,
-                                    onChanged: (newValue) {
-                                      setState(() {
-                                        selectedPlanet = newValue;
-                                        widget.planetController.text = newValue;
-                                      });
-                                            },
-                                  );
+                               );
                               
                             }else{
                               return Container();
@@ -242,50 +276,71 @@ class _InfoState extends State<Info> {
                             case ConnectionState.active:
                             case ConnectionState.done:  
                             if (snapshot.hasData){
-                               return DropdownButtonFormField(
-                                    items: snapshot.data,
-                                    validator: (var value) {
-                                      if (value?.isEmpty ?? true) {
-                                        return 'Selecione um satélite';
-                                      }
-                                      return null;
-                                    },
-                                    //decoration: InputDecoration.collapsed(hintText: ''),
-                                    decoration: InputDecoration(
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: new BorderRadius.circular(25.0),
-                                        borderSide: BorderSide(
-                                          color: Colors.purple[700],
-                                          width: 1.5
+                               return Theme(
+                                  data: Theme.of(context).copyWith(
+                                  canvasColor: Color(0xff380b4c)),
+                                  child: DropdownButtonFormField(
+                                      items: snapshot.data,
+                                      validator: (var value) {
+                                        if (value == null) {
+                                          return 'Selecione um satélite';
+                                        }else{
+                                          if (value.name == "Nenhum"){
+                                            var cont = 3;
+                                            if (widget.planetController.text == ""){
+                                              cont--;
+                                            }
+                                            if (widget.starController.text == ""){
+                                              cont--;
+                                            }
+                                            if (widget.satelliteController.text == ""){
+                                              cont--;
+                                            }
+                                            if(cont<2){
+                                              return "Selecione pelo menos dois elementos";
+                                            }
+                                          }else{
+                                           return null; 
+                                          }
+                                        }
+                                      },
+                                      //decoration: InputDecoration.collapsed(hintText: ''),
+                                      decoration: InputDecoration(
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius: new BorderRadius.circular(25.0),
+                                          borderSide: BorderSide(
+                                            color: Colors.purple[700],
+                                            width: 1.5
+                                          ),
                                         ),
+                                        errorBorder: OutlineInputBorder(
+                                          borderRadius: new BorderRadius.circular(25.0),
+                                          borderSide: BorderSide(
+                                            color: Colors.pink[700],
+                                            width: 1.5
+                                          ),
+                                        )
                                       ),
-                                      errorBorder: OutlineInputBorder(
-                                        borderRadius: new BorderRadius.circular(25.0),
-                                        borderSide: BorderSide(
-                                          color: Colors.pink[700],
-                                          width: 1.5
-                                        ),
-                                      )
+                                      hint: Text("Selecione o satélite",  style: TextStyle(
+                                                                          color: Colors.purple[700],
+                                                                          fontFamily: "Poppins",
+                                                                          fontSize: 18.0,)),
+                                      style: TextStyle(
+                                        color: Colors.purple[700],
+                                        fontFamily: "Poppins",
+                                        fontSize: 18.0,),
+                                      iconSize: 25,
+                                      isExpanded: true,
+                                      isDense: true,
+                                      value: selectedSatellite,
+                                      onChanged: (newValue) {
+                                        setState(() {
+                                          selectedSatellite = newValue;
+                                          widget.satelliteController.text = newValue.id;
+                                        });
+                                              },
                                     ),
-                                    hint: Text("Selecione o satélite",  style: TextStyle(
-                                                                        color: Colors.purple[700],
-                                                                        fontFamily: "Poppins",
-                                                                        fontSize: 18.0,)),
-                                    style: TextStyle(
-                                      color: Colors.purple[700],
-                                      fontFamily: "Poppins",
-                                      fontSize: 18.0,),
-                                    iconSize: 25,
-                                    isExpanded: true,
-                                    isDense: true,
-                                    value: selectedSatellite,
-                                    onChanged: (newValue) {
-                                      setState(() {
-                                        selectedSatellite = newValue;
-                                        widget.satelliteController.text = newValue;
-                                      });
-                                            },
-                                  );
+                               );
                               
                             }else{
                               return Container();
@@ -305,50 +360,71 @@ class _InfoState extends State<Info> {
                             case ConnectionState.active:
                             case ConnectionState.done:  
                             if (snapshot.hasData){
-                               return DropdownButtonFormField(
-                                    items: snapshot.data,
-                                    validator: (var value) {
-                                      if (value?.isEmpty ?? true) {
-                                        return 'Selecione uma estrela';
-                                      }
-                                      return null;
-                                    },
-                                    //decoration: InputDecoration.collapsed(hintText: ''),
-                                    decoration: InputDecoration(
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: new BorderRadius.circular(25.0),
-                                        borderSide: BorderSide(
-                                          color: Colors.purple[700],
-                                          width: 1.5
+                               return Theme(
+                                 data: Theme.of(context).copyWith(
+                                  canvasColor: Color(0xff380b4c)),
+                                  child: DropdownButtonFormField(
+                                      items: snapshot.data,
+                                      validator: (value) {
+                                        if (value == null) {
+                                          return 'Selecione uma estrela';
+                                        }else{
+                                          if (value.name == "Nenhum"){
+                                            var cont = 3;
+                                            if (widget.planetController.text == ""){
+                                              cont--;
+                                            }
+                                            if (widget.starController.text == ""){
+                                              cont--;
+                                            }
+                                            if (widget.satelliteController.text == ""){
+                                              cont--;
+                                            }
+                                            if(cont<2){
+                                              return "Selecione pelo menos dois elementos";
+                                            }
+                                          }else{
+                                           return null; 
+                                          }
+                                        }
+                                      },
+                                      //decoration: InputDecoration.collapsed(hintText: ''),
+                                      decoration: InputDecoration(
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius: new BorderRadius.circular(25.0),
+                                          borderSide: BorderSide(
+                                            color: Colors.purple[700],
+                                            width: 1.5
+                                          ),
                                         ),
+                                        errorBorder: OutlineInputBorder(
+                                          borderRadius: new BorderRadius.circular(25.0),
+                                          borderSide: BorderSide(
+                                            color: Colors.pink[700],
+                                            width: 1.5
+                                          ),
+                                        )
                                       ),
-                                      errorBorder: OutlineInputBorder(
-                                        borderRadius: new BorderRadius.circular(25.0),
-                                        borderSide: BorderSide(
-                                          color: Colors.pink[700],
-                                          width: 1.5
-                                        ),
-                                      )
+                                      hint: Text("Selecione a estrela",  style: TextStyle(
+                                                                          color: Colors.purple[800],
+                                                                          fontFamily: "Poppins",
+                                                                          fontSize: 18.0,)),
+                                      style: TextStyle(
+                                        color: Colors.purple[700],
+                                        fontFamily: "Poppins",
+                                        fontSize: 18.0,),
+                                      iconSize: 25,
+                                      isExpanded: true,
+                                      isDense: true,
+                                      value: selectedStar,
+                                      onChanged: (newValue) {
+                                        setState(() {
+                                          selectedStar = newValue;
+                                          widget.starController.text = newValue.id;
+                                        });
+                                              },
                                     ),
-                                    hint: Text("Selecione a estrela",  style: TextStyle(
-                                                                        color: Colors.purple[700],
-                                                                        fontFamily: "Poppins",
-                                                                        fontSize: 18.0,)),
-                                    style: TextStyle(
-                                      color: Colors.purple[700],
-                                      fontFamily: "Poppins",
-                                      fontSize: 18.0,),
-                                    iconSize: 25,
-                                    isExpanded: true,
-                                    isDense: true,
-                                    value: selectedStar,
-                                    onChanged: (newValue) {
-                                      setState(() {
-                                        selectedStar = newValue;
-                                        widget.starController.text = newValue;
-                                      });
-                                            },
-                                  );
+                               );
                               
                             }else{
                               return Container();
@@ -375,31 +451,43 @@ class _InfoState extends State<Info> {
               ),
         ),
         Padding(
-          padding: EdgeInsets.only(top: 20.0),
+          padding: EdgeInsets.fromLTRB(8.0, 20.0, 8.0, 20.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              Text("Planeta", style: TextStyle(
-                                      color: Colors.purple[700],
-                                      fontFamily: "Poppins",
-                                      fontSize: 18.0,),),
-              Text("Satélite", style: TextStyle(
-                                      color: Colors.purple[700],
-                                      fontFamily: "Poppins",
-                                      fontSize: 18.0,),),
-              Text("Estrela", style: TextStyle(
-                                      color: Colors.purple[700],
-                                      fontFamily: "Poppins",
-                                      fontSize: 18.0,),),
-            ],),
-        ),
-        Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              
-            Text(""),
+              selectedPlanet != null ? 
+                selectedPlanet.id != "" ?
+                Column(
+                  children: <Widget>[
+                    Text("Planeta", style: TextStyle(
+                                        color: Colors.purple[700],
+                                        fontFamily: "Poppins",
+                                        fontSize: 18.0,),),
+                    OrbitCard(title: selectedPlanet.name, asset: 'assets/animations/'+assets[selectedPlanet.colorId]+'Planet.flr' ,),
+                  ],
+                ) : Container() : Container(),
+              selectedSatellite != null ? 
+               selectedSatellite.id != "" ? 
+                Column(
+                  children: <Widget>[
+                    Text("Satélite", style: TextStyle(
+                                        color: Colors.purple[700],
+                                        fontFamily: "Poppins",
+                                        fontSize: 18.0,),),
+                    OrbitCard(title: selectedSatellite.name, asset: 'assets/animations/'+assets[selectedSatellite.colorId]+'Satelite.flr' ,),
+                  ],
+                ) : Container() : Container(),
+              selectedStar != null ? 
+                selectedStar.id != "" ?
+                Column(
+                  children: <Widget>[
+                    Text("Estrela", style: TextStyle(
+                                        color: Colors.purple[700],
+                                        fontFamily: "Poppins",
+                                        fontSize: 18.0,),),
+                    OrbitCard(title: selectedStar.name, asset: 'assets/animations/'+assets[selectedStar.colorId]+'Star.flr'),
+                  ],
+                ) : Container() : Container(),
           ],)
           )
       ],
