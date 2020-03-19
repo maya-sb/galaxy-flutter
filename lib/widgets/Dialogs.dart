@@ -37,11 +37,12 @@ class addHorizontalList extends StatefulWidget {
 }
 
 class SelectDialog extends StatefulWidget {
-  SelectDialog(this.future, this.title, this.listId);
+  SelectDialog(this.future, this.title, this.listId, this.type);
 
   final future;
   final title;
   final listId;
+  final type;
 
   @override
   _SelectDialogState createState() => _SelectDialogState();
@@ -105,8 +106,9 @@ class _SelectDialogState extends State<SelectDialog> {
                                      items: snapshot.data,
                                         validator: (value) {
                                           if (value == null) {
-                                            return 'Selecione um planeta';
+                                            return 'Selecione um '+widget.type;
                                           }
+                                          return null;
                                         },
                                         decoration: InputDecoration(
                                           enabledBorder: OutlineInputBorder(
@@ -124,7 +126,7 @@ class _SelectDialogState extends State<SelectDialog> {
                                             ),
                                           )
                                         ),
-                                        hint: Text("Selecione o planeta",  style: TextStyle(
+                                        hint: Text("Selecione o "+widget.type,  style: TextStyle(
                                                                             color: Colors.purple[700],
                                                                             fontFamily: "Poppins",
                                                                             fontSize: 18.0,)),

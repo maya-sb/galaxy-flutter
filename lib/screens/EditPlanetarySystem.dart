@@ -320,7 +320,7 @@ class _EditPlanetarySystemState extends State<EditPlanetarySystem> {
                                               onTap: () async{
                                                
                                                 var planet = await showDialog(context: context, builder: (context) {
-                                                    return SelectDialog(db.getAll('planet', Planet), "Adicionar Planeta",listIdPlanets);
+                                                    return SelectDialog(db.getAll('planet', Planet), "Adicionar Planeta",listIdPlanets,"planeta");
                                                 });
 
                                                 if(planet != null) { 
@@ -467,8 +467,6 @@ class _InfoState extends State<Info> {
         return val;
       }
     }
-
-  String _selectedGalaxy;
 
   @override
   Widget build(BuildContext context) {

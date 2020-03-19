@@ -9,8 +9,6 @@ import 'package:galaxy_flutter/screens/AddGasDialog.dart';
 import 'package:galaxy_flutter/widgets/Animations.dart';
 import 'package:galaxy_flutter/widgets/Dialogs.dart';
 import 'package:galaxy_flutter/widgets/Fields.dart';
-import 'package:galaxy_flutter/models/Gas.dart';
-import 'package:galaxy_flutter/widgets/Lists.dart';
 
 class RegisterSatellite extends StatefulWidget {
   @override
@@ -253,7 +251,7 @@ class _RegisterSatelliteState extends State<RegisterSatellite> {
                           ),
                             width: 140.0,
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Colors.white70,
                               shape: BoxShape.rectangle,
                               borderRadius: new BorderRadius.circular(8.0),
                           ),
@@ -344,7 +342,7 @@ class Info extends StatelessWidget {
               child: EditField(
                 title: "Massa", 
                 controller: massController, 
-                validator: validatorSize, 
+                validator: validatorMass, 
                 fontSize: 18.0,
                 keyboardType: TextInputType.number,
             ),),

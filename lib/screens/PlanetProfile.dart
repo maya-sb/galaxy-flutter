@@ -1,11 +1,12 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
-import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:galaxy_flutter/Api.dart';
 import 'package:galaxy_flutter/RouteGenerator.dart';
 import 'package:galaxy_flutter/models/PlanetGas.dart';
+import 'package:galaxy_flutter/models/PlanetSystemPlanetary.dart';
+import 'package:galaxy_flutter/models/PlanetarySystem.dart';
 import 'package:galaxy_flutter/widgets/Animations.dart';
 import 'package:galaxy_flutter/widgets/Fields.dart';
 import 'package:galaxy_flutter/widgets/Lists.dart';
@@ -21,7 +22,6 @@ class PlanetProfile extends StatefulWidget {
 
 class _PlanetProfileState extends State<PlanetProfile > {
 
-  final _formKey = GlobalKey<FormState>();
   var nameController = TextEditingController();
   var sizeController = TextEditingController();
   var massController = TextEditingController();
@@ -33,6 +33,21 @@ class _PlanetProfileState extends State<PlanetProfile > {
   
   var gases;  
   Future future;
+  var systems;
+
+   _getSystems() async{
+    List items = await db.getWhere('planetSystemPlanetary', PlanetSystemPlanetary, 'planetId', widget.id);
+    List systems = [];
+
+    if (items != null){
+      var system;
+      for (PlanetSystemPlanetary psp in items){
+        system = await db.getdocbyId('system', psp.systemId);
+        systems.add(PlanetarySystem.fromMap(system));
+      }
+    }
+    return systems;
+  }
 
   _getPlanet() async{
 
@@ -64,6 +79,7 @@ class _PlanetProfileState extends State<PlanetProfile > {
     super.initState();
     future = _getPlanet();
     gases = _getGases();
+    systems = _getSystems();
   }
 
   @override
@@ -201,7 +217,7 @@ class _PlanetProfileState extends State<PlanetProfile > {
                                               ),
                                                 width: 140.0,
                                                 decoration: BoxDecoration(
-                                                  color: Colors.white,
+                                                  color: Colors.white70,
                                                   shape: BoxShape.rectangle,
                                                   borderRadius: new BorderRadius.circular(8.0),
                                               ),
@@ -215,6 +231,27 @@ class _PlanetProfileState extends State<PlanetProfile > {
                             
                           }
                         ), 
+                        Padding(
+                            padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
+                            child: Text("Sistemas Planetários", style: TextStyle(color: Colors.purple[700], fontSize: 19),),
+                        ),      
+                        FutureBuilder(
+                          future: systems,
+                          builder: (context, snapshot){
+                            switch (snapshot.connectionState) {
+                                case ConnectionState.none:
+                                case ConnectionState.waiting:
+                                case ConnectionState.active:
+                                case ConnectionState.done:  
+                                  return Container(
+                                    padding: EdgeInsets.only(left:15),
+                                    height: 180, 
+                                    child: HorizontalList(list: snapshot.data, asset: 'assets/svg/galaxy.svg',editable: false)
+                                  );
+                              }
+                          }
+                        ), 
+
                         ]
                       ),
                        );

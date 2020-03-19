@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flare_flutter/flare_actor.dart';
-import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:galaxy_flutter/Api.dart';
 import 'package:galaxy_flutter/RouteGenerator.dart';
 import 'package:galaxy_flutter/models/Planet.dart';
 import 'package:galaxy_flutter/models/PlanetGas.dart';
+import 'package:galaxy_flutter/models/PlanetSystemPlanetary.dart';
+import 'package:galaxy_flutter/models/PlanetarySystem.dart';
 import 'package:galaxy_flutter/screens/AddGasDialog.dart';
 import 'package:galaxy_flutter/widgets/Animations.dart';
 import 'package:galaxy_flutter/widgets/Fields.dart';
-import 'package:galaxy_flutter/widgets/Lists.dart';
 import 'package:galaxy_flutter/widgets/Dialogs.dart';
 
 class EditPlanet extends StatefulWidget {
@@ -38,6 +38,51 @@ class _EditPlanetState extends State<EditPlanet> {
   var apagados = [];
   var adicionados = [];
   var listId = [];
+
+  Future selectedSystems;
+  var deletedSystems = [];
+  var addedSystems = [];
+  var listIdSystems = [];
+
+  updateSystem(String id, String op) async{
+    var data = await db.getbyId('system', id);
+
+    if (data != null){
+      int numPlanets = data['numPlanets'];
+      if (op == "+"){
+        await db.updateField('system', id, 'numPlanets', numPlanets+1);
+      }else{
+        await db.updateField('system', id, 'numPlanets', numPlanets-1);
+      }
+    }
+  }
+
+  _getSystems() async{
+    List items = await db.getWhere('planetSystemPlanetary', PlanetSystemPlanetary, 'planetId', widget.id);
+    List systems = [];
+
+    var system;
+    for (PlanetSystemPlanetary psp in items){
+      system = await db.getbyId('system', psp.systemId);
+      systems.add({"name": system["name"], "systemId": psp.systemId, "id": psp.id});
+    }
+
+    return systems;
+  }
+
+
+  var systems;
+
+  getSystems(var systemsBanco){
+    systems = systemsBanco;
+    if (systemsBanco != null){
+      for (var system in systemsBanco){
+      listIdSystems.add(system["systemId"]);
+    }
+    }
+    return systems;
+  }
+
 
    _getPlanet() async{
 
@@ -118,6 +163,7 @@ class _EditPlanetState extends State<EditPlanet> {
     super.initState();
     dadosPlanet = _getPlanet();
     selectedGases = _getGases();
+    selectedSystems = _getSystems();
   }
 
   @override
@@ -126,7 +172,7 @@ class _EditPlanetState extends State<EditPlanet> {
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.pink[700],
           child: Icon(Icons.save, color: Colors.white,),
-          onPressed: (){
+          onPressed: () async{
             if (_formKey.currentState.validate()) {
             
               Planet planet = Planet(id: widget.id, name: nameController.text, size: sizeController.text, mass: massController.text, rotationSpeed: rotationController.text, colorId: selectedColor);
@@ -140,6 +186,19 @@ class _EditPlanetState extends State<EditPlanet> {
                 PlanetGas planetGas = PlanetGas(gasId: gas["gasId"], planetId: widget.id, amount: gas["amount"]);
                 var idPlanetGas = widget.id+"-"+gas["gasId"];
                 db.setId('planetGas', planetGas, idPlanetGas);
+              }
+
+              for (var plaId in deletedSystems){
+                var systemId = plaId.split("-")[0];
+                await updateSystem(systemId, "-");
+                db.delete('planetSystemPlanetary', plaId);
+              }
+
+              for (var system in addedSystems){
+                PlanetSystemPlanetary planetSystem = PlanetSystemPlanetary(planetId: widget.id, systemId: system["id"]);
+                var idplanetSystem = system["id"]+"-"+widget.id;
+                db.setId('planetSystemPlanetary', planetSystem, idplanetSystem);
+                await updateSystem(system["id"], "+");
               }
 
               Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_PLANET_PROFILE, arguments: widget.id);
@@ -212,7 +271,13 @@ class _EditPlanetState extends State<EditPlanet> {
                                         showDialog(context: context, builder :(context){
                                           return confirmExitRemove(
                                             title: "Deseja remover planeta permanentemente?", 
-                                            action: (){ 
+                                            action: () async{
+
+                                              for (var sysId in listIdSystems){
+                                                await updateSystem(sysId, "-");
+                                              }
+
+                                              db.deleteOnCascade('planetSystemPlanetary', 'planetId', widget.id);
                                               db.deleteOnCascade('planetGas', 'planetId', widget.id);
                                               db.delete("planet", widget.id); 
                                               Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_PLANETS);});
@@ -342,7 +407,7 @@ class _EditPlanetState extends State<EditPlanet> {
                                           ),
                                             width: 140.0,
                                             decoration: BoxDecoration(
-                                              color: Colors.white,
+                                              color: Colors.white70,
                                               shape: BoxShape.rectangle,
                                               borderRadius: new BorderRadius.circular(8.0),
                                           ),
@@ -365,6 +430,139 @@ class _EditPlanetState extends State<EditPlanet> {
                                                   }
                                                   listId.removeWhere((item) => item == gases[index-1]["gasId"]);
                                                   gases.removeAt(index-1);                  
+                                                });
+                                              }
+                                              ))
+                                          ]
+                                      );
+                                        //return GasCard(title: widget.list[index-1], index: index, editable: widget.editable);
+                                      }
+                                      
+                                    } ,
+                                  )
+                                  //child: HorizontalList(list: selectedGases, editable: true, isGas: true,)
+                                );
+                                }
+                            },
+                            ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20.0, bottom: 10.0, top: 10.0),
+                            child: Text("Sistemas Planetários", style: TextStyle(color: Colors.purple[800], fontSize: 18),),
+                          ), 
+                          FutureBuilder(
+                            future: selectedSystems,
+                            builder: (context, snapshot){
+
+                              switch (snapshot.connectionState){
+                                case ConnectionState.none:
+                                case ConnectionState.active:
+                                case ConnectionState.waiting:
+                                case ConnectionState.done:
+                                  var aux = getSystems(snapshot.data);
+                                  
+                                  if (aux == null){
+                                    return Container(); 
+                                  }
+
+                                  return Container(
+                                  padding: EdgeInsets.only(left: 15, right: 10),
+                                  height: 180,
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: systems.length+1,
+                                    itemBuilder: (context, index) {
+                                      if (index == 0){
+                                        return Container(
+                                          padding: EdgeInsets.all(10),
+                                          child: InkWell(
+                                              onTap: () async{
+                                               
+                                                var system = await showDialog(context: context, builder: (context) {
+                                                    return SelectDialog(db.getAll('system', PlanetarySystem), "Adicionar Sistema Planetário",listIdSystems,"sistema");
+                                                });
+
+                                                if(system!= null) { 
+                                                  setState(() {
+                                                  addedSystems.add(system);
+                                                  systems.add(system);
+                                                  listIdSystems.add(system["id"]);
+                                                });}
+
+                                              },
+                                              borderRadius: BorderRadius.circular(8.0),
+                                              child: Center(child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: <Widget>[
+                                                Padding(
+                                                  padding: EdgeInsets.all(10),
+                                                  child: Text("+", style: TextStyle(color: Color(0xff380b4c), fontSize: 60),),
+                                                ),
+                                              ],
+                                            )),
+                                          ),
+                                          margin: const EdgeInsets.symmetric(
+                                          vertical: 10.0,
+                                          horizontal: 5.0,
+                                        ),
+                                          width: 140.0,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white70,
+                                            shape: BoxShape.rectangle,
+                                            borderRadius: new BorderRadius.circular(8.0),
+                                        ),
+                                      );
+
+                                      } else { 
+                                        return Stack(
+                                          children: [
+                                            Container(
+                                            padding: EdgeInsets.all(10),
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: <Widget>[
+                                                Padding(
+                                                  padding: const EdgeInsets.all(0),
+                                                  child: Text(systems[index-1]['name'], style: TextStyle(color: Color(0xff380b4c), fontSize: 16),),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  child: SizedBox.fromSize(
+                                                      child: SvgPicture.asset('assets/svg/galaxy.svg'),
+                                                      size: Size(70.0, 70.0),
+                                                    ),
+                                                ),
+                                              ],
+                                            ),
+                                            margin: const EdgeInsets.symmetric(
+                                            vertical: 10.0,
+                                            horizontal: 5.0,
+                                          ),
+                                            width: 140.0,
+                                            decoration: BoxDecoration(
+                                              color: Colors.white70,
+                                              shape: BoxShape.rectangle,
+                                              borderRadius: new BorderRadius.circular(8.0),
+                                          ),
+                                          ),
+                                          Positioned(top: 7, right: 0, child: IconButton(
+                                            icon: Icon(Icons.clear,color:Color(0xff380b4c),), 
+                                            onPressed: (){
+                                                setState(() {
+                                                  var indexPlanet;
+                                                  for (int i=0; i<addedSystems.length; i++){
+                                                    if(addedSystems[i]["id"] == systems[index-1]["systemId"]){
+                                                      indexPlanet = i;
+                                                      break;
+                                                    }
+                                                  }
+                                                  if (indexPlanet != null){
+                                                    addedSystems.removeAt(indexPlanet);
+                                                  }else{
+                                                    deletedSystems.add(systems[index-1]["id"]);
+                                                  }
+                                                  listIdSystems.removeWhere((item) => item == systems[index-1]["systemId"]);
+                                                 systems.removeAt(index-1);                  
                                                 });
                                               }
                                               ))

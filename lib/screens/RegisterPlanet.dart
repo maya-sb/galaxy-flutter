@@ -5,6 +5,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:galaxy_flutter/Api.dart';
 import 'package:galaxy_flutter/models/Planet.dart';
 import 'package:galaxy_flutter/models/PlanetGas.dart';
+import 'package:galaxy_flutter/models/PlanetSystemPlanetary.dart';
+import 'package:galaxy_flutter/models/PlanetarySystem.dart';
 import 'package:galaxy_flutter/screens/AddGasDialog.dart';
 import 'package:galaxy_flutter/widgets/Animations.dart';
 import 'package:galaxy_flutter/widgets/Dialogs.dart';
@@ -32,8 +34,23 @@ class _RegisterPlanetState extends State<RegisterPlanet> {
 
   var selectedColor = 0;
   List selectedGases = [];
+  List selectedSystems = [];
+  List listIdSystems = [];
 
   var listId = [];
+
+  updateSystem(String id, String op) async{
+    var data = await db.getbyId('system', id);
+
+    if (data != null){
+      int numPlanets = data['numPlanets'];
+      if (op == "+"){
+        await db.updateField('system', id, 'numPlanets', numPlanets+1);
+      }else{
+        await db.updateField('system', id, 'numPlanets', numPlanets-1);
+      }
+    }
+  }
 
   Future _openAddGasDialog() async {
     var gas = await Navigator.of(context).push(MaterialPageRoute(
@@ -88,7 +105,7 @@ class _RegisterPlanetState extends State<RegisterPlanet> {
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.pink[700],
           child: Icon(Icons.save, color: Colors.white,),
-          onPressed: (){
+          onPressed: () async{
             
             if (_formKey.currentState.validate()) {
             
@@ -101,6 +118,13 @@ class _RegisterPlanetState extends State<RegisterPlanet> {
                 db.setId('planetGas', planetGas, idPlanetGas);
               }
 
+              for (var system in selectedSystems){
+                PlanetSystemPlanetary plaSystem = PlanetSystemPlanetary(planetId: id, systemId: system["id"]);
+                var idPlaSystem = system["id"] + "-"+ id;
+                db.setId('planetSystemPlanetary', plaSystem, idPlaSystem);
+                await updateSystem(system["id"], "+");
+              }
+              
               Navigator.pop(context);
 
             }
@@ -254,7 +278,7 @@ class _RegisterPlanetState extends State<RegisterPlanet> {
                           ),
                             width: 140.0,
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Colors.white70,
                               shape: BoxShape.rectangle,
                               borderRadius: new BorderRadius.circular(8.0),
                           ),
@@ -277,6 +301,108 @@ class _RegisterPlanetState extends State<RegisterPlanet> {
                   )
                   //child: HorizontalList(list: selectedGases, editable: true, isGas: true,)
                 ),
+                Padding(
+                padding: const EdgeInsets.only(top: 10.0, left: 20.0, bottom: 10.0,),
+                child: Text("Sistemas Planetários", style: TextStyle(color: Colors.purple[800], fontSize: 18),),
+              ), 
+                Container(
+                  padding: EdgeInsets.only(left: 15, right: 10),
+                  height: 180,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: selectedSystems.length+1,
+                    itemBuilder: (context, index) {
+                      if (index == 0){
+                        return Container(
+                          padding: EdgeInsets.all(10),
+                          child: InkWell(
+                              onTap: () async{
+                                var system = await showDialog(context: context, builder: (context) {
+                                    return SelectDialog(db.getAll('system', PlanetarySystem), "Adicionar Sistema Planetário",listIdSystems, "sistema");
+                                });
+
+                                if(system != null) { 
+                                  setState(() {
+                                  selectedSystems.add(system);
+                                  listIdSystems.add(system["id"]);
+                                });}
+                              },
+
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: Center(child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: Text("+", style: TextStyle(color: Color(0xff380b4c), fontSize: 60),),
+                                ),
+                              ],
+                            )),
+                          ),
+                          margin: const EdgeInsets.symmetric(
+                          vertical: 10.0,
+                          horizontal: 5.0,
+                        ),
+                          width: 140.0,
+                          decoration: BoxDecoration(
+                            color: Colors.white70,
+                            shape: BoxShape.rectangle,
+                            borderRadius: new BorderRadius.circular(8.0),
+                        ),
+                      );
+
+                      } else { 
+                        return Stack(
+                          children: [
+                            Container(
+                            padding: EdgeInsets.all(10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.all(0),
+                                  child: Text(selectedSystems[index-1]['name'], style: TextStyle(color: Color(0xff380b4c), fontSize: 16),),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox.fromSize(
+                                      child: SvgPicture.asset('assets/svg/uranus.svg'),
+                                      size: Size(70.0, 70.0),
+                                    ),
+                                ),
+                              ],
+                            ),
+                            margin: const EdgeInsets.symmetric(
+                            vertical: 10.0,
+                            horizontal: 5.0,
+                          ),
+                            width: 140.0,
+                            decoration: BoxDecoration(
+                              color: Colors.white70,
+                              shape: BoxShape.rectangle,
+                              borderRadius: new BorderRadius.circular(8.0),
+                          ),
+                          ),
+                           Positioned(top: 7, right: 0, child: IconButton(
+                            icon: Icon(Icons.clear,color:Color(0xff380b4c),), 
+                            onPressed: (){
+                                setState(() {
+                                  listIdSystems.removeWhere((item) => item == selectedSystems[index-1]["id"]);
+                                  selectedSystems.removeAt(index-1);
+                                });
+                              }
+                              ))
+                          ]
+                      );
+                        //return GasCard(title: widget.list[index-1], index: index, editable: widget.editable);
+                      }
+                      
+                    } ,
+                  )
+                  //child: HorizontalList(list: selectedGases, editable: true, isGas: true,)
+                ),
+
             ],
           ),
         ),

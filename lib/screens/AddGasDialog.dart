@@ -110,6 +110,7 @@ class _AddGasDialogState extends State<AddGasDialog> {
                                         if (value == null) {
                                           return 'Selecione uma gás';
                                         }
+                                        return null;
                                       },
                                       decoration: InputDecoration(
                                         enabledBorder: OutlineInputBorder(
@@ -163,6 +164,7 @@ class _AddGasDialogState extends State<AddGasDialog> {
                                                                           if (value?.isEmpty ?? true) {
                                                                             return 'Digite o nome do gás';
                                                                           }
+                                                                          return null;
                                                                         },),
                                                         )
                                                     
@@ -212,6 +214,7 @@ class _AddGasDialogState extends State<AddGasDialog> {
                                   if (value?.isEmpty ?? true) {
                                     return 'Digite uma quantidade';
                                   }
+                                  return null;
                                       },),
                             )
                           ]

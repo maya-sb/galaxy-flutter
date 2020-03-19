@@ -450,7 +450,7 @@ class Info extends StatelessWidget {
               child: EditField(
                 title: "Massa", 
                 controller: massController, 
-                validator: validatorSize, 
+                validator: validatorMass, 
                 fontSize: 18.0,
                 keyboardType: TextInputType.number,
             ),),

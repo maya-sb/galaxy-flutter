@@ -27,7 +27,6 @@ class _PlanetarySystemProfileState extends State<PlanetarySystemProfile> {
   var galaxyController = TextEditingController();
   int _selectedColor = 0;
   String _galaxyId;
-  Future _nameGalaxy;
   var planets;
 
   Api db = Api();

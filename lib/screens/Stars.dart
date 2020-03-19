@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:galaxy_flutter/Api.dart';
 import 'package:galaxy_flutter/RouteGenerator.dart';
-import 'package:galaxy_flutter/models/PlanetarySystem.dart';
 import 'package:galaxy_flutter/models/Satellite.dart';
-import 'package:galaxy_flutter/models/Star.dart';
 import 'package:galaxy_flutter/widgets/Lists.dart';
 
 class Stars extends StatefulWidget {

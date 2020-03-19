@@ -22,22 +22,22 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
 
     List<StaggeredTile> _staggeredTiles = const <StaggeredTile>[
-    const StaggeredTile.count(2, 3),
     const StaggeredTile.count(2, 2),
     const StaggeredTile.count(2, 3),
+    const StaggeredTile.count(2, 3),
     const StaggeredTile.count(2, 2),
-    const StaggeredTile.count(4, 2),
-    //const StaggeredTile.count(2, 2),
+    const StaggeredTile.count(2, 2),
+    const StaggeredTile.count(2, 2),
   ];
 
 
   List<Widget> _tiles = const <Widget>[
-    const _Card(title: 'Galáxias',asset: 'assets/svg/orbit.svg', type:'Galaxies'),
-    const _Card(title: 'Planetas',asset: 'assets/svg/uranus.svg', type: 'Planets',),
+    const _Card(title: 'Galáxias',asset: 'assets/svg/blackhole.svg', type:'Galaxies'),
+    const _Card(title:'Órbitas', asset:'assets/svg/orbit.svg', ),
     const _Card(title:'  Sistemas\nPlanetários', asset: 'assets/svg/galaxy.svg', type: 'Systems'),
+    const _Card(title: 'Planetas',asset: 'assets/svg/uranus.svg', type: 'Planets',),
     const _Card(title:'Satélites', asset: 'assets/svg/moon2.svg', type: 'Satellites',),
     const _Card(title:'Estrelas', asset: 'assets/svg/stars.svg', type: 'Stars'),
-    //const _Card(title:'Buracos \n Negros', asset:'assets/svg/blackhole.svg')
   ];
 
   _signOut() async {

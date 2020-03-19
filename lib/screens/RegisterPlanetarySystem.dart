@@ -128,7 +128,6 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
             if (_formKey.currentState.validate()) {
               PlanetarySystem system = PlanetarySystem(name: nameController.text, age:ageController.text, numStars: 0, numPlanets: selectedPlanets.length, galaxyId: galaxyController.text, colorId: selectedColor);
               //TODO Transações
-              //db.insert('system', system);
               var id = db.set('system', system);
               await updateGalaxy(galaxyController.text);
 
@@ -228,7 +227,7 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
                           child: InkWell(
                               onTap: () async{
                                 var planet = await showDialog(context: context, builder: (context) {
-                                    return SelectDialog(db.getAll('planet', Planet), "Adicionar Planeta",listIdPlanets);
+                                    return SelectDialog(db.getAll('planet', Planet), "Adicionar Planeta",listIdPlanets,"planeta");
                                 });
 
                                 if(planet != null) { 
