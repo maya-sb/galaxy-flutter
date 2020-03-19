@@ -4,9 +4,11 @@ import 'package:galaxy_flutter/models/Galaxy.dart';
 import 'package:galaxy_flutter/models/Gas.dart';
 import 'package:galaxy_flutter/models/Planet.dart';
 import 'package:galaxy_flutter/models/PlanetGas.dart';
+import 'package:galaxy_flutter/models/PlanetSystemPlanetary.dart';
 import 'package:galaxy_flutter/models/PlanetarySystem.dart';
 import 'package:galaxy_flutter/models/Satellite.dart';
 import 'package:galaxy_flutter/models/SatelliteGas.dart';
+import 'package:galaxy_flutter/models/StarSystemPlanetary.dart';
 
 class Api {
 
@@ -79,6 +81,11 @@ class Api {
     return data;
   }
 
+  getdocbyId(String collectionName, String id) async{
+    DocumentSnapshot doc = await db.collection(collectionName).document(id).get();
+    return doc;
+  }
+
   getAll(String collectionName, var type) async{
 
     QuerySnapshot querySnapshot = await db.collection(collectionName).orderBy("name").getDocuments();
@@ -130,6 +137,12 @@ class Api {
             break;
           case PlanetGas:
             item = PlanetGas.fromMap(doc);
+            break;
+          case PlanetSystemPlanetary:
+            item = PlanetSystemPlanetary.fromMap(doc);
+            break;
+          case StarSystemPlanetary:
+            item = StarSystemPlanetary.fromMap(doc);
             break;
         }
 

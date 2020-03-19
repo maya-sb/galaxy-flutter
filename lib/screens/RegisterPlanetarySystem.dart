@@ -1,7 +1,10 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:galaxy_flutter/Api.dart';
+import 'package:galaxy_flutter/models/Planet.dart';
+import 'package:galaxy_flutter/models/PlanetSystemPlanetary.dart';
 import 'package:galaxy_flutter/models/PlanetarySystem.dart';
 import 'package:galaxy_flutter/widgets/Animations.dart';
 import 'package:galaxy_flutter/widgets/Dialogs.dart';
@@ -29,6 +32,10 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
   Api db = Api();
 
   var galaxyList;
+  List selectedPlanets = [];
+  List selectedStars = [];
+  List listIdPlanets = [];
+  List listIdStars = [];
 
   @override
   void initState() {
@@ -119,10 +126,18 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
             }
 
             if (_formKey.currentState.validate()) {
-              PlanetarySystem system = PlanetarySystem(name: nameController.text, age:ageController.text, numStars: 0, numPlanets: 0, galaxyId: galaxyController.text, colorId: selectedColor);
+              PlanetarySystem system = PlanetarySystem(name: nameController.text, age:ageController.text, numStars: 0, numPlanets: selectedPlanets.length, galaxyId: galaxyController.text, colorId: selectedColor);
               //TODO Transações
-              db.insert('system', system);
+              //db.insert('system', system);
+              var id = db.set('system', system);
               await updateGalaxy(galaxyController.text);
+
+              for (var planet in selectedPlanets){
+                PlanetSystemPlanetary plaSystem = PlanetSystemPlanetary(planetId: planet["id"], systemId: id);
+                var idPlaSystem = id+"-"+planet["id"];
+                db.setId('planetSystemPlanetary', plaSystem, idPlaSystem);
+              }
+
               Navigator.pop(context);
             }
             }),
@@ -183,7 +198,7 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
               ),
                Padding(
                 padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
-                child: Text("Cor", style: TextStyle(color: Colors.pink[800], fontSize: 18),),
+                child: Text("Cor", style: TextStyle(color: Colors.purple[800], fontSize: 18),),
               ),
               Container(
                 padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
@@ -194,7 +209,108 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
                       children: _colorList(),
                     ),
                   )        
-              )
+              ),
+               Padding(
+                padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,),
+                child: Text("Planetas", style: TextStyle(color: Colors.purple[800], fontSize: 18),),
+              ), 
+                Container(
+                  padding: EdgeInsets.only(left: 15, right: 10),
+                  height: 180,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: selectedPlanets.length+1,
+                    itemBuilder: (context, index) {
+                      if (index == 0){
+                        return Container(
+                          padding: EdgeInsets.all(10),
+                          child: InkWell(
+                              onTap: () async{
+                                var planet = await showDialog(context: context, builder: (context) {
+                                    return SelectDialog(db.getAll('planet', Planet), "Adicionar Planeta",listIdPlanets);
+                                });
+
+                                if(planet != null) { 
+                                  setState(() {
+                                  selectedPlanets.add(planet);
+                                  listIdPlanets.add(planet["id"]);
+                                });}
+                              },
+
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: Center(child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: Text("+", style: TextStyle(color: Color(0xff380b4c), fontSize: 60),),
+                                ),
+                              ],
+                            )),
+                          ),
+                          margin: const EdgeInsets.symmetric(
+                          vertical: 10.0,
+                          horizontal: 5.0,
+                        ),
+                          width: 140.0,
+                          decoration: BoxDecoration(
+                            color: Colors.white70,
+                            shape: BoxShape.rectangle,
+                            borderRadius: new BorderRadius.circular(8.0),
+                        ),
+                      );
+
+                      } else { 
+                        return Stack(
+                          children: [
+                            Container(
+                            padding: EdgeInsets.all(10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.all(0),
+                                  child: Text(selectedPlanets[index-1]['name'], style: TextStyle(color: Color(0xff380b4c), fontSize: 16),),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox.fromSize(
+                                      child: SvgPicture.asset('assets/svg/uranus.svg'),
+                                      size: Size(70.0, 70.0),
+                                    ),
+                                ),
+                              ],
+                            ),
+                            margin: const EdgeInsets.symmetric(
+                            vertical: 10.0,
+                            horizontal: 5.0,
+                          ),
+                            width: 140.0,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.rectangle,
+                              borderRadius: new BorderRadius.circular(8.0),
+                          ),
+                          ),
+                           Positioned(top: 7, right: 0, child: IconButton(
+                            icon: Icon(Icons.clear,color:Color(0xff380b4c),), 
+                            onPressed: (){
+                                setState(() {
+                                  listIdPlanets.removeWhere((item) => item == selectedPlanets[index-1]["id"]);
+                                  selectedPlanets.removeAt(index-1);
+                                });
+                              }
+                              ))
+                          ]
+                      );
+                        //return GasCard(title: widget.list[index-1], index: index, editable: widget.editable);
+                      }
+                      
+                    } ,
+                  )
+                  //child: HorizontalList(list: selectedGases, editable: true, isGas: true,)
+                ),
             ],
           ),
         ),
@@ -275,6 +391,7 @@ class _InfoState extends State<Info> {
                         case ConnectionState.waiting:
                         case ConnectionState.active:
                         case ConnectionState.done:  
+                        if (snapshot.hasData){
                           if (snapshot.data.length == 0){
                             return Container(
                               decoration:  BoxDecoration(
@@ -367,12 +484,16 @@ class _InfoState extends State<Info> {
                                   });
                                         },
                               );
+                            }}else{
+                              return Container();
                             }
 
                     }
                     }
                     
                   )
-                  )]));
+                  ),
+                  ]
+                  ));
   }
 }

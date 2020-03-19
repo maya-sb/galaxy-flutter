@@ -36,6 +36,141 @@ class addHorizontalList extends StatefulWidget {
   _addHorizontalListState createState() => _addHorizontalListState();
 }
 
+class SelectDialog extends StatefulWidget {
+  SelectDialog(this.future, this.title, this.listId);
+
+  final future;
+  final title;
+  final listId;
+
+  @override
+  _SelectDialogState createState() => _SelectDialogState();
+}
+
+class _SelectDialogState extends State<SelectDialog> {
+
+  Map map;
+  var items;
+  var _selectedItem;
+  var controllerName = TextEditingController();
+  var controllerId = TextEditingController();
+
+  loadList() async{
+    var listBD = await widget.future;
+    List<DropdownMenuItem> items = [];
+
+    for (var item in listBD){
+      if(!widget.listId.contains(item.id)){
+        items.add(new DropdownMenuItem(
+            child: Text(item.name,  style: TextStyle(
+                                color: Colors.purple[700],
+                                fontFamily: "Poppins",
+                                fontSize: 18.0,)),
+            value: item,  
+        )
+        );
+      }
+    }
+    return items;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    items = loadList();
+    final _formKey = GlobalKey<FormState>();
+
+    return AlertDialog(
+      shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(8.0))),
+      title: Text(widget.title),
+      contentPadding: EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0.0),
+      content: Container(
+        height: 120.0,
+        child: FutureBuilder(
+          future: items,
+          builder: (context, snapshot){
+            switch(snapshot.connectionState){
+                      case ConnectionState.none:
+                      case ConnectionState.waiting:
+                      case ConnectionState.active:
+                      case ConnectionState.done:
+                        return Form(
+                          key: _formKey,
+                          child: Column(
+                            children:[
+                              Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                  child: DropdownButtonFormField(
+                                     items: snapshot.data,
+                                        validator: (value) {
+                                          if (value == null) {
+                                            return 'Selecione um planeta';
+                                          }
+                                        },
+                                        decoration: InputDecoration(
+                                          enabledBorder: OutlineInputBorder(
+                                            borderRadius:BorderRadius.circular(25.0),
+                                            borderSide: BorderSide(
+                                              color: Colors.purple[700],
+                                              width: 1.5
+                                            ),
+                                          ),
+                                          errorBorder: OutlineInputBorder(
+                                            borderRadius: new BorderRadius.circular(25.0),
+                                            borderSide: BorderSide(
+                                              color: Colors.pink[700],
+                                              width: 1.5
+                                            ),
+                                          )
+                                        ),
+                                        hint: Text("Selecione o planeta",  style: TextStyle(
+                                                                            color: Colors.purple[700],
+                                                                            fontFamily: "Poppins",
+                                                                            fontSize: 18.0,)),
+                                        style: TextStyle(
+                                          color: Colors.purple[700],
+                                          fontFamily: "Poppins",
+                                          fontSize: 18.0,),
+                                        isDense: true,
+                                        isExpanded: true,
+                                        value: _selectedItem,
+                                        onChanged: (newValue) {      
+                                          setState(() {
+                                              _selectedItem = newValue;   
+                                              controllerId.text = newValue.id;
+                                              controllerName.text = newValue.name;  
+                                          });          
+                                      },
+
+                                  ),
+                                ),
+                            ]
+                          ),
+                        );
+            }
+          }
+        ),
+      ),
+      actions: <Widget>[
+        FlatButton(child: Text("Sim"),onPressed: (){
+
+          if (_formKey.currentState.validate()) {
+          
+          Navigator.pop(context, 
+                  {'name': controllerName.text, 
+                    'id': controllerId.text,
+                  });   
+          }
+        }),
+        FlatButton(child: Text("Cancelar"),onPressed: (){
+          Navigator.pop(context, null);
+        },)
+      ],
+    );
+  }
+}
+
 class _addHorizontalListState extends State<addHorizontalList> {
 
   var _isSelected = [];

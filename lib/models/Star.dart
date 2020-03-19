@@ -30,4 +30,7 @@ class Star{
       "tipo": this.tipo,
       "colorId": this.colorId};
   }
+
+    bool operator == (m) => m is Star && id == m.id;
+
 }

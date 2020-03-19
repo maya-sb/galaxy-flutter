@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:galaxy_flutter/Api.dart';
 import 'package:galaxy_flutter/RouteGenerator.dart';
+import 'package:galaxy_flutter/models/Planet.dart';
+import 'package:galaxy_flutter/models/PlanetSystemPlanetary.dart';
 import 'package:galaxy_flutter/widgets/Animations.dart';
 import 'package:galaxy_flutter/widgets/Fields.dart';
+import 'package:galaxy_flutter/widgets/Lists.dart';
 
 class PlanetarySystemProfile extends StatefulWidget {
   PlanetarySystemProfile({this.id});
@@ -25,6 +28,7 @@ class _PlanetarySystemProfileState extends State<PlanetarySystemProfile> {
   int _selectedColor = 0;
   String _galaxyId;
   Future _nameGalaxy;
+  var planets;
 
   Api db = Api();
 
@@ -42,10 +46,26 @@ class _PlanetarySystemProfileState extends State<PlanetarySystemProfile> {
     return widget.id;
   }
 
+
+  _getPlanets() async{
+    List items = await db.getWhere('planetSystemPlanetary', PlanetSystemPlanetary, 'systemId', widget.id);
+    List planets = [];
+
+    if (items != null){
+      var planet;
+      for (PlanetSystemPlanetary psp in items){
+        planet = await db.getdocbyId('planet', psp.planetId);
+        planets.add(Planet.fromMap(planet));
+      }
+    }
+    return planets;
+  }
+
   @override
   void initState() {
     super.initState();
     future = _getSystem();
+    planets = _getPlanets();
   }
 
   @override
@@ -144,7 +164,30 @@ class _PlanetarySystemProfileState extends State<PlanetarySystemProfile> {
                               },
                               
                           ),
-                        ),)
+                        ),),
+                          numPlanetsController.text == '0' 
+                        ? Container()
+                        : Padding(
+                            padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
+                            child: Text("Planetas", style: TextStyle(color: Colors.purple[700], fontSize: 19),),
+                          ),      
+                        FutureBuilder(
+                          future: planets,
+                          builder: (context, snapshot){
+                            switch (snapshot.connectionState) {
+                                case ConnectionState.none:
+                                case ConnectionState.waiting:
+                                case ConnectionState.active:
+                                case ConnectionState.done:  
+                                  return Container(
+                                    padding: EdgeInsets.only(left:15),
+                                    height: 180, 
+                                    child: HorizontalList(list: snapshot.data, asset: 'assets/svg/uranus.svg',editable: false)
+                                  );
+                              }
+                          }
+                        ), 
+
                         ]
                       ),
                        );

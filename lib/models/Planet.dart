@@ -26,4 +26,7 @@ class Planet{
       "rotationSpeed": this.rotationSpeed,
       "colorId": this.colorId};
   }
+
+  bool operator == (m) => m is Planet && id == m.id;
+
 }
