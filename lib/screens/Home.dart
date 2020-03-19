@@ -33,7 +33,7 @@ class _HomeState extends State<Home> {
 
   List<Widget> _tiles = const <Widget>[
     const _Card(title: 'Galáxias',asset: 'assets/svg/blackhole.svg', type:'Galaxies'),
-    const _Card(title:'Órbitas', asset:'assets/svg/orbit.svg', ),
+    const _Card(title:'Órbitas', asset:'assets/svg/orbit.svg',type: 'Orbits'),
     const _Card(title:'  Sistemas\nPlanetários', asset: 'assets/svg/galaxy.svg', type: 'Systems'),
     const _Card(title: 'Planetas',asset: 'assets/svg/uranus.svg', type: 'Planets',),
     const _Card(title:'Satélites', asset: 'assets/svg/moon2.svg', type: 'Satellites',),
@@ -107,6 +107,8 @@ class _Card extends StatelessWidget {
                 Navigator.pushNamed(context, RouteGenerator.ROUTE_SATELLITES);
               }else if(type == 'Stars'){
                 Navigator.pushNamed(context, RouteGenerator.ROUTE_STARS);
+              }else if(type == 'Orbits'){
+                Navigator.pushNamed(context, RouteGenerator.ROUTE_ORBITS);
               }
             },
             child: Center(

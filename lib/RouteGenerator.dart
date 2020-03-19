@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:galaxy_flutter/screens/EditGalaxy.dart';
+import 'package:galaxy_flutter/screens/EditOrbit.dart';
 import 'package:galaxy_flutter/screens/EditSatellite.dart';
 import 'package:galaxy_flutter/screens/EditPlanet.dart';
 import 'package:galaxy_flutter/screens/GalaxyProfile.dart';
 import 'package:galaxy_flutter/screens/Home.dart';
 import 'package:galaxy_flutter/screens/Login.dart';
+import 'package:galaxy_flutter/screens/OrbitProfile.dart';
+import 'package:galaxy_flutter/screens/Orbits.dart';
 import 'package:galaxy_flutter/screens/PlanetProfile.dart';
 import 'package:galaxy_flutter/screens/Planets.dart';
 import 'package:galaxy_flutter/screens/RegisterGalaxy.dart';
+import 'package:galaxy_flutter/screens/RegisterOrbit.dart';
 import 'package:galaxy_flutter/screens/RegisterSatellite.dart';
 import 'package:galaxy_flutter/screens/SatelliteProfile.dart';
 import 'package:galaxy_flutter/screens/Satellites.dart';
@@ -43,7 +47,10 @@ class RouteGenerator {
   static const String ROUTE_SATELLITE_PROFILE = "satelliteProfile";
   static const String ROUTE_EDIT_SATELLITE = "/editSatellite";
   static const String ROUTE_STARS = "/stars";
-
+  static const String ROUTE_ORBITS = "/orbits";
+  static const String ROUTE_REGISTER_ORBIT = "/registerOrbit";
+  static const String ROUTE_ORBIT_PROFILE = "/orbitProfile";
+  static const String ROUTE_EDIT_ORBIT = "/editOrbit";
 
   static Route<dynamic> generateRoute(RouteSettings settings){
     final arguments = settings.arguments;
@@ -111,7 +118,18 @@ class RouteGenerator {
       case ROUTE_STARS:
         return MaterialPageRoute(
           builder: (_) => Stars());
-
+      case ROUTE_ORBITS:
+        return MaterialPageRoute(
+          builder: (_) => Orbits());
+      case ROUTE_REGISTER_ORBIT:
+        return MaterialPageRoute(
+          builder: (_) => RegisterOrbit());
+      case ROUTE_ORBIT_PROFILE:
+        return MaterialPageRoute(
+          builder: (_) => OrbitProfile());
+      case ROUTE_EDIT_ORBIT:
+        return MaterialPageRoute(
+          builder: (_) => EditOrbit());
     }
     
   }
