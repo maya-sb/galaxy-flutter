@@ -5,6 +5,7 @@ import 'package:galaxy_flutter/models/PlanetarySystem.dart';
 import 'package:galaxy_flutter/models/Satellite.dart';
 import 'package:galaxy_flutter/models/Star.dart';
 import 'package:galaxy_flutter/widgets/Lists.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class Stars extends StatefulWidget {
   @override
@@ -32,7 +33,7 @@ class _StarsState extends State<Stars> {
        },
        child: Scaffold(
          appBar: AppBar(
-          title: Text("Estrelas", style: TextStyle(color: Colors.white)),
+          title: Text("Estrelass", style: TextStyle(color: Colors.white)),
           iconTheme: IconThemeData(color: Colors.white),
           backgroundColor: Colors.transparent,
           actions: <Widget>[
@@ -58,12 +59,67 @@ class _StarsState extends State<Stars> {
             )
           ],
          ),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add,color: Colors.pink[700],),
+        //Navigator.pushNamed(context, RouteGenerator.ROUTE_REGISTER_SATELLITE);
+        floatingActionButton: SpeedDial(
+          // both default to 16
+          marginRight: 18,
+          marginBottom: 20,
+          child: Icon(Icons.add),
+          // this is ignored if animatedIcon is non null
+          // child: Icon(Icons.add),
+          // If true user is forced to close dial manually 
+          // by tapping main button and overlay is not rendered.
+          closeManually: false,
+          curve: Curves.bounceIn,
+          overlayColor: Colors.purple[900],
+          overlayOpacity: 0.5,
+          onOpen: () => print('OPENING DIAL'),
+          onClose: () => print('DIAL CLOSED'),
+          tooltip: 'Speed Dial',
+          heroTag: 'speed-dial-hero-tag',
           backgroundColor: Colors.white,
-          onPressed: (){
-             Navigator.pushNamed(context, RouteGenerator.ROUTE_REGISTER_SATELLITE);
-        },),
+          foregroundColor: Colors.pink[700],
+          elevation: 8.0,
+          shape: CircleBorder(),
+          children: [
+            SpeedDialChild(
+              child: Icon(Icons.star, color: Colors.pink[700],),
+              backgroundColor: Colors.white,
+              label: 'Anã branca',
+              labelStyle: TextStyle(fontSize: 18.0, color: Colors.pink[700]),
+              onTap: () => print('FIRST CHILD')
+            ),
+            SpeedDialChild(
+              child: Icon(Icons.star, color: Colors.pink[700],),
+              backgroundColor: Colors.white,
+              label: 'Anã vermelha',
+              labelStyle: TextStyle(fontSize: 18.0, color: Colors.pink[700]),
+              onTap: () => print('FIRST CHILD')
+            ),
+            SpeedDialChild(
+              child: Icon(Icons.star, color: Colors.pink[700],),
+              backgroundColor: Colors.white,
+              label: 'Gigante azul',
+              labelStyle: TextStyle(fontSize: 18.0, color: Colors.pink[700]),
+              onTap: () => print('FIRST CHILD')
+            ),
+            SpeedDialChild(
+              child: Icon(Icons.star, color: Colors.pink[700],),
+              backgroundColor: Colors.white,
+              label: 'Gigante vermelha',
+              labelStyle: TextStyle(fontSize: 18.0, color: Colors.pink[700]),
+              onTap: () => print('FIRST CHILD')
+            ),
+            SpeedDialChild(
+              child: Icon(Icons.star, color: Colors.pink[700],),
+              backgroundColor: Colors.white,
+              label: 'Estrela binária',
+              labelStyle: TextStyle(fontSize: 18.0, color: Colors.pink[700]),
+              onTap: () => print('FIRST CHILD')
+            ),
+       
+          ],
+        ),
         body: lista,
       ),
     );
