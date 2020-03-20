@@ -14,7 +14,6 @@ class _OrbitsState extends State<Orbits> {
   Api db = Api();
   var orbits;
 
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -40,7 +39,7 @@ class _OrbitsState extends State<Orbits> {
           onPressed: (){
              Navigator.pushNamed(context, RouteGenerator.ROUTE_REGISTER_ORBIT);
         },),
-        body: NameList(type: 'Orbit', future: db.getAll("orbit", Orbit), route: RouteGenerator.ROUTE_ORBIT_PROFILE)
+        body: NameList(type: 'Orbit', future: db.getAll("orbit", Orbit), route: RouteGenerator.ROUTE_ORBIT_PROFILE, db: db)
       ),
     );
   }

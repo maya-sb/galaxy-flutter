@@ -205,10 +205,12 @@ class CardAdd extends StatelessWidget {
 }
 
 class CardList extends StatelessWidget {
-  const CardList({this.title, this.actionOnTap});
+  const CardList({this.title, this.actionOnTap, this.item, this.db});
 
   final title;
   final actionOnTap;
+  final item;
+  final db;
 
   @override
   Widget build(BuildContext context) {
@@ -218,13 +220,60 @@ class CardList extends StatelessWidget {
         child: Center(child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(title, 
-            style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff380b4c), fontSize: 20, ),),
-            /*Text("Tamanho: 49.244 km", 
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white54, fontSize: 15, ),),
-            Text("Massa: 1,024 × 10^26 kg", 
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white54, fontSize: 15, ),),   
-            */
+            title != null 
+            ? (Text(title, 
+            style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff380b4c), fontSize: 20, ),))
+            : FutureBuilder(
+              future: db.getbyId('planet',item.planetId),
+              builder: (context,snapshot){
+                switch (snapshot.connectionState) {
+                  case ConnectionState.none:
+                  case ConnectionState.waiting:
+                  case ConnectionState.active:
+                  case ConnectionState.done:  
+                    if (snapshot.hasData){
+                      return Text(snapshot.data["name"], style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff380b4c), fontSize: 20, ));
+                    }else{
+                      return Container();
+                    }
+                }
+              },),
+              title != null 
+              ? Container ()
+              : FutureBuilder(
+              future: db.getbyId('satellite',item.satelliteId),
+              builder: (context,snapshot){
+                switch (snapshot.connectionState) {
+                  case ConnectionState.none:
+                  case ConnectionState.waiting:
+                  case ConnectionState.active:
+                  case ConnectionState.done:  
+                    if (snapshot.hasData){
+                      return Text(snapshot.data["name"], style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff380b4c), fontSize: 20, ));
+                    }else{
+                      return Container();
+                    }
+                }
+              },
+            ),
+              title != null 
+              ? Container ()
+              :FutureBuilder(
+                future: db.getbyId('star',item.starId),
+                builder: (context,snapshot){
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.none:
+                    case ConnectionState.waiting:
+                    case ConnectionState.active:
+                    case ConnectionState.done:  
+                      if (snapshot.hasData){
+                        return Text(snapshot.data["name"], style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff380b4c), fontSize: 20, ));
+                      }else{
+                        return Container();
+                      }
+                  }
+                },
+              )
           ],
         )),
         height: 120.0,

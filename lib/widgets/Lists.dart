@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:galaxy_flutter/models/Orbit.dart';
 import 'package:galaxy_flutter/widgets/Cards.dart';
 import 'package:galaxy_flutter/widgets/Animations.dart';
 
@@ -76,12 +77,42 @@ class RowList extends StatelessWidget {
   }
 }
 
+class OrbitList extends StatelessWidget {
+  OrbitList({this.item, this.action, this.asset, this.db});
+
+  final item;
+  final action;
+  final asset;
+  final db;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        height: 120.0,
+       margin: const EdgeInsets.symmetric(
+         vertical: 10.0,
+       ),
+      child: Stack(
+        children: <Widget>[
+          CardList(actionOnTap: action, item: item, db: db,),
+          Positioned (left: 10, child: Padding(
+            padding: const EdgeInsets.only(top:5.0),
+            child: AnimationList(asset: asset,),
+          )),
+        ],
+      )
+      
+    );
+  }
+}
+
 class NameList extends StatelessWidget {
-  const NameList({this.type, this.future, this.route});
+  const NameList({this.type, this.future, this.route, this.db});
 
   final String type;
   final future;
   final route;
+  final db;
 
   @override
   Widget build(BuildContext context) {
@@ -107,29 +138,40 @@ class NameList extends StatelessWidget {
                            Text("Algo de errado aconteceu.", style: TextStyle(color: Colors.white70, fontSize: 20),),
                            Text("Tente novamente mais tarde.", style: TextStyle(color: Colors.white70, fontSize: 20),),
                          ],
-                       ),);                    }else{
-                    if (snapshot.data.length == 0){
-                      return Center(child: Text("Nada por aqui :c", style: TextStyle(color: Colors.white70, fontSize: 25),),);
-                    } else {
-                    return ListView.builder(
-                      itemCount: snapshot.data.length,
-                      itemBuilder: (context, index) {
-                        List itens = snapshot.data;
-                        var item = itens[index];
-                        return Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: RowList(
-                            title: item.name, 
-                            asset: 'assets/animations/'+ assets[item.colorId] + type + '.flr', 
-                            action: () => Navigator.pushNamed(
-                              context, 
-                              route, 
-                              arguments: item.id)
-                          ),
-                        );
-                      }
-                    );
-                  }
+                       ),);                    
+                    }else{
+                      if (snapshot.data.length == 0){
+                        return Center(child: Text("Nada por aqui :c", style: TextStyle(color: Colors.white70, fontSize: 25),),);
+                      } else {
+                      return ListView.builder(
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (context, index) {
+                          List itens = snapshot.data;
+                          var item = itens[index];
+                          return Padding(
+                            padding: const EdgeInsets.all(0.0),
+                            child: type != 'Orbit'
+                            ? RowList(
+                              title: item.name, 
+                              asset: 'assets/animations/'+ assets[item.colorId] + type + '.flr', 
+                              action: () => Navigator.pushNamed(
+                                context, 
+                                route, 
+                                arguments: item.id)
+                            )
+                            : OrbitList(
+                              item: item,
+                              action:  () => Navigator.pushNamed(
+                                context, 
+                                route, 
+                                arguments: item.id),
+                              asset:'assets/animations/pinkSystem.flr',
+                              db: db,
+                            ),
+                          );
+                        }
+                      );
+                    }
                 }
                 }
               },          ));

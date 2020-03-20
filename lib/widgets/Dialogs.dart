@@ -214,16 +214,6 @@ class _addHorizontalListState extends State<addHorizontalList> {
                   padding: const EdgeInsets.only(top: 5),
                     child: FlatButton(child: Text("Novo Satélite", style: TextStyle(color: Colors.purple),),onPressed: widget.create,)
                 );
-                /*
-                return Padding(
-                  padding: const EdgeInsets.only(left: 16.0, top: 5),
-                    child: Row(children: [Text("Outro:"), Padding(
-                      padding: const EdgeInsets.only(left: 108.0),
-                      child: IconButton(icon: Icon(Icons.add_box), onPressed: (){}, iconSize: 30,),
-                    ),]
-                    //child:FlatButton(color: Colors.pink,child: Text("Novo Satélite"),onPressed: () =>  Navigator.pop(context))
-                    ),
-                );*/
               }
             }
           ),

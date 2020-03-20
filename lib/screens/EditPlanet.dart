@@ -270,6 +270,7 @@ class _EditPlanetState extends State<EditPlanet> {
                                         
                                         showDialog(context: context, builder :(context){
                                           return confirmExitRemove(
+                                            content: "A remoção do planeta implicará na remoção das órbitas que ele faz parte.",
                                             title: "Deseja remover planeta permanentemente?", 
                                             action: () async{
 
@@ -279,6 +280,7 @@ class _EditPlanetState extends State<EditPlanet> {
 
                                               db.deleteOnCascade('planetSystemPlanetary', 'planetId', widget.id);
                                               db.deleteOnCascade('planetGas', 'planetId', widget.id);
+                                              db.deleteOnCascade('orbit', 'planetId', widget.id);
                                               db.delete("planet", widget.id); 
                                               Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_PLANETS);});
                                         });

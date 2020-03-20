@@ -83,11 +83,27 @@ class _RegisterOrbitState extends State<RegisterOrbit> {
           onPressed: () async{
             if (_formKey.currentState.validate()) {
 
-              Orbit orbit = Orbit(satelliteId: satelliteController.text, planetId: planetController.text, starId: starController.text);
-              var id = satelliteController.text+"-"+planetController.text+"-"+starController.text;
+              Orbit orbit = Orbit(satelliteId: satelliteController.text, planetId: planetController.text, starId: starController.text);            
+              
+              var id;
+              var ids = [];
+
+              if (planetController.text!=""){
+                ids.add(planetController.text);
+              }
+              if (satelliteController.text!=""){
+                ids.add(satelliteController.text);
+              }
+              if (starController.text != ""){
+                ids.add(starController.text);
+              }
+              id = ids.join("-");
+              
               db.setId('orbit', orbit, id, context: context);
+
+              }
             }
-            }),
+            ),
         body: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

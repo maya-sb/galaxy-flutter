@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:galaxy_flutter/models/Galaxy.dart';
 import 'package:galaxy_flutter/models/Gas.dart';
+import 'package:galaxy_flutter/models/Orbit.dart';
 import 'package:galaxy_flutter/models/Planet.dart';
 import 'package:galaxy_flutter/models/PlanetGas.dart';
 import 'package:galaxy_flutter/models/PlanetSystemPlanetary.dart';
@@ -114,7 +115,9 @@ class Api {
 
   getAll(String collectionName, var type) async{
 
-    QuerySnapshot querySnapshot = await db.collection(collectionName).orderBy("name").getDocuments();
+    //TODO ORDENAR POR NOME??
+    //QuerySnapshot querySnapshot = await db.collection(collectionName).orderBy("name").getDocuments();
+    QuerySnapshot querySnapshot = await db.collection(collectionName).getDocuments();
     List list = List();
     var item;
 
@@ -138,6 +141,10 @@ class Api {
             break;
           case Planet:
             item = Planet.fromMap(doc);
+            break;
+          case Orbit:
+            item = Orbit.fromMap(doc);
+            break;
           
         }
 

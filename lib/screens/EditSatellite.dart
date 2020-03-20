@@ -212,6 +212,7 @@ class _EditSatelliteState extends State<EditSatellite> {
                                             title: "Deseja remover satélite permanentemente?", 
                                             action: (){ 
                                               db.deleteOnCascade('satelliteGas', 'satelliteId', widget.id);
+                                              db.deleteOnCascade('orbit', 'satelliteId', widget.id);
                                               db.delete("satellite", widget.id); 
                                               Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_SATELLITES);});
                                         });

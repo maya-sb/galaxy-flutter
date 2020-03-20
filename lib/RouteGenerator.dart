@@ -126,7 +126,7 @@ class RouteGenerator {
           builder: (_) => RegisterOrbit());
       case ROUTE_ORBIT_PROFILE:
         return MaterialPageRoute(
-          builder: (_) => OrbitProfile());
+          builder: (_) => OrbitProfile(id: arguments));
       case ROUTE_EDIT_ORBIT:
         return MaterialPageRoute(
           builder: (_) => EditOrbit());
