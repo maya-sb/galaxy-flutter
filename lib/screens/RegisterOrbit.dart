@@ -2,6 +2,7 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:galaxy_flutter/Api.dart';
+import 'package:galaxy_flutter/RouteGenerator.dart';
 import 'package:galaxy_flutter/models/Orbit.dart';
 import 'package:galaxy_flutter/models/Planet.dart';
 import 'package:galaxy_flutter/models/Satellite.dart';
@@ -85,21 +86,30 @@ class _RegisterOrbitState extends State<RegisterOrbit> {
 
               Orbit orbit = Orbit(satelliteId: satelliteController.text, planetId: planetController.text, starId: starController.text);            
               
-              var id;
-              var ids = [];
-
-              if (planetController.text!=""){
-                ids.add(planetController.text);
-              }
-              if (satelliteController.text!=""){
-                ids.add(satelliteController.text);
-              }
-              if (starController.text != ""){
-                ids.add(starController.text);
-              }
-              id = ids.join("-");
+              var value = await db.check(orbit, "insert");
               
-              db.setId('orbit', orbit, id, context: context);
+              if (value){
+                await db.insert('orbit', orbit);
+                Navigator.pop(context);
+              }else{
+                showDialog(
+                  context: context,
+                  builder: (context){
+                    return AlertDialog(
+                      shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                      title: Text("Erro ao criar órbita"),
+                      content: Text("Essa órbita já existe."),
+                      contentPadding: EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 0.0),
+                      actions: <Widget>[
+                        FlatButton(child: Text("Ok"),onPressed: (){
+                          Navigator.pop(context);
+                        },)
+                      ],
+                    );
+                }
+              );
+              }
 
               }
             }

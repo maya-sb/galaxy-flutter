@@ -85,6 +85,36 @@ class Api {
     db.collection(collectionName).document(id).delete();
   }
 
+  check(Orbit orbit, var op) async{
+
+    var count;
+    var resul = true;
+
+    QuerySnapshot querySnapshot = await db.collection('orbit')
+                                        .where('planetId', isEqualTo: orbit.planetId)
+                                        .where('satelliteId', isEqualTo: orbit.satelliteId)
+                                        .where('starId', isEqualTo: orbit.starId)
+                                        .getDocuments();
+
+    count = querySnapshot.documents.length;
+
+    if (op == "update"){
+      for(DocumentSnapshot doc in querySnapshot.documents){
+          String idDocument = doc.documentID;
+
+          if (idDocument != orbit.id){
+              resul = false;
+          }
+      }
+    }else{
+      if (count != 0){
+        resul = false;
+      }
+    }
+
+      return resul;
+  }
+
   deleteOnCascade(String collectionName, String field, String value) async{
 
     await db.collection(collectionName)

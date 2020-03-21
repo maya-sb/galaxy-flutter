@@ -24,4 +24,7 @@ class Satellite{
       "mass": this.mass,
       "colorId": this.colorId};
   }
+
+    bool operator == (m) => m is Satellite && id == m.id;
+
 }
