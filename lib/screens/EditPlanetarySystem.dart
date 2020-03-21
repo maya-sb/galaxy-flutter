@@ -177,8 +177,7 @@ class _EditPlanetarySystemState extends State<EditPlanetarySystem> {
 
               for (var planet in addedPlanets){
                 PlanetSystemPlanetary planetSystem = PlanetSystemPlanetary(planetId: planet["id"], systemId: widget.id);
-                var idplanetSystem = widget.id+"-"+planet["id"];
-                db.setId('planetSystemPlanetary', planetSystem, idplanetSystem);
+                db.insert('planetSystemPlanetary', planetSystem);
               }
 
               Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_PLANETARY_SYSTEM_PROFILE, arguments: widget.id);

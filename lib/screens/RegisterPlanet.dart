@@ -114,14 +114,12 @@ class _RegisterPlanetState extends State<RegisterPlanet> {
 
               for (var gas in selectedGases){
                 PlanetGas planetGas = PlanetGas(gasId: gas["gasId"], planetId: id, amount: gas["amount"]);
-                var idPlanetGas = id+"-"+gas["gasId"];
-                db.setId('planetGas', planetGas, idPlanetGas);
+                db.insert('planetGas', planetGas);
               }
 
               for (var system in selectedSystems){
                 PlanetSystemPlanetary plaSystem = PlanetSystemPlanetary(planetId: id, systemId: system["id"]);
-                var idPlaSystem = system["id"] + "-"+ id;
-                db.setId('planetSystemPlanetary', plaSystem, idPlaSystem);
+                db.insert('planetSystemPlanetary', plaSystem);
                 await updateSystem(system["id"], "+");
               }
               

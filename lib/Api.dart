@@ -44,23 +44,7 @@ class Api {
 
     db.collection(collectionName).document(id).get().then((documentSnapshot){
       if (documentSnapshot.exists){
-        showDialog(
-                  context: context,
-                  builder: (context){
-                  return AlertDialog(
-                    shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8.0))),
-                    title: Text("Erro ao cadastrar órbita"),
-                    content: Text("Essa órbita já existe."),
-                    contentPadding: EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 0.0),
-                    actions: <Widget>[
-                      FlatButton(child: Text("Ok"),onPressed: (){
-                        Navigator.pop(context);
-                      },)
-                    ],
-                  );
-                  }
-                );
+        //Mostre o erro
       }else{
         db.collection(collectionName).document(id).setData(object.toMap());
         if (context!=null) {Navigator.pop(context);}

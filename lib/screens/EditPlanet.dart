@@ -184,8 +184,7 @@ class _EditPlanetState extends State<EditPlanet> {
 
               for (var gas in adicionados){
                 PlanetGas planetGas = PlanetGas(gasId: gas["gasId"], planetId: widget.id, amount: gas["amount"]);
-                var idPlanetGas = widget.id+"-"+gas["gasId"];
-                db.setId('planetGas', planetGas, idPlanetGas);
+                db.insert('planetGas', planetGas);
               }
 
               for (var plaId in deletedSystems){
@@ -196,8 +195,7 @@ class _EditPlanetState extends State<EditPlanet> {
 
               for (var system in addedSystems){
                 PlanetSystemPlanetary planetSystem = PlanetSystemPlanetary(planetId: widget.id, systemId: system["id"]);
-                var idplanetSystem = system["id"]+"-"+widget.id;
-                db.setId('planetSystemPlanetary', planetSystem, idplanetSystem);
+                db.insert('planetSystemPlanetary', planetSystem);
                 await updateSystem(system["id"], "+");
               }
 

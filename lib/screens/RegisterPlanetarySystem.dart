@@ -133,8 +133,7 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
 
               for (var planet in selectedPlanets){
                 PlanetSystemPlanetary plaSystem = PlanetSystemPlanetary(planetId: planet["id"], systemId: id);
-                var idPlaSystem = id+"-"+planet["id"];
-                db.setId('planetSystemPlanetary', plaSystem, idPlaSystem);
+                db.insert('planetSystemPlanetary', plaSystem);
               }
 
               Navigator.pop(context);
@@ -287,7 +286,7 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
                           ),
                             width: 140.0,
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Colors.white70,
                               shape: BoxShape.rectangle,
                               borderRadius: new BorderRadius.circular(8.0),
                           ),

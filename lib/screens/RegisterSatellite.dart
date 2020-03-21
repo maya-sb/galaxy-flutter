@@ -96,8 +96,7 @@ class _RegisterSatelliteState extends State<RegisterSatellite> {
 
               for (var gas in selectedGases){
                 SatelliteGas satelliteGas = SatelliteGas(gasId: gas["gasId"], satelliteId: id, amount: gas["amount"]);
-                var idSatelliteGas = id+"-"+gas["gasId"];
-                db.setId('satelliteGas', satelliteGas, idSatelliteGas);
+                db.insert('satelliteGas', satelliteGas);
               }
 
               Navigator.pop(context);

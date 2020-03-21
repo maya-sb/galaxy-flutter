@@ -136,8 +136,7 @@ class _EditSatelliteState extends State<EditSatellite> {
 
               for (var gas in adicionados){
                 SatelliteGas satelliteGas = SatelliteGas(gasId: gas["gasId"], satelliteId: widget.id, amount: gas["amount"]);
-                var idSatelliteGas = widget.id+"-"+gas["gasId"];
-                db.setId('satelliteGas', satelliteGas, idSatelliteGas);
+                db.insert('satelliteGas', satelliteGas);
               }
 
               Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_SATELLITE_PROFILE, arguments: widget.id);
