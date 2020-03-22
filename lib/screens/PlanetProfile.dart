@@ -167,7 +167,7 @@ class _PlanetProfileState extends State<PlanetProfile > {
                         )
                         ),
                         Padding(
-                            padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
+                            padding: const EdgeInsets.only(left: 20.0, top:10.0, bottom: 10.0),
                             child: Text("Composição", style: TextStyle(color: Colors.purple[700], fontSize: 19),),
                           ),      
                         FutureBuilder(
@@ -181,6 +181,8 @@ class _PlanetProfileState extends State<PlanetProfile > {
                                   );
                                 case ConnectionState.active:
                                 case ConnectionState.done: 
+                                  if (snapshot.hasData){
+                                    if (snapshot.data.length != 0){
                                     return Container(
                                       padding: EdgeInsets.only(left:15),
                                       height: 180,
@@ -226,13 +228,24 @@ class _PlanetProfileState extends State<PlanetProfile > {
                                       )
                                       //child: HorizontalList(list: selectedGases, editable: true, isGas: true,)
                                     );
-
+                                  }else{
+                                    return Padding(
+                                        padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
+                                        child: Center(child: Text("Não possui gases", style: TextStyle(color: Colors.white70, fontSize: 16)),),
+                                      );
+                                  }
+                                }else{
+                                  return Padding(
+                                        padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
+                                        child: Center(child: Text("Não possui gases", style: TextStyle(color: Colors.white70, fontSize: 16)),),
+                                      );
+                                }
                               }
                             
                           }
                         ), 
                         Padding(
-                            padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
+                            padding: const EdgeInsets.only(left: 20.0, bottom: 10.0, top:10.0),
                             child: Text("Sistemas Planetários", style: TextStyle(color: Colors.purple[700], fontSize: 19),),
                         ),      
                         FutureBuilder(
@@ -242,12 +255,26 @@ class _PlanetProfileState extends State<PlanetProfile > {
                                 case ConnectionState.none:
                                 case ConnectionState.waiting:
                                 case ConnectionState.active:
-                                case ConnectionState.done:  
-                                  return Container(
-                                    padding: EdgeInsets.only(left:15),
-                                    height: 180, 
-                                    child: HorizontalList(list: snapshot.data, asset: 'assets/svg/galaxy.svg',editable: false)
-                                  );
+                                case ConnectionState.done:
+                                  if (snapshot.hasData){
+                                    if (snapshot.data.length != 0){
+                                      return Container(
+                                      padding: EdgeInsets.only(left:15),
+                                      height: 180, 
+                                      child: HorizontalList(list: snapshot.data, asset: 'assets/svg/galaxy.svg',editable: false)
+                                    );
+                                    }else{
+                                      return Padding(
+                                      padding: const EdgeInsets.only(top: 20.0),
+                                      child: Center(child: Text("Não pertence há sistemas", style: TextStyle(color: Colors.white70, fontSize: 16)),),
+                                    );
+                                    }
+                                  }else{
+                                    return Padding(
+                                      padding: const EdgeInsets.only(top: 20.0),
+                                      child: Center(child: Text("Não pertence há sistemas", style: TextStyle(color: Colors.white70, fontSize: 16)),),
+                                    );
+                                  }
                               }
                           }
                         ), 

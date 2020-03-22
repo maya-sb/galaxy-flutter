@@ -129,7 +129,20 @@ class _GalaxyProfileState extends State<GalaxyProfile> {
                           ),
                         ),
                         numSystemsController.text == '0' 
-                        ? Container()
+                        ? Padding(
+                            padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0, right: 20.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text("Sistemas Planetários", style: TextStyle(color: Colors.purple[700], fontSize: 19),),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 20.0),
+                                  child: Center(child: Text("Não há sistemas planetários", style: TextStyle(color: Colors.white70, fontSize: 16)),),
+                                )
+                              
+                              ],
+                            ),
+                          )
                         : Padding(
                             padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
                             child: Text("Sistemas Planetários", style: TextStyle(color: Colors.purple[700], fontSize: 19),),
