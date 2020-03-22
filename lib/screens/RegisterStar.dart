@@ -164,7 +164,7 @@ class _RegisterStarState extends State<RegisterStar> {
                         child: Text("Sistemas Planetários", style: TextStyle(color: Colors.purple[800], fontSize: 18),),
                       ), 
                       Container(
-                        padding: EdgeInsets.only(left: 15, right: 10),
+                        padding: EdgeInsets.only(left: 15),
                         height: 180,
                         child: ListView.builder(
                           shrinkWrap: true,
@@ -222,7 +222,7 @@ class _RegisterStarState extends State<RegisterStar> {
                                     children: <Widget>[
                                       Padding(
                                         padding: const EdgeInsets.all(0),
-                                        child: Text(selectedSystems[index-1]['name'], style: TextStyle(color: Color(0xff380b4c), fontSize: 16),),
+                                        child: Text(selectedSystems[index-1]['name'], style: TextStyle(color: Color(0xff380b4c), fontSize: selectedSystems[index-1]['name'].length < 23 ? 16 : 13),),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),

@@ -38,9 +38,6 @@ class _EditStarState extends State<EditStar> {
 
   var _selectedColor = 0;
   var dadosStar;
-  var apagados = [];
-  var adicionados = [];
-  var listId = [];
 
   Future selectedSystems;
   var deletedSystems = [];
@@ -51,11 +48,11 @@ class _EditStarState extends State<EditStar> {
     var data = await db.getbyId('system', id);
 
     if (data != null){
-      int numStar = data['numStar'];
+      int numStars = data['numStars'];
       if (op == "+"){
-        await db.updateField('system', id, 'numStar', numStar+1);
+        await db.updateField('system', id, 'numStars', numStars+1);
       }else{
-        await db.updateField('system', id, 'numStar', numStar-1);
+        await db.updateField('system', id, 'numStars', numStars-1);
       }
     }
   }
@@ -123,9 +120,8 @@ class _EditStarState extends State<EditStar> {
               db.update("star", star);
 
               for (var stId in deletedSystems){
-                var systemId = stId.split("-")[0];
-                await updateSystem(systemId, "-");
-                db.delete('planetSystemPlanetary', stId);
+                await updateSystem(stId["systemId"], "-");
+                db.delete('starSystemPlanetary', stId["id"]);
               }
 
               for (var system in addedSystems){
@@ -133,7 +129,7 @@ class _EditStarState extends State<EditStar> {
                 db.insert('starSystemPlanetary', starSystem);
                 await updateSystem(system["id"], "+");
               }
-
+            
               Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_STAR_PROFILE, arguments: widget.id);
 
             }
@@ -254,7 +250,7 @@ class _EditStarState extends State<EditStar> {
                                   }
 
                                   return Container(
-                                  padding: EdgeInsets.only(left: 15, right: 10),
+                                  padding: EdgeInsets.only(left: 15),
                                   height: 180,
                                   child: ListView.builder(
                                     shrinkWrap: true,
@@ -312,7 +308,7 @@ class _EditStarState extends State<EditStar> {
                                               children: <Widget>[
                                                 Padding(
                                                   padding: const EdgeInsets.all(0),
-                                                  child: Text(systems[index-1]['name'], style: TextStyle(color: Color(0xff380b4c), fontSize: 16),),
+                                                  child: Text(systems[index-1]['name'], style: TextStyle(color: Color(0xff380b4c), fontSize: systems[index-1]['name'].length < 23 ? 16 : 13),),
                                                 ),
                                                 Padding(
                                                   padding: const EdgeInsets.all(8.0),
@@ -348,7 +344,7 @@ class _EditStarState extends State<EditStar> {
                                                   if (indexPlanet != null){
                                                     addedSystems.removeAt(indexPlanet);
                                                   }else{
-                                                    deletedSystems.add(systems[index-1]["id"]);
+                                                    deletedSystems.add(systems[index-1]);
                                                   }
                                                   listIdSystems.removeWhere((item) => item == systems[index-1]["systemId"]);
                                                  systems.removeAt(index-1);                  

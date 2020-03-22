@@ -169,11 +169,22 @@ class _StarProfileState extends State<StarProfile > {
                                 case ConnectionState.waiting:
                                 case ConnectionState.active:
                                 case ConnectionState.done:  
-                                  return Container(
-                                    padding: EdgeInsets.only(left:15),
-                                    height: 180, 
-                                    child: HorizontalList(list: snapshot.data, asset: 'assets/svg/galaxy.svg',editable: false)
-                                  );
+                                  if (snapshot.hasData){
+                                    if (snapshot.data.length != 0){
+                                      return Container(
+                                        padding: EdgeInsets.only(left:15),
+                                        height: 180, 
+                                        child: HorizontalList(list: snapshot.data, asset: 'assets/svg/galaxy.svg',editable: false)
+                                      );
+                                    }else{
+                                      return Padding(
+                                      padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
+                                      child: Center(child: Text("Não pertence há sistemas", style: TextStyle(color: Colors.white70, fontSize: 16)),),
+                                    );
+                                    }
+                                  }else{
+                                    return Container();
+                                  }
                               }
                           }
                         ), 
