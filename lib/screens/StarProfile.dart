@@ -58,7 +58,7 @@ class _StarProfileState extends State<StarProfile > {
     sizeController.text = data["size"] + " Km";
     massController.text = data["mass"] + " massas solares";
     ageController.text = data["age"] + " bilhões de anos";
-    distanceController.text = data["distance"] + " anos-luz"
+    distanceController.text = data["distance"] + " anos-luz";
     typeController.text = data["type"];
     _selectedColor = data["colorId"];
     death = data["death"];

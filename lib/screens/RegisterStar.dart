@@ -80,7 +80,33 @@ class _RegisterStarState extends State<RegisterStar> {
           child: Icon(Icons.save, color: Colors.white,),
           onPressed: () async{
             if (_formKey.currentState.validate()) {
+              
+              switch(type) {
+                case "Anã branca":
+                  _selectedColor = 0;
+                  break;
+                
+                case "Anã vermelha":
+                  _selectedColor = 1;
+                  break;
+                
+                case "Gigante azul":
+                  _selectedColor = 2;
+                  break;
+                
+                case "Gigante vermelha":
+                  if(deathController.text == "true") {
+                    _selectedColor = 4;
+                  } else {
+                    _selectedColor = 3;
+                  }
+                  break;
 
+                case "Estrela binária":
+                  _selectedColor = 4;
+                  break;
+                
+              }
               Star star = Star(name: nameController.text, age: ageController.text, size: sizeController.text, mass: massController.text, distance: distanceController.text, type: type, death: deathController.text, colorId: _selectedColor);
 
               var id = db.set('star', star);

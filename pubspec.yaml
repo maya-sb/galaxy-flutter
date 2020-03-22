@@ -99,7 +99,6 @@ flutter:
   - assets/animations/greySystem.flr
   - assets/animations/pinkHole.flr
   - assets/animations/blueHole.flr
-  - assets/animations/orangeHole.flr
   - assets/animations/yellowHole.flr
   - assets/animations/greenHole.flr
   - assets/animations/greyHole.flr
@@ -111,6 +110,10 @@ flutter:
   - assets/animations/greySatelite.flr
   - assets/animations/abStar.flr
   - assets/animations/avStar.flr
+  - assets/animations/gaStar.flr
+  - assets/animations/gvStar.flr
+  - assets/animations/ebStar.flr
+  - assets/animations/bnStar.flr
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
