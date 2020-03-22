@@ -234,7 +234,7 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
                           child: InkWell(
                               onTap: () async{
                                 var planet = await showDialog(context: context, builder: (context) {
-                                    return SelectDialog(db.getAll('planet', Planet), "Adicionar Planeta",listIdPlanets,"planeta");
+                                    return SelectDialog(db.getAll('planet', Planet), "Adicionar Planeta",listIdPlanets,"um planeta");
                                 });
 
                                 if(planet != null) { 
@@ -335,7 +335,7 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
                           child: InkWell(
                               onTap: () async{
                                 var star = await showDialog(context: context, builder: (context) {
-                                    return SelectDialog(db.getAll('star', Star), "Adicionar Estrela",listIdStars,"estrela");
+                                    return SelectDialog(db.getAll('star', Star), "Adicionar Estrela",listIdStars,"uma estrela");
                                 });
 
                                 if(star != null) { 

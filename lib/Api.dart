@@ -153,7 +153,6 @@ class Api {
     var item;
 
     for(DocumentSnapshot doc in querySnapshot.documents){
-
         switch(type){
           case Galaxy:
             item = Galaxy.fromMap(doc);
