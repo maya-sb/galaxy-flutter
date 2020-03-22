@@ -64,7 +64,7 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
     for (Galaxy item in galaxies){
       items.add(DropdownMenuItem(
         child: Text(item.name,  style: TextStyle(
-                                color: Colors.purple[700],
+                                color: Colors.white,
                                 fontFamily: "Poppins",
                                 fontSize: 18.0,)),
         value: item.id,
@@ -221,7 +221,7 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
                 child: Text("Planetas", style: TextStyle(color: Colors.purple[800], fontSize: 18),),
               ), 
                 Container(
-                  padding: EdgeInsets.only(left: 15, right: 10),
+                  padding: EdgeInsets.only(left:15),
                   height: 180,
                   child: ListView.builder(
                     shrinkWrap: true,
@@ -322,7 +322,7 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
                 child: Text("Estrelas", style: TextStyle(color: Colors.purple[800], fontSize: 18),),
               ), 
                 Container(
-                  padding: EdgeInsets.only(left: 15, right: 10),
+                  padding: EdgeInsets.only(left:15),
                   height: 180,
                   child: ListView.builder(
                     shrinkWrap: true,
@@ -548,49 +548,52 @@ class _InfoState extends State<Info> {
                             );
                            
                           }else{ 
-                            return DropdownButtonFormField(
-                                items: snapshot.data,
-                                validator: (String value) {
-                                  if (value?.isEmpty ?? true) {
-                                    return 'Selecione uma galáxia';
-                                  }
-                                },
-                                //decoration: InputDecoration.collapsed(hintText: ''),
-                                decoration: InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(25.0),
-                                    borderSide: BorderSide(
-                                      color: Colors.purple[700],
-                                      width: 1.5
+                            return Theme(
+                            data: Theme.of(context).copyWith(canvasColor: Color(0xff380b4c)),
+                              child: DropdownButtonFormField(
+                                  items: snapshot.data,
+                                  validator: (String value) {
+                                    if (value?.isEmpty ?? true) {
+                                      return 'Selecione uma galáxia';
+                                    }
+                                  },
+                                  //decoration: InputDecoration.collapsed(hintText: ''),
+                                  decoration: InputDecoration(
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: new BorderRadius.circular(25.0),
+                                      borderSide: BorderSide(
+                                        color: Colors.purple[700],
+                                        width: 1.5
+                                      ),
                                     ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderRadius: new BorderRadius.circular(25.0),
+                                      borderSide: BorderSide(
+                                        color: Colors.pink[700],
+                                        width: 1.5
+                                      ),
+                                    )
                                   ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(25.0),
-                                    borderSide: BorderSide(
-                                      color: Colors.pink[700],
-                                      width: 1.5
-                                    ),
-                                  )
+                                  hint: Text("Selecione a galáxia",  style: TextStyle(
+                                                                      color: Colors.purple[700],
+                                                                      fontFamily: "Poppins",
+                                                                      fontSize: 18.0,)),
+                                  style: TextStyle(
+                                    color: Colors.purple[700],
+                                    fontFamily: "Poppins",
+                                    fontSize: 18.0,),
+                                  iconSize: 25,
+                                  isExpanded: true,
+                                  isDense: true,
+                                  value: _selectedGalaxy,
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      _selectedGalaxy = newValue;
+                                      widget.galaxyController.text = newValue;
+                                    });
+                                          },
                                 ),
-                                hint: Text("Selecione a galáxia",  style: TextStyle(
-                                                                    color: Colors.purple[700],
-                                                                    fontFamily: "Poppins",
-                                                                    fontSize: 18.0,)),
-                                style: TextStyle(
-                                  color: Colors.purple[700],
-                                  fontFamily: "Poppins",
-                                  fontSize: 18.0,),
-                                iconSize: 25,
-                                isExpanded: true,
-                                isDense: true,
-                                value: _selectedGalaxy,
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    _selectedGalaxy = newValue;
-                                    widget.galaxyController.text = newValue;
-                                  });
-                                        },
-                              );
+                            );
                             }}else{
                               return Container();
                             }

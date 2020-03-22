@@ -136,7 +136,7 @@ class _EditPlanetarySystemState extends State<EditPlanetarySystem> {
     for (Galaxy item in galaxies){
       items.add(DropdownMenuItem(
         child: Text(item.name,  style: TextStyle(
-                                color: Colors.purple[700],
+                                color: Colors.white,
                                 fontFamily: "Poppins",
                                 fontSize: 18.0,)),
         value: item.id,
@@ -345,7 +345,7 @@ class _EditPlanetarySystemState extends State<EditPlanetarySystem> {
                                   }
 
                                   return Container(
-                                  padding: EdgeInsets.only(left: 15, right: 10),
+                                  padding: EdgeInsets.only(left:15),
                                   height: 180,
                                   child: ListView.builder(
                                     shrinkWrap: true,
@@ -420,7 +420,7 @@ class _EditPlanetarySystemState extends State<EditPlanetarySystem> {
                                           ),
                                             width: 140.0,
                                             decoration: BoxDecoration(
-                                              color: Colors.white,
+                                              color: Colors.white70,
                                               shape: BoxShape.rectangle,
                                               borderRadius: new BorderRadius.circular(8.0),
                                           ),
@@ -478,7 +478,7 @@ class _EditPlanetarySystemState extends State<EditPlanetarySystem> {
                                   }
 
                                   return Container(
-                                  padding: EdgeInsets.only(left: 15, right: 10),
+                                  padding: EdgeInsets.only(left:15),
                                   height: 180,
                                   child: ListView.builder(
                                     shrinkWrap: true,
@@ -553,7 +553,7 @@ class _EditPlanetarySystemState extends State<EditPlanetarySystem> {
                                           ),
                                             width: 140.0,
                                             decoration: BoxDecoration(
-                                              color: Colors.white,
+                                              color: Colors.white70,
                                               shape: BoxShape.rectangle,
                                               borderRadius: new BorderRadius.circular(8.0),
                                           ),
@@ -677,49 +677,52 @@ class _InfoState extends State<Info> {
                         );
                         case ConnectionState.active:
                         case ConnectionState.done:  
-                            return DropdownButtonFormField(
-                                items: snapshot.data,
-                                validator: (var value) {
-                                  if (value?.isEmpty ?? true) {
-                                    return 'Selecione uma galáxia';
-                                  }
-                                },
-                                //decoration: InputDecoration.collapsed(hintText: ''),
-                                decoration: InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(25.0),
-                                    borderSide: BorderSide(
-                                      color: Colors.purple[700],
-                                      width: 1.5
+                            return Theme(
+                                data: Theme.of(context).copyWith(canvasColor: Color(0xff380b4c)),
+                                child: DropdownButtonFormField(
+                                  items: snapshot.data,
+                                  validator: (var value) {
+                                    if (value?.isEmpty ?? true) {
+                                      return 'Selecione uma galáxia';
+                                    }
+                                  },
+                                  //decoration: InputDecoration.collapsed(hintText: ''),
+                                  decoration: InputDecoration(
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: new BorderRadius.circular(25.0),
+                                      borderSide: BorderSide(
+                                        color: Colors.purple[700],
+                                        width: 1.5
+                                      ),
                                     ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderRadius: new BorderRadius.circular(25.0),
+                                      borderSide: BorderSide(
+                                        color: Colors.pink[700],
+                                        width: 1.5
+                                      ),
+                                    )
                                   ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(25.0),
-                                    borderSide: BorderSide(
-                                      color: Colors.pink[700],
-                                      width: 1.5
-                                    ),
-                                  )
+                                  hint: Text("Selecione a galáxia",  style: TextStyle(
+                                                                      color: Colors.purple[700],
+                                                                      fontFamily: "Poppins",
+                                                                      fontSize: 18.0,)),
+                                  style: TextStyle(
+                                    color: Colors.purple[700],
+                                    fontFamily: "Poppins",
+                                    fontSize: 18.0,),
+                                  iconSize: 25,
+                                  isDense: true,
+                                  isExpanded: true,
+                                  value: _selectedGalaxy,
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      _selectedGalaxy = newValue;
+                                      widget.galaxyController.text = newValue;
+                                    });
+                                          },
                                 ),
-                                hint: Text("Selecione a galáxia",  style: TextStyle(
-                                                                    color: Colors.purple[700],
-                                                                    fontFamily: "Poppins",
-                                                                    fontSize: 18.0,)),
-                                style: TextStyle(
-                                  color: Colors.purple[700],
-                                  fontFamily: "Poppins",
-                                  fontSize: 18.0,),
-                                iconSize: 25,
-                                isDense: true,
-                                isExpanded: true,
-                                value: _selectedGalaxy,
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    _selectedGalaxy = newValue;
-                                    widget.galaxyController.text = newValue;
-                                  });
-                                        },
-                              );
+                            );
                             }
                     }
                    

@@ -153,7 +153,7 @@ class _EditGalaxyState extends State<EditGalaxy> {
                                             content: "A remoção da galáxia implica na remoção dos sistemas planetários pertencentes a ela.",
                                             title: "Deseja remover galáxia permanentemente?", 
                                             action: (){ 
-                                              db.deleteOnCascade('system', 'galaxyId', widget.id);
+                                              db.deleteOnCascadeOnCascade(widget.id);
                                               db.delete("galaxy", widget.id); 
                                               Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_GALAXIES);});
                                         });

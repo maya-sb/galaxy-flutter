@@ -37,7 +37,7 @@ class _AddGasDialogState extends State<AddGasDialog> {
       if (!widget.listId.contains(item.id)){
         items.add(new DropdownMenuItem(
         child: Text(item.name,  style: TextStyle(
-                                color: Colors.purple[700],
+                                color: Colors.white,
                                 fontFamily: "Poppins",
                                 fontSize: 18.0,)),
         //value: item.id,
@@ -49,7 +49,7 @@ class _AddGasDialogState extends State<AddGasDialog> {
     Gas newGas = Gas(id: 'NEW', name: 'NEW');
     items.add(new DropdownMenuItem(
         child: Text("Cadastrar Novo",  style: TextStyle(
-                                color: Colors.purple[700],
+                                color: Colors.pink[800],
                                 fontFamily: "Poppins",
                                 fontSize: 18.0,)),
         value: newGas,
@@ -104,104 +104,107 @@ class _AddGasDialogState extends State<AddGasDialog> {
                           children:[
                             Padding(
                               padding: const EdgeInsets.all(16.0),
-                                child: DropdownButtonFormField(
-                                   items: snapshot.data,
-                                      validator: (value) {
-                                        if (value == null) {
-                                          return 'Selecione uma gás';
-                                        }
-                                        return null;
-                                      },
-                                      decoration: InputDecoration(
-                                        enabledBorder: OutlineInputBorder(
-                                          borderRadius:BorderRadius.circular(25.0),
-                                          borderSide: BorderSide(
-                                            color: Colors.purple[700],
-                                            width: 1.5
+                                child: Theme(
+                                      data: Theme.of(context).copyWith(canvasColor: Color(0xff380b4c)),
+                                     child: DropdownButtonFormField(
+                                     items: snapshot.data,
+                                        validator: (value) {
+                                          if (value == null) {
+                                            return 'Selecione uma gás';
+                                          }
+                                          return null;
+                                        },
+                                        decoration: InputDecoration(
+                                          enabledBorder: OutlineInputBorder(
+                                            borderRadius:BorderRadius.circular(25.0),
+                                            borderSide: BorderSide(
+                                              color: Colors.purple[700],
+                                              width: 1.5
+                                            ),
                                           ),
+                                          errorBorder: OutlineInputBorder(
+                                            borderRadius: new BorderRadius.circular(25.0),
+                                            borderSide: BorderSide(
+                                              color: Colors.pink[700],
+                                              width: 1.5
+                                            ),
+                                          )
                                         ),
-                                        errorBorder: OutlineInputBorder(
-                                          borderRadius: new BorderRadius.circular(25.0),
-                                          borderSide: BorderSide(
-                                            color: Colors.pink[700],
-                                            width: 1.5
-                                          ),
-                                        )
-                                      ),
-                                      hint: Text("Selecione o gás",  style: TextStyle(
-                                                                          color: Colors.purple[700],
-                                                                          fontFamily: "Poppins",
-                                                                          fontSize: 18.0,)),
-                                      style: TextStyle(
-                                        color: Colors.purple[700],
-                                        fontFamily: "Poppins",
-                                        fontSize: 18.0,),
-                                      isDense: true,
-                                      isExpanded: true,
-                                      value: _selectedGas,
-                                      onChanged: (Gas newValue) {
-                                  
+                                        hint: Text("Selecione o gás",  style: TextStyle(
+                                                                            color: Colors.purple[700],
+                                                                            fontFamily: "Poppins",
+                                                                            fontSize: 18.0,)),
+                                        style: TextStyle(
+                                          color: Colors.purple[700],
+                                          fontFamily: "Poppins",
+                                          fontSize: 18.0,),
+                                        isDense: true,
+                                        isExpanded: true,
+                                        value: _selectedGas,
+                                        onChanged: (Gas newValue) {
                                     
-                                          if (newValue.id == "NEW"){
-                                            showDialog(context: context, builder: (context) {
-                                              var gasController = TextEditingController();
-                                              final _formKeyDialog = GlobalKey<FormState>();
-                                              return AlertDialog(
-                                                contentPadding: EdgeInsets.all(15.0),
-                                                shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(Radius.circular(8.0))),
-                                                title: Text("Novo Gás"),
-                                                content: SingleChildScrollView(
-                                                    child: Form(
-                                                      key: _formKeyDialog,
-                                                      child: Padding(
-                                                          padding: const EdgeInsets.only(top: 10.0, left: 4.0, right: 4.0),
-                                                          child: EditField(
-                                                            textColor: Colors.purple[700],
-                                                            controller: gasController, 
-                                                            title: "Nome", 
-                                                            validator: (String value) {
-                                                                          if (value?.isEmpty ?? true) {
-                                                                            return 'Digite o nome do gás';
-                                                                          }
-                                                                          return null;
-                                                                        },),
-                                                        )
-                                                    
+                                      
+                                            if (newValue.id == "NEW"){
+                                              showDialog(context: context, builder: (context) {
+                                                var gasController = TextEditingController();
+                                                final _formKeyDialog = GlobalKey<FormState>();
+                                                return AlertDialog(
+                                                  contentPadding: EdgeInsets.all(15.0),
+                                                  shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                                                  title: Text("Novo Gás"),
+                                                  content: SingleChildScrollView(
+                                                      child: Form(
+                                                        key: _formKeyDialog,
+                                                        child: Padding(
+                                                            padding: const EdgeInsets.only(top: 10.0, left: 4.0, right: 4.0),
+                                                            child: EditField(
+                                                              textColor: Colors.purple[700],
+                                                              controller: gasController, 
+                                                              title: "Nome", 
+                                                              validator: (String value) {
+                                                                            if (value?.isEmpty ?? true) {
+                                                                              return 'Digite o nome do gás';
+                                                                            }
+                                                                            return null;
+                                                                          },),
+                                                          )
+                                                      
+                                                  ),
                                                 ),
-                                              ),
-                                              actions: <Widget>[
-                                                FlatButton(child: Text("Cancelar"),onPressed: () =>  Navigator.pop(context)
-                                                ,),
-                                                FlatButton(
-                                                  child: Text("Adicionar"),
-                                                  onPressed: () async{
-                                                    
-                                                    controllerName.text = gasController.text;
-                                                    if (_formKeyDialog.currentState.validate()) {
+                                                actions: <Widget>[
+                                                  FlatButton(child: Text("Cancelar"),onPressed: () =>  Navigator.pop(context)
+                                                  ,),
+                                                  FlatButton(
+                                                    child: Text("Adicionar"),
+                                                    onPressed: () async{
+                                                      
+                                                      controllerName.text = gasController.text;
+                                                      if (_formKeyDialog.currentState.validate()) {
 
-                                                    Gas gas = Gas(name: controllerName.text);
-                                                    var ref = db.db.collection('gas').document();
-                                                    var id = ref.documentID;
-                                                    db.db.collection('gas').document(id).setData(gas.toMap());
-                                                    setState((){});
-                                                    Navigator.pop(context);
-                                                    }
+                                                      Gas gas = Gas(name: controllerName.text);
+                                                      var ref = db.db.collection('gas').document();
+                                                      var id = ref.documentID;
+                                                      db.db.collection('gas').document(id).setData(gas.toMap());
+                                                      setState((){});
+                                                      Navigator.pop(context);
+                                                      }
 
-                                                  })
-                                              ],);
-                                          });
-                                          
-                                        }else{
-                                            setState(() {
-                                                _selectedGas = newValue;   
-                                                controllerId.text = newValue.id;
-                                                controllerName.text = newValue.name;  
-                                                 
+                                                    })
+                                                ],);
                                             });
-                                          }           
-                                    },
+                                            
+                                          }else{
+                                              setState(() {
+                                                  _selectedGas = newValue;   
+                                                  controllerId.text = newValue.id;
+                                                  controllerName.text = newValue.name;  
+                                                   
+                                              });
+                                            }           
+                                      },
 
+                                  ),
                                 ),
                               ),
                             Padding(

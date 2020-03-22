@@ -182,13 +182,28 @@ class _PlanetarySystemProfileState extends State<PlanetarySystemProfile> {
                               
                           ),
                         ),),
-                          numPlanetsController.text == '0' 
-                        ? Container()
+                        numPlanetsController.text == '0' 
+                        ? Padding(
+                            padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0, right: 20.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text("Planetas", style: TextStyle(color: Colors.purple[700], fontSize: 19),),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 20.0),
+                                  child: Center(child: Text("Não há planetas", style: TextStyle(color: Colors.white70, fontSize: 16)),),
+                                )
+                              
+                              ],
+                            ),
+                          )
                         : Padding(
                             padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
                             child: Text("Planetas", style: TextStyle(color: Colors.purple[700], fontSize: 19),),
-                          ),      
-                        FutureBuilder(
+                          ),     
+                         numPlanetsController.text == '0' 
+                         ? Container() 
+                         : FutureBuilder(
                           future: planets,
                           builder: (context, snapshot){
                             switch (snapshot.connectionState) {
@@ -205,12 +220,27 @@ class _PlanetarySystemProfileState extends State<PlanetarySystemProfile> {
                           }
                         ),
                         numStarsController.text == '0' 
-                        ? Container()
+                        ? Padding(
+                            padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0, right: 20.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text("Estrelas", style: TextStyle(color: Colors.purple[700], fontSize: 19),),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 20.0),
+                                  child: Center(child: Text("Não há estrelas", style: TextStyle(color: Colors.white70, fontSize: 16)),),
+                                )
+                              
+                              ],
+                            ),
+                          )
                         : Padding(
                             padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
                             child: Text("Estrelas", style: TextStyle(color: Colors.purple[700], fontSize: 19),),
-                          ),      
-                        FutureBuilder(
+                          ),   
+                        numStarsController.text == '0' 
+                        ? Container()
+                        : FutureBuilder(
                           future: stars,
                           builder: (context, snapshot){
                             switch (snapshot.connectionState) {

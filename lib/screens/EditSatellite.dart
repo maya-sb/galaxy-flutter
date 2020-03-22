@@ -266,7 +266,7 @@ class _EditSatelliteState extends State<EditSatellite> {
                                   }
 
                                   return Container(
-                                  padding: EdgeInsets.only(left: 15, right: 10),
+                                  padding: EdgeInsets.only(left:15),
                                   height: 180,
                                   child: ListView.builder(
                                     shrinkWrap: true,
@@ -340,7 +340,7 @@ class _EditSatelliteState extends State<EditSatellite> {
                                           ),
                                             width: 140.0,
                                             decoration: BoxDecoration(
-                                              color: Colors.white,
+                                              color: Colors.white70,
                                               shape: BoxShape.rectangle,
                                               borderRadius: new BorderRadius.circular(8.0),
                                           ),

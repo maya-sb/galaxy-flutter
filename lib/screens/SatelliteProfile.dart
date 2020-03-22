@@ -160,8 +160,10 @@ class _SatelliteProfileState extends State<SatelliteProfile> {
                                   );
                                 case ConnectionState.active:
                                 case ConnectionState.done: 
+                                  if(snapshot.hasData){
+                                    if (snapshot.data.length != 0){
                                     return Container(
-                                      padding: EdgeInsets.only(left: 15, right: 10),
+                                    padding: EdgeInsets.only(left:15),
                                       height: 180,
                                       child: ListView.builder(
                                         shrinkWrap: true,
@@ -196,7 +198,7 @@ class _SatelliteProfileState extends State<SatelliteProfile> {
                                               ),
                                                 width: 140.0,
                                                 decoration: BoxDecoration(
-                                                  color: Colors.white,
+                                                  color: Colors.white70,
                                                   shape: BoxShape.rectangle,
                                                   borderRadius: new BorderRadius.circular(8.0),
                                               ),
@@ -205,6 +207,18 @@ class _SatelliteProfileState extends State<SatelliteProfile> {
                                       )
                                       //child: HorizontalList(list: selectedGases, editable: true, isGas: true,)
                                     );
+                                    }else{
+                                       return Padding(
+                                        padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
+                                        child: Center(child: Text("Não possui gases", style: TextStyle(color: Colors.white70, fontSize: 16)),),
+                                      );
+                                    }
+                                  }else{
+                                     return Padding(
+                                        padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
+                                        child: Center(child: Text("Não possui gases", style: TextStyle(color: Colors.white70, fontSize: 16)),),
+                                      );
+                                  }
 
                               }
                             

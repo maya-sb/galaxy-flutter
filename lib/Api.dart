@@ -114,6 +114,23 @@ class Api {
     });
   }
 
+   deleteOnCascadeOnCascade(String galaxyId) async{
+
+    await db.collection('system')
+    .where('galaxyId', isEqualTo: galaxyId)
+    .getDocuments()
+    .then((snapshot){
+
+      for(DocumentSnapshot doc in snapshot.documents){
+        String id = doc.documentID;
+        deleteOnCascade('starSystemPlanetary', 'systemId', id);
+        deleteOnCascade('planetSystemPlanetary', 'systemId', id);
+        delete('system', id);
+      }
+
+    });
+  }
+
   getbyId(String collectionName, String id) async{
     
     DocumentSnapshot doc = await db.collection(collectionName).document(id).get();
