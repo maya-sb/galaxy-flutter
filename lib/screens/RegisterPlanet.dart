@@ -365,7 +365,7 @@ class _RegisterPlanetState extends State<RegisterPlanet> {
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: SizedBox.fromSize(
-                                      child: SvgPicture.asset('assets/svg/uranus.svg'),
+                                      child: SvgPicture.asset('assets/svg/galaxy.svg'),
                                       size: Size(70.0, 70.0),
                                     ),
                                 ),

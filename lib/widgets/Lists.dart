@@ -116,6 +116,7 @@ class NameList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("oi");
 
   return Container(
           color: Color(0xff380b4c),
@@ -153,7 +154,10 @@ class NameList extends StatelessWidget {
                             child: type != 'Orbit'
                             ? RowList(
                               title: item.name, 
-                              asset: 'assets/animations/'+ assets[item.colorId] + type + '.flr', 
+                              asset: type == "Star" ?
+                                'assets/animations/'+ starAssets[item.colorId] + type + '.flr'
+                                :'assets/animations/'+ assets[item.colorId] + type + '.flr'
+                              ,
                               action: () => Navigator.pushNamed(
                                 context, 
                                 route, 

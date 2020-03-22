@@ -4,13 +4,13 @@ class Star{
   String name;
   String age;
   String size;
+  String mass;
   String distance;
   String type;
-  String mass;
   String death = "false";
   int colorId;
 
-  Star({this.id, this.name, this.age, this.size, this.mass, this.distance, this.type, this.colorId});
+  Star({this.id, this.name, this.age, this.size, this.mass, this.distance, this.type, this.death, this.colorId});
 
   Star.fromMap(var document){
     id = document.documentID;

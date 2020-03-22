@@ -264,7 +264,7 @@ class _InfoState extends State<Info> {
                                         color: Colors.purple[700],
                                         fontFamily: "Poppins",
                                         fontSize: 18.0,),),
-                    OrbitCard(title: widget.selectedStar["name"], asset: 'assets/animations/'+assets[widget.selectedStar["colorId"]]+'Star.flr'),
+                    OrbitCard(title: widget.selectedStar["name"], asset: 'assets/animations/'+ starAssets[widget.selectedStar["colorId"]]+'Star.flr'),
                   ],
                 ) : Container() ,
           ],)
