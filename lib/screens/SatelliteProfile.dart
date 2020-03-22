@@ -196,7 +196,7 @@ class _SatelliteProfileState extends State<SatelliteProfile> {
                                               ),
                                                 width: 140.0,
                                                 decoration: BoxDecoration(
-                                                  color: Colors.white,
+                                                  color: Colors.white70,
                                                   shape: BoxShape.rectangle,
                                                   borderRadius: new BorderRadius.circular(8.0),
                                               ),
