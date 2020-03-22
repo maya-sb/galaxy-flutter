@@ -53,9 +53,9 @@ class _PlanetProfileState extends State<PlanetProfile > {
 
     Map<String, dynamic> data = await db.getbyId("planet", widget.id);
     nameController.text = data["name"];
-    sizeController.text = data["size"];
-    massController.text = data["mass"];
-    rotationController.text = data["rotationSpeed"];
+    sizeController.text = data["size"] + " Km";
+    massController.text = data["mass"] + " Kg";
+    rotationController.text = data["rotationSpeed"] + " Km/h";
     _selectedColor = data["colorId"];
     return widget.id;
   }
@@ -310,12 +310,12 @@ class Info extends StatelessWidget {
              ),  
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: OutputField(controller: sizeController, title: "Tamanho",),
+              child: OutputField(controller: sizeController, title: "Tamanho", suffixText: "Km",),
               ), 
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: OutputField(title: "Massa", controller: massController,
-            ),),
+              child: OutputField(title: "Massa", controller: massController, suffixText: "Kg",)
+              ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: OutputField(title: "Velocidade de Rotação", controller: rotationController,

@@ -36,8 +36,8 @@ class _SatelliteProfileState extends State<SatelliteProfile> {
 
     Map<String, dynamic> data = await db.getbyId("satellite", widget.id);
     nameController.text = data["name"];
-    sizeController.text = data["size"];
-    massController.text = data["mass"];
+    sizeController.text = data["size"] + " Km";
+    massController.text = data["mass"] + " Kg";
     _selectedColor = data["colorId"];
     return widget.id;
   }
@@ -256,12 +256,12 @@ class Info extends StatelessWidget {
              ),  
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: OutputField(controller: sizeController, title: "Tamanho",),
+              child: OutputField(controller: sizeController, title: "Tamanho", suffixText: "Km",),
               ), 
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: OutputField(title: "Massa", controller: massController,
-            ),),
+              child: OutputField(title: "Massa", controller: massController, suffixText: "Kg",),
+              ),
           ],
             ),
           margin: const EdgeInsets.symmetric(

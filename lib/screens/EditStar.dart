@@ -464,19 +464,19 @@ class _InfoState extends State<Info> {
                ),  
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: EditField(title: "Tamanho", controller: widget.sizeController, validator: validatorSize, fontSize: 18.0, keyboardType: TextInputType.number),
+                child: EditField(title: "Tamanho", controller: widget.sizeController, validator: validatorSize, suffixText:"Km" , fontSize: 18.0, keyboardType: TextInputType.number),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: EditField(title: "Massa", controller: widget.massController, validator: validatorMass, fontSize: 18.0, keyboardType: TextInputType.number ,),
+                child: EditField(title: "Massa", controller: widget.massController, validator: validatorMass, suffixText: "massas solares", fontSize: 18.0, keyboardType: TextInputType.number ,),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: EditField(title: "Idade", controller: widget.ageController, validator: validatorAge, fontSize: 18.0, keyboardType: TextInputType.number ,),
+                child: EditField(title: "Idade", controller: widget.ageController, validator: validatorAge, suffixText: "bilhões de anos",fontSize: 18.0, keyboardType: TextInputType.number ,),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: EditField(title: "Distância", controller: widget.distanceController, validator: validatorDistance, fontSize: 18.0, keyboardType: TextInputType.number ,),
+                child: EditField(title: "Distância da Terra", controller: widget.distanceController, validator: validatorDistance, suffixText: "anos-luz",fontSize: 18.0, keyboardType: TextInputType.number ,),
               ),
 
               widget.type == "Gigante vermelha"

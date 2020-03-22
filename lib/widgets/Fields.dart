@@ -12,8 +12,8 @@ class EditField extends StatefulWidget {
     this.fontSize: 18,
     this.isPassword: false,
     this.keyboardType: TextInputType.text,
-    this.textColor: Colors.white
-
+    this.textColor: Colors.white,
+    this.suffixText
   });
 
   final String title;
@@ -23,6 +23,7 @@ class EditField extends StatefulWidget {
   final bool isPassword;
   final TextInputType keyboardType;
   final Color textColor;
+  final String suffixText;
 
   @override
   _EditFieldState createState() => _EditFieldState();
@@ -93,6 +94,8 @@ class _EditFieldState extends State<EditField> {
         errorStyle: TextStyle(
           color: Colors.pink[700],
         ),
+        suffixText: widget.suffixText,
+        suffixStyle: TextStyle(fontSize: widget.fontSize,color: Colors.purple[800])
         //fillColor: Colors.green
       ),
       validator: widget.validator,
@@ -108,10 +111,11 @@ class _EditFieldState extends State<EditField> {
 
 class OutputField extends StatelessWidget {
 
-  const OutputField({this.title, this.controller});
+  const OutputField({this.title, this.controller, this.suffixText});
 
   final title;
   final controller;
+  final suffixText;
 
   @override
   Widget build(BuildContext context) {
@@ -122,7 +126,7 @@ class OutputField extends StatelessWidget {
       autofocus: false,
       decoration: new InputDecoration(
         labelText: title,
-        labelStyle: TextStyle(color: Colors.purple[700], fontSize: 20.0),
+        labelStyle: TextStyle(color: Colors.purple[700], fontSize: 18.0),
         fillColor: Colors.white,
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide.none
@@ -130,6 +134,8 @@ class OutputField extends StatelessWidget {
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide.none
         ),
+        //suffixText: suffixText,
+        suffixStyle: TextStyle(fontSize:20.0, color: Colors.white)
       ),
       keyboardType: TextInputType.emailAddress,
       style: TextStyle(

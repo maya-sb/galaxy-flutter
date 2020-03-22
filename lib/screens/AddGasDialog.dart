@@ -211,6 +211,7 @@ class _AddGasDialogState extends State<AddGasDialog> {
                               padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                               child: EditField(
                                 title: "Quantidade", 
+                                suffixText: "%",
                                 controller: controllerAmount,
                                 keyboardType: TextInputType.number,
                                 validator: (String value) {

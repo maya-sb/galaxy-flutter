@@ -192,6 +192,7 @@ class Info extends StatelessWidget {
                 title: "Distância da Terra", 
                 controller: distanceController, 
                 validator: validatorDistance, 
+                suffixText: "anos-luz",
                 fontSize: 18.0,
                 keyboardType: TextInputType.number,
             ),), 

@@ -659,6 +659,7 @@ class _InfoState extends State<Info> {
               padding: const EdgeInsets.all(8.0),
               child: EditField(
                 title: "Idade", 
+                suffixText: "bilhões de anos",
                 controller: widget.ageController, 
                 validator: validatorAge, 
                 fontSize: 18.0,

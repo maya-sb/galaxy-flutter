@@ -40,7 +40,7 @@ class _PlanetarySystemProfileState extends State<PlanetarySystemProfile> {
 
     Map<String, dynamic> data = await db.getbyId("system", widget.id);
     nameController.text = data["name"];
-    ageController.text = data["age"];
+    ageController.text = data["age"] + " bilhões de anos";
     numPlanetsController.text = data["numPlanets"].toString();
     numStarsController.text = data["numStars"].toString();
     _galaxyId = data["galaxyId"];
@@ -301,6 +301,7 @@ class Info extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: OutputField(
                 title: "Idade", 
+                suffixText: "bilhões de anos",
                 controller: ageController,  
             ),), 
             Padding(

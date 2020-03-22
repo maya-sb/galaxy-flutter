@@ -55,9 +55,10 @@ class _StarProfileState extends State<StarProfile > {
 
     Map<String, dynamic> data = await db.getbyId("star", widget.id);
     nameController.text = data["name"];
-    sizeController.text = data["size"];
-    massController.text = data["mass"];
-    ageController.text = data["age"];
+    sizeController.text = data["size"] + " Km";
+    massController.text = data["mass"] + " massas solares";
+    ageController.text = data["age"] + " bilhões de anos";
+    distanceController.text = data["distance"] + " anos-luz"
     typeController.text = data["type"];
     _selectedColor = data["colorId"];
     death = data["death"];
@@ -236,15 +237,19 @@ class Info extends StatelessWidget {
             ),  
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: OutputField(controller: sizeController, title: "Tamanho",),
+              child: OutputField(controller: sizeController, title: "Tamanho", suffixText: "Km",),
             ), 
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: OutputField(title: "Massa", controller: massController,),
+              child: OutputField(title: "Massa", controller: massController, suffixText: "massas solares",),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: OutputField(title: "Idade", controller: ageController,),
+              child: OutputField(title: "Idade", controller: ageController, suffixText: "bilhões de anos",),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: OutputField(title: "Distância da Terra", controller: distanceController,),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
