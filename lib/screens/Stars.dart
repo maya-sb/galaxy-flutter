@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:galaxy_flutter/Api.dart';
 import 'package:galaxy_flutter/RouteGenerator.dart';
-import 'package:galaxy_flutter/models/Satellite.dart';
 import 'package:galaxy_flutter/models/Star.dart';
 import 'package:galaxy_flutter/widgets/Lists.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -20,7 +19,7 @@ class _StarsState extends State<Stars> {
   @override
   void initState(){
     super.initState();
-    lista = NameList(type: 'Star', future: db.getAll('star', Star), route: RouteGenerator.ROUTE_SATELLITE_PROFILE);
+    lista = NameList(type: 'Star', future: db.getAll('star', Star), route: RouteGenerator.ROUTE_STAR_PROFILE);
   }
 
   @override
@@ -86,35 +85,55 @@ class _StarsState extends State<Stars> {
               backgroundColor: Colors.white,
               label: 'Anã branca',
               labelStyle: TextStyle(fontSize: 18.0, color: Colors.pink[700]),
-              onTap: () => print('FIRST CHILD')
+              onTap: () => Navigator.pushNamed(
+                            context, 
+                            RouteGenerator.ROUTE_REGISTER_STAR, 
+                            arguments: "Anã branca"
+                          )
             ),
             SpeedDialChild(
               child: Icon(Icons.star, color: Colors.pink[700],),
               backgroundColor: Colors.white,
               label: 'Anã vermelha',
               labelStyle: TextStyle(fontSize: 18.0, color: Colors.pink[700]),
-              onTap: () => print('FIRST CHILD')
+              onTap: () => Navigator.pushNamed(
+                            context, 
+                            RouteGenerator.ROUTE_REGISTER_STAR, 
+                            arguments: "Anã vermelha"
+                          )
             ),
             SpeedDialChild(
               child: Icon(Icons.star, color: Colors.pink[700],),
               backgroundColor: Colors.white,
               label: 'Gigante azul',
               labelStyle: TextStyle(fontSize: 18.0, color: Colors.pink[700]),
-              onTap: () => print('FIRST CHILD')
+              onTap: () => Navigator.pushNamed(
+                            context, 
+                            RouteGenerator.ROUTE_REGISTER_STAR, 
+                            arguments: "Gigante azul"
+                          )
             ),
             SpeedDialChild(
               child: Icon(Icons.star, color: Colors.pink[700],),
               backgroundColor: Colors.white,
               label: 'Gigante vermelha',
               labelStyle: TextStyle(fontSize: 18.0, color: Colors.pink[700]),
-              onTap: () => print('FIRST CHILD')
+              onTap: () => Navigator.pushNamed(
+                            context, 
+                            RouteGenerator.ROUTE_REGISTER_STAR, 
+                            arguments: "Gigante vermelha"
+                          )
             ),
             SpeedDialChild(
               child: Icon(Icons.star, color: Colors.pink[700],),
               backgroundColor: Colors.white,
               label: 'Estrela binária',
               labelStyle: TextStyle(fontSize: 18.0, color: Colors.pink[700]),
-              onTap: () => print('FIRST CHILD')
+              onTap: () => Navigator.pushNamed(
+                            context, 
+                            RouteGenerator.ROUTE_REGISTER_STAR, 
+                            arguments: "Estrela binária"
+                          )
             ),
        
           ],
@@ -129,31 +148,31 @@ class _StarsState extends State<Stars> {
     setState(() {
       switch (choice) {
         case "Todos":
-          lista = NameList(type: 'Star', future: db.getAll('star', Star), route: RouteGenerator.ROUTE_SATELLITE_PROFILE);
+          lista = NameList(type: 'Star', future: db.getAll('star', Star), route: RouteGenerator.ROUTE_STAR_PROFILE);
           break;
         
         case "Anã branca":
-          lista = NameList(type: 'Star', future: db.getWhere('star', Star, 'type', 'Anã branca'), route: RouteGenerator.ROUTE_SATELLITE_PROFILE);
+          lista = NameList(type: 'Star', future: db.getWhere('star', Star, 'type', 'Anã branca'), route: RouteGenerator.ROUTE_STAR_PROFILE);
           break;
         
         case "Anã vermelha":
-          lista = NameList(type: 'Star', future: db.getWhere('star', Star, 'type', 'Anã vermelha'), route: RouteGenerator.ROUTE_SATELLITE_PROFILE);
+          lista = NameList(type: 'Star', future: db.getWhere('star', Star, 'type', 'Anã vermelha'), route: RouteGenerator.ROUTE_STAR_PROFILE);
           break;
         
         case "Gigante azul":
-          lista = NameList(type: 'Star', future: db.getWhere('star', Star, 'type', 'Gigante azul'), route: RouteGenerator.ROUTE_SATELLITE_PROFILE);
+          lista = NameList(type: 'Star', future: db.getWhere('star', Star, 'type', 'Gigante azul'), route: RouteGenerator.ROUTE_STAR_PROFILE);
           break;
         
         case "Gigante vermelha":
-          lista = NameList(type: 'Star', future: db.getWhere('star', Star, 'type', 'Gigante vermelha'), route: RouteGenerator.ROUTE_SATELLITE_PROFILE);
+          lista = NameList(type: 'Star', future: db.getWhere('star', Star, 'type', 'Gigante vermelha'), route: RouteGenerator.ROUTE_STAR_PROFILE);
           break;
         
         case "Estrela binária":
-          lista = NameList(type: 'Star', future: db.getWhere('star', Star, 'type','Estrela binária'), route: RouteGenerator.ROUTE_SATELLITE_PROFILE);
+          lista = NameList(type: 'Star', future: db.getWhere('star', Star, 'type','Estrela binária'), route: RouteGenerator.ROUTE_STAR_PROFILE);
           break;
         
         case "Buraco negro":
-          lista = NameList(type: 'Star', future: db.getWhere('star', Star, 'death', true), route: RouteGenerator.ROUTE_SATELLITE_PROFILE);
+          lista = NameList(type: 'Star', future: db.getWhere('star', Star, 'death', true), route: RouteGenerator.ROUTE_STAR_PROFILE);
       }
     });
     
