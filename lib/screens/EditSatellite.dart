@@ -266,7 +266,7 @@ class _EditSatelliteState extends State<EditSatellite> {
                                   }
 
                                   return Container(
-                                  padding: EdgeInsets.only(left: 15, right: 10),
+                                  padding: EdgeInsets.only(left:15),
                                   height: 180,
                                   child: ListView.builder(
                                     shrinkWrap: true,

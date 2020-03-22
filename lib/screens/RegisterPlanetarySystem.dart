@@ -221,7 +221,7 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
                 child: Text("Planetas", style: TextStyle(color: Colors.purple[800], fontSize: 18),),
               ), 
                 Container(
-                  padding: EdgeInsets.only(left: 15, right: 10),
+                  padding: EdgeInsets.only(left:15),
                   height: 180,
                   child: ListView.builder(
                     shrinkWrap: true,
@@ -322,7 +322,7 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
                 child: Text("Estrelas", style: TextStyle(color: Colors.purple[800], fontSize: 18),),
               ), 
                 Container(
-                  padding: EdgeInsets.only(left: 15, right: 10),
+                  padding: EdgeInsets.only(left:15),
                   height: 180,
                   child: ListView.builder(
                     shrinkWrap: true,

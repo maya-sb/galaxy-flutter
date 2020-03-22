@@ -345,7 +345,7 @@ class _EditPlanetarySystemState extends State<EditPlanetarySystem> {
                                   }
 
                                   return Container(
-                                  padding: EdgeInsets.only(left: 15, right: 10),
+                                  padding: EdgeInsets.only(left:15),
                                   height: 180,
                                   child: ListView.builder(
                                     shrinkWrap: true,
@@ -478,7 +478,7 @@ class _EditPlanetarySystemState extends State<EditPlanetarySystem> {
                                   }
 
                                   return Container(
-                                  padding: EdgeInsets.only(left: 15, right: 10),
+                                  padding: EdgeInsets.only(left:15),
                                   height: 180,
                                   child: ListView.builder(
                                     shrinkWrap: true,

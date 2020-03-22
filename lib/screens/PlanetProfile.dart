@@ -182,7 +182,7 @@ class _PlanetProfileState extends State<PlanetProfile > {
                                 case ConnectionState.active:
                                 case ConnectionState.done: 
                                     return Container(
-                                      padding: EdgeInsets.only(left: 15, right: 10),
+                                      padding: EdgeInsets.only(left:15),
                                       height: 180,
                                       child: ListView.builder(
                                         shrinkWrap: true,

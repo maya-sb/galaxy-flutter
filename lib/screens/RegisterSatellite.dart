@@ -177,7 +177,7 @@ class _RegisterSatelliteState extends State<RegisterSatellite> {
                 child: Text("Composição", style: TextStyle(color: Colors.purple[800], fontSize: 18),),
               ), 
                 Container(
-                  padding: EdgeInsets.only(left: 15, right: 10),
+                  padding: EdgeInsets.only(left:15),
                   height: 180,
                   child: ListView.builder(
                     shrinkWrap: true,
