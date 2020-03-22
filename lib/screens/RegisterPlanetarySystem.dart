@@ -6,6 +6,8 @@ import 'package:galaxy_flutter/Api.dart';
 import 'package:galaxy_flutter/models/Planet.dart';
 import 'package:galaxy_flutter/models/PlanetSystemPlanetary.dart';
 import 'package:galaxy_flutter/models/PlanetarySystem.dart';
+import 'package:galaxy_flutter/models/Star.dart';
+import 'package:galaxy_flutter/models/StarSystemPlanetary.dart';
 import 'package:galaxy_flutter/widgets/Animations.dart';
 import 'package:galaxy_flutter/widgets/Dialogs.dart';
 import 'package:galaxy_flutter/widgets/Fields.dart';
@@ -126,14 +128,20 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
             }
 
             if (_formKey.currentState.validate()) {
-              PlanetarySystem system = PlanetarySystem(name: nameController.text, age:ageController.text, numStars: 0, numPlanets: selectedPlanets.length, galaxyId: galaxyController.text, colorId: selectedColor);
               //TODO Transações
+
+              PlanetarySystem system = PlanetarySystem(name: nameController.text, age:ageController.text, numStars: selectedStars.length, numPlanets: selectedPlanets.length, galaxyId: galaxyController.text, colorId: selectedColor);
               var id = db.set('system', system);
               await updateGalaxy(galaxyController.text);
 
               for (var planet in selectedPlanets){
                 PlanetSystemPlanetary plaSystem = PlanetSystemPlanetary(planetId: planet["id"], systemId: id);
                 db.insert('planetSystemPlanetary', plaSystem);
+              }
+
+              for (var star in selectedStars){
+                StarSystemPlanetary starSystem = StarSystemPlanetary(starId: star["id"], systemId: id);
+                db.insert('starSystemPlanetary', starSystem);
               }
 
               Navigator.pop(context);
@@ -297,6 +305,107 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
                                 setState(() {
                                   listIdPlanets.removeWhere((item) => item == selectedPlanets[index-1]["id"]);
                                   selectedPlanets.removeAt(index-1);
+                                });
+                              }
+                              ))
+                          ]
+                      );
+                        //return GasCard(title: widget.list[index-1], index: index, editable: widget.editable);
+                      }
+                      
+                    } ,
+                  )
+                  //child: HorizontalList(list: selectedGases, editable: true, isGas: true,)
+                ),
+                 Padding(
+                padding: const EdgeInsets.only(top: 10.0, left: 20.0, bottom: 10.0,),
+                child: Text("Estrelas", style: TextStyle(color: Colors.purple[800], fontSize: 18),),
+              ), 
+                Container(
+                  padding: EdgeInsets.only(left: 15, right: 10),
+                  height: 180,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: selectedStars.length+1,
+                    itemBuilder: (context, index) {
+                      if (index == 0){
+                        return Container(
+                          padding: EdgeInsets.all(10),
+                          child: InkWell(
+                              onTap: () async{
+                                var star = await showDialog(context: context, builder: (context) {
+                                    return SelectDialog(db.getAll('star', Star), "Adicionar Estrela",listIdStars,"estrela");
+                                });
+
+                                if(star != null) { 
+                                  setState(() {
+                                  selectedStars.add(star);
+                                  listIdStars.add(star["id"]);
+                                });}
+                              },
+
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: Center(child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: Text("+", style: TextStyle(color: Color(0xff380b4c), fontSize: 60),),
+                                ),
+                              ],
+                            )),
+                          ),
+                          margin: const EdgeInsets.symmetric(
+                          vertical: 10.0,
+                          horizontal: 5.0,
+                        ),
+                          width: 140.0,
+                          decoration: BoxDecoration(
+                            color: Colors.white70,
+                            shape: BoxShape.rectangle,
+                            borderRadius: new BorderRadius.circular(8.0),
+                        ),
+                      );
+
+                      } else { 
+                        return Stack(
+                          children: [
+                            Container(
+                            padding: EdgeInsets.all(10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.all(0),
+                                  child: Text(selectedStars[index-1]['name'], style: TextStyle(color: Color(0xff380b4c), fontSize: 16),),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox.fromSize(
+                                      child: SvgPicture.asset('assets/svg/stars.svg', color: Color(0xff380b4c)),
+                                      size: Size(70.0, 70.0),
+                                    ),
+                                ),
+                              ],
+                            ),
+                            margin: const EdgeInsets.symmetric(
+                            vertical: 10.0,
+                            horizontal: 5.0,
+                          ),
+                            width: 140.0,
+                            decoration: BoxDecoration(
+                              color: Colors.white70,
+                              shape: BoxShape.rectangle,
+                              borderRadius: new BorderRadius.circular(8.0),
+                          ),
+                          ),
+                           Positioned(top: 7, right: 0, child: IconButton(
+                            icon: Icon(Icons.clear,color:Color(0xff380b4c),), 
+                            onPressed: (){
+                                setState(() {
+                                  listIdStars.removeWhere((item) => item == selectedStars[index-1]["id"]);
+                                  selectedStars.removeAt(index-1);
                                 });
                               }
                               ))

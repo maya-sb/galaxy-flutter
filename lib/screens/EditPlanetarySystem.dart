@@ -6,6 +6,8 @@ import 'package:galaxy_flutter/Api.dart';
 import 'package:galaxy_flutter/models/Galaxy.dart';
 import 'package:galaxy_flutter/models/Planet.dart';
 import 'package:galaxy_flutter/models/PlanetSystemPlanetary.dart';
+import 'package:galaxy_flutter/models/Star.dart';
+import 'package:galaxy_flutter/models/StarSystemPlanetary.dart';
 import 'package:galaxy_flutter/models/PlanetarySystem.dart';
 import 'package:galaxy_flutter/widgets/Animations.dart';
 import 'package:galaxy_flutter/widgets/Dialogs.dart';
@@ -71,6 +73,32 @@ class _EditPlanetarySystemState extends State<EditPlanetarySystem> {
     }
     }
     return planets;
+  }
+
+  _getStars() async{
+    List items = await db.getWhere('starSystemPlanetary', StarSystemPlanetary, 'systemId', widget.id);
+    List stars = [];
+
+    var star;
+    for (StarSystemPlanetary ssp in items){
+      star = await db.getbyId('star', ssp.starId);
+      stars.add({"name": star["name"], "starId": ssp.starId, "id": ssp.id});
+    }
+
+    return stars;
+  }
+
+
+  var stars;
+
+  getStars(var starsBanco){
+    stars = starsBanco;
+    if (starsBanco != null){
+      for (var star in starsBanco){
+      listIdStars.add(star["starId"]);
+    }
+    }
+    return stars;
   }
 
    _getSystem() async{
@@ -151,6 +179,7 @@ class _EditPlanetarySystemState extends State<EditPlanetarySystem> {
     future = _getSystem();
     galaxyList = loadGalaxyList();
     selectedPlanets = _getPlanets();
+    selectedStars = _getStars();
   }
 
   @override
@@ -163,6 +192,7 @@ class _EditPlanetarySystemState extends State<EditPlanetarySystem> {
 
             if (_formKey.currentState.validate()) {
               numPlanets = planets.length;
+              numStars = stars.length;
               PlanetarySystem system = PlanetarySystem(id:widget.id, name: nameController.text, age:ageController.text, numStars: numStars, numPlanets: numPlanets, galaxyId: galaxyController.text, colorId: _selectedColor);
               //TODO Transações
               db.update('system', system);
@@ -178,6 +208,15 @@ class _EditPlanetarySystemState extends State<EditPlanetarySystem> {
               for (var planet in addedPlanets){
                 PlanetSystemPlanetary planetSystem = PlanetSystemPlanetary(planetId: planet["id"], systemId: widget.id);
                 db.insert('planetSystemPlanetary', planetSystem);
+              }
+
+              for (var starId in deletedStars){
+                db.delete('starSystemPlanetary', starId);
+              }
+
+              for (var star in addedStars){
+                StarSystemPlanetary starSystem = StarSystemPlanetary(starId: star["id"], systemId: widget.id);
+                db.insert('starSystemPlanetary', starSystem);
               }
 
               Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_PLANETARY_SYSTEM_PROFILE, arguments: widget.id);
@@ -251,6 +290,7 @@ class _EditPlanetarySystemState extends State<EditPlanetarySystem> {
                                               await updateGalaxy(lastGalaxy, "-");
 
                                               db.deleteOnCascade('planetSystemPlanetary', 'systemId', widget.id);
+                                              db.deleteOnCascade('starSystemPlanetary', 'systemId', widget.id);
                                               db.delete("system", widget.id); 
                                               Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_PLANETARY_SYSTEMS);});
                                         });
@@ -403,6 +443,139 @@ class _EditPlanetarySystemState extends State<EditPlanetarySystem> {
                                                   }
                                                   listIdPlanets.removeWhere((item) => item == planets[index-1]["planetId"]);
                                                   planets.removeAt(index-1);                  
+                                                });
+                                              }
+                                              ))
+                                          ]
+                                      );
+                                        //return GasCard(title: widget.list[index-1], index: index, editable: widget.editable);
+                                      }
+                                      
+                                    } ,
+                                  )
+                                  //child: HorizontalList(list: selectedGases, editable: true, isGas: true,)
+                                );
+                                }
+                            },
+                            ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,),
+                            child: Text("Estrelas", style: TextStyle(color: Colors.purple[800], fontSize: 18),),
+                          ), 
+                          FutureBuilder(
+                            future: selectedStars,
+                            builder: (context, snapshot){
+
+                              switch (snapshot.connectionState){
+                                case ConnectionState.none:
+                                case ConnectionState.active:
+                                case ConnectionState.waiting:
+                                case ConnectionState.done:
+                                  var aux = getStars(snapshot.data);
+                                  
+                                  if (aux == null){
+                                    return Container(); 
+                                  }
+
+                                  return Container(
+                                  padding: EdgeInsets.only(left: 15, right: 10),
+                                  height: 180,
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: stars.length+1,
+                                    itemBuilder: (context, index) {
+                                      if (index == 0){
+                                        return Container(
+                                          padding: EdgeInsets.all(10),
+                                          child: InkWell(
+                                              onTap: () async{
+                                               
+                                                var star = await showDialog(context: context, builder: (context) {
+                                                    return SelectDialog(db.getAll('star', Star), "Adicionar Estrela",listIdStars,"estrela");
+                                                });
+
+                                                if(star != null) { 
+                                                  setState(() {
+                                                  addedStars.add(star);
+                                                  stars.add(star);
+                                                  listIdStars.add(star["id"]);
+                                                });}
+
+                                              },
+                                              borderRadius: BorderRadius.circular(8.0),
+                                              child: Center(child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: <Widget>[
+                                                Padding(
+                                                  padding: EdgeInsets.all(10),
+                                                  child: Text("+", style: TextStyle(color: Color(0xff380b4c), fontSize: 60),),
+                                                ),
+                                              ],
+                                            )),
+                                          ),
+                                          margin: const EdgeInsets.symmetric(
+                                          vertical: 10.0,
+                                          horizontal: 5.0,
+                                        ),
+                                          width: 140.0,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white70,
+                                            shape: BoxShape.rectangle,
+                                            borderRadius: new BorderRadius.circular(8.0),
+                                        ),
+                                      );
+
+                                      } else { 
+                                        return Stack(
+                                          children: [
+                                            Container(
+                                            padding: EdgeInsets.all(10),
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: <Widget>[
+                                                Padding(
+                                                  padding: const EdgeInsets.all(0),
+                                                  child: Text(stars[index-1]['name'], style: TextStyle(color: Color(0xff380b4c), fontSize: 16),),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  child: SizedBox.fromSize(
+                                                      child: SvgPicture.asset('assets/svg/stars.svg', color: Color(0xff380b4c)),
+                                                      size: Size(70.0, 70.0),
+                                                    ),
+                                                ),
+                                              ],
+                                            ),
+                                            margin: const EdgeInsets.symmetric(
+                                            vertical: 10.0,
+                                            horizontal: 5.0,
+                                          ),
+                                            width: 140.0,
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              shape: BoxShape.rectangle,
+                                              borderRadius: new BorderRadius.circular(8.0),
+                                          ),
+                                          ),
+                                          Positioned(top: 7, right: 0, child: IconButton(
+                                            icon: Icon(Icons.clear,color:Color(0xff380b4c),), 
+                                            onPressed: (){
+                                                setState(() {
+                                                  var indexStar;
+                                                  for (int i=0; i<addedStars.length; i++){
+                                                    if(addedStars[i]["id"] == stars[index-1]["starId"]){
+                                                      indexStar = i;
+                                                      break;
+                                                    }
+                                                  }
+                                                  if (indexStar != null){
+                                                    addedStars.removeAt(indexStar);
+                                                  }else{
+                                                    deletedStars.add(stars[index-1]["id"]);
+                                                  }
+                                                  listIdStars.removeWhere((item) => item == stars[index-1]["starId"]);
+                                                  stars.removeAt(index-1);                  
                                                 });
                                               }
                                               ))

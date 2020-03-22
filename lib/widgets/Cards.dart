@@ -24,7 +24,7 @@ class OrbitingCard extends StatelessWidget {
                 child: Text(title, style: TextStyle(color: Color(0xff380b4c), fontSize: 16),),
               ),
               SizedBox.fromSize(
-                  child:  SvgPicture.asset(svg),
+                  child:  SvgPicture.asset(svg, color: Color(0xff380b4c)),
                   size: Size(70.0, 70.0),
                 ),
             ],

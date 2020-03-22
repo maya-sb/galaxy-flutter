@@ -177,7 +177,6 @@ class Api {
     var item;
 
     for(DocumentSnapshot doc in querySnapshot.documents){
-
         switch(type){
           case SatelliteGas:
             item = SatelliteGas.fromMap(doc);
@@ -188,7 +187,6 @@ class Api {
           case Star:
             item = Star.fromMap(doc);
             break;
-          
           case PlanetGas:
             item = PlanetGas.fromMap(doc);
             break;

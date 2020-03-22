@@ -5,6 +5,8 @@ import 'package:galaxy_flutter/Api.dart';
 import 'package:galaxy_flutter/RouteGenerator.dart';
 import 'package:galaxy_flutter/models/Planet.dart';
 import 'package:galaxy_flutter/models/PlanetSystemPlanetary.dart';
+import 'package:galaxy_flutter/models/Star.dart';
+import 'package:galaxy_flutter/models/StarSystemPlanetary.dart';
 import 'package:galaxy_flutter/widgets/Animations.dart';
 import 'package:galaxy_flutter/widgets/Fields.dart';
 import 'package:galaxy_flutter/widgets/Lists.dart';
@@ -28,6 +30,7 @@ class _PlanetarySystemProfileState extends State<PlanetarySystemProfile> {
   int _selectedColor = 0;
   String _galaxyId;
   var planets;
+  var stars;
 
   Api db = Api();
 
@@ -60,11 +63,26 @@ class _PlanetarySystemProfileState extends State<PlanetarySystemProfile> {
     return planets;
   }
 
+  _getStars() async{
+    List items = await db.getWhere('starSystemPlanetary', StarSystemPlanetary, 'systemId', widget.id);
+    List stars = [];
+
+    if (items != null){
+      var star;
+      for (StarSystemPlanetary ssp in items){
+        star = await db.getdocbyId('star', ssp.starId);
+        stars.add(Star.fromMap(star));
+      }
+    }
+    return stars;
+  }
+
   @override
   void initState() {
     super.initState();
     future = _getSystem();
     planets = _getPlanets();
+    stars = _getStars();
   }
 
   @override
@@ -185,7 +203,29 @@ class _PlanetarySystemProfileState extends State<PlanetarySystemProfile> {
                                   );
                               }
                           }
-                        ), 
+                        ),
+                        numStarsController.text == '0' 
+                        ? Container()
+                        : Padding(
+                            padding: const EdgeInsets.only(left: 20.0, bottom: 10.0,  top:10.0),
+                            child: Text("Estrelas", style: TextStyle(color: Colors.purple[700], fontSize: 19),),
+                          ),      
+                        FutureBuilder(
+                          future: stars,
+                          builder: (context, snapshot){
+                            switch (snapshot.connectionState) {
+                                case ConnectionState.none:
+                                case ConnectionState.waiting:
+                                case ConnectionState.active:
+                                case ConnectionState.done:  
+                                  return Container(
+                                    padding: EdgeInsets.only(left:15),
+                                    height: 180, 
+                                    child: HorizontalList(list: snapshot.data, asset: 'assets/svg/stars.svg',editable: false)
+                                  );
+                              }
+                          }
+                        ),  
 
                         ]
                       ),
