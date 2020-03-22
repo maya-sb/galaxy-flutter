@@ -403,7 +403,7 @@ class _EditPlanetarySystemState extends State<EditPlanetarySystem> {
                                               children: <Widget>[
                                                 Padding(
                                                   padding: const EdgeInsets.all(0),
-                                                  child: Text(planets[index-1]['name'], style: TextStyle(color: Color(0xff380b4c), fontSize: 16),),
+                                                  child: Text(planets[index-1]['name'], style: TextStyle(color: Color(0xff380b4c), fontSize: planets[index-1]['name'].length < 23 ? 16 : 13),),
                                                 ),
                                                 Padding(
                                                   padding: const EdgeInsets.all(8.0),
@@ -536,7 +536,7 @@ class _EditPlanetarySystemState extends State<EditPlanetarySystem> {
                                               children: <Widget>[
                                                 Padding(
                                                   padding: const EdgeInsets.all(0),
-                                                  child: Text(stars[index-1]['name'], style: TextStyle(color: Color(0xff380b4c), fontSize: 16),),
+                                                  child: Text(stars[index-1]['name'], style: TextStyle(color: Color(0xff380b4c), fontSize:  stars[index-1]['name'].length < 23 ? 16 : 13),),
                                                 ),
                                                 Padding(
                                                   padding: const EdgeInsets.all(8.0),

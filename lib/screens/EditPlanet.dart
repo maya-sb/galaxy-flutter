@@ -523,7 +523,7 @@ class _EditPlanetState extends State<EditPlanet> {
                                               children: <Widget>[
                                                 Padding(
                                                   padding: const EdgeInsets.all(0),
-                                                  child: Text(systems[index-1]['name'], style: TextStyle(color: Color(0xff380b4c), fontSize: 16),),
+                                                  child: Text(systems[index-1]['name'], style: TextStyle(color: Color(0xff380b4c), fontSize: systems[index-1]['name'].lenght < 23 ? 16 : 13),),
                                                 ),
                                                 Padding(
                                                   padding: const EdgeInsets.all(8.0),
