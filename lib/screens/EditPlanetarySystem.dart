@@ -359,7 +359,7 @@ class _EditPlanetarySystemState extends State<EditPlanetarySystem> {
                                               onTap: () async{
                                                
                                                 var planet = await showDialog(context: context, builder: (context) {
-                                                    return SelectDialog(db.getAll('planet', Planet), "Adicionar Planeta",listIdPlanets,"planeta");
+                                                    return SelectDialog(db.getAll('planet', Planet), "Adicionar Planeta",listIdPlanets,"um planeta");
                                                 });
 
                                                 if(planet != null) { 
@@ -403,7 +403,7 @@ class _EditPlanetarySystemState extends State<EditPlanetarySystem> {
                                               children: <Widget>[
                                                 Padding(
                                                   padding: const EdgeInsets.all(0),
-                                                  child: Text(planets[index-1]['name'], style: TextStyle(color: Color(0xff380b4c), fontSize: 16),),
+                                                  child: Text(planets[index-1]['name'], style: TextStyle(color: Color(0xff380b4c), fontSize: planets[index-1]['name'].length < 23 ? 16 : 13),),
                                                 ),
                                                 Padding(
                                                   padding: const EdgeInsets.all(8.0),
@@ -492,7 +492,7 @@ class _EditPlanetarySystemState extends State<EditPlanetarySystem> {
                                               onTap: () async{
                                                
                                                 var star = await showDialog(context: context, builder: (context) {
-                                                    return SelectDialog(db.getAll('star', Star), "Adicionar Estrela",listIdStars,"estrela");
+                                                    return SelectDialog(db.getAll('star', Star), "Adicionar Estrela",listIdStars,"uma estrela");
                                                 });
 
                                                 if(star != null) { 
@@ -536,7 +536,7 @@ class _EditPlanetarySystemState extends State<EditPlanetarySystem> {
                                               children: <Widget>[
                                                 Padding(
                                                   padding: const EdgeInsets.all(0),
-                                                  child: Text(stars[index-1]['name'], style: TextStyle(color: Color(0xff380b4c), fontSize: 16),),
+                                                  child: Text(stars[index-1]['name'], style: TextStyle(color: Color(0xff380b4c), fontSize:  stars[index-1]['name'].length < 23 ? 16 : 13),),
                                                 ),
                                                 Padding(
                                                   padding: const EdgeInsets.all(8.0),

@@ -31,7 +31,7 @@ class _StarsState extends State<Stars> {
        },
        child: Scaffold(
          appBar: AppBar(
-          title: Text("Estrelass", style: TextStyle(color: Colors.white)),
+          title: Text("Estrelas", style: TextStyle(color: Colors.white)),
           iconTheme: IconThemeData(color: Colors.white),
           backgroundColor: Colors.transparent,
           actions: <Widget>[

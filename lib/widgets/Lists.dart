@@ -116,7 +116,6 @@ class NameList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("oi");
 
   return Container(
           color: Color(0xff380b4c),

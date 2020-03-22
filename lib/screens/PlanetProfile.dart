@@ -235,10 +235,7 @@ class _PlanetProfileState extends State<PlanetProfile > {
                                       );
                                   }
                                 }else{
-                                  return Padding(
-                                        padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
-                                        child: Center(child: Text("Não possui gases", style: TextStyle(color: Colors.white70, fontSize: 16)),),
-                                      );
+                                  return Container();
                                 }
                               }
                             
@@ -265,15 +262,12 @@ class _PlanetProfileState extends State<PlanetProfile > {
                                     );
                                     }else{
                                       return Padding(
-                                      padding: const EdgeInsets.only(top: 20.0),
+                                      padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
                                       child: Center(child: Text("Não pertence há sistemas", style: TextStyle(color: Colors.white70, fontSize: 16)),),
                                     );
                                     }
                                   }else{
-                                    return Padding(
-                                      padding: const EdgeInsets.only(top: 20.0),
-                                      child: Center(child: Text("Não pertence há sistemas", style: TextStyle(color: Colors.white70, fontSize: 16)),),
-                                    );
+                                    return Container();
                                   }
                               }
                           }

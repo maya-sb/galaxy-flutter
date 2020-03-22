@@ -227,7 +227,7 @@ class _PlanetarySystemProfileState extends State<PlanetarySystemProfile> {
                               children: <Widget>[
                                 Text("Estrelas", style: TextStyle(color: Colors.purple[700], fontSize: 19),),
                                 Padding(
-                                  padding: const EdgeInsets.only(top: 20.0),
+                                  padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
                                   child: Center(child: Text("Não há estrelas", style: TextStyle(color: Colors.white70, fontSize: 16)),),
                                 )
                               

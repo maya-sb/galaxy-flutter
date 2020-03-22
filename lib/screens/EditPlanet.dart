@@ -188,9 +188,8 @@ class _EditPlanetState extends State<EditPlanet> {
               }
 
               for (var plaId in deletedSystems){
-                var systemId = plaId.split("-")[0];
-                await updateSystem(systemId, "-");
-                db.delete('planetSystemPlanetary', plaId);
+                await updateSystem(plaId["systemId"], "-");
+                db.delete('planetSystemPlanetary', plaId["id"]);
               }
 
               for (var system in addedSystems){
@@ -479,7 +478,7 @@ class _EditPlanetState extends State<EditPlanet> {
                                               onTap: () async{
                                                
                                                 var system = await showDialog(context: context, builder: (context) {
-                                                    return SelectDialog(db.getAll('system', PlanetarySystem), "Adicionar Sistema Planetário",listIdSystems,"sistema");
+                                                    return SelectDialog(db.getAll('system', PlanetarySystem), "Adicionar Sistema Planetário",listIdSystems,"um sistema");
                                                 });
 
                                                 if(system!= null) { 
@@ -523,7 +522,7 @@ class _EditPlanetState extends State<EditPlanet> {
                                               children: <Widget>[
                                                 Padding(
                                                   padding: const EdgeInsets.all(0),
-                                                  child: Text(systems[index-1]['name'], style: TextStyle(color: Color(0xff380b4c), fontSize: 16),),
+                                                  child: Text(systems[index-1]['name'], style: TextStyle(color: Color(0xff380b4c), fontSize: systems[index-1]['name'].length < 23 ? 16 : 13),),
                                                 ),
                                                 Padding(
                                                   padding: const EdgeInsets.all(8.0),
@@ -559,7 +558,7 @@ class _EditPlanetState extends State<EditPlanet> {
                                                   if (indexPlanet != null){
                                                     addedSystems.removeAt(indexPlanet);
                                                   }else{
-                                                    deletedSystems.add(systems[index-1]["id"]);
+                                                    deletedSystems.add(systems[index-1]);
                                                   }
                                                   listIdSystems.removeWhere((item) => item == systems[index-1]["systemId"]);
                                                  systems.removeAt(index-1);                  

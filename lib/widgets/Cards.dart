@@ -18,10 +18,11 @@ class OrbitingCard extends StatelessWidget {
           padding: EdgeInsets.all(10),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(bottom: 10.0),
-                child: Text(title, style: TextStyle(color: Color(0xff380b4c), fontSize: 16),),
+                child: Text(title, style: TextStyle(color: Color(0xff380b4c), fontSize: title.length < 23 ? 16 : 13),),
               ),
               SizedBox.fromSize(
                   child:  SvgPicture.asset(svg, color: Color(0xff380b4c)),
@@ -76,9 +77,9 @@ class OrbitCard extends StatelessWidget {
                   size: Size(80.0, 80.0),
                 ) : Container(height: 80.0, width: 80.0,),
                 this.title != null ?
-                 Padding(
+                Padding(
                 padding: const EdgeInsets.only(top: 10.0),
-                child: Text(title, style: TextStyle(color: Color(0xff380b4c), fontSize: 16),),
+                child: Text(title, style: TextStyle(color: Color(0xff380b4c), fontSize: title.length < 23 ? 16 : 12),),
               ) : Container(padding: EdgeInsets.only(top:30.0),)
             ],
           ),
@@ -87,6 +88,7 @@ class OrbitCard extends StatelessWidget {
            horizontal: 5.0,
          ),
           width: 116.0,
+          height: 140,
           decoration: BoxDecoration(
             color: Colors.white70,
             shape: BoxShape.rectangle,
@@ -221,8 +223,11 @@ class CardList extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             title != null 
-            ? (Text(title, 
-            style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff380b4c), fontSize: 20, ),))
+            ? Padding(
+              padding: title.length < 23 ? const EdgeInsets.only(left: 16.0) : const EdgeInsets.only(left: 44.0) ,
+              child: (Text(title, 
+              style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff380b4c), fontSize: 20, ),)),
+            )
             : FutureBuilder(
               future: db.getbyId('planet',item.planetId),
               builder: (context,snapshot){
@@ -232,7 +237,7 @@ class CardList extends StatelessWidget {
                   case ConnectionState.active:
                   case ConnectionState.done:  
                     if (snapshot.hasData){
-                      return Text(snapshot.data["name"], style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff380b4c), fontSize: 20, ));
+                      return Text(snapshot.data["name"], style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff380b4c), fontSize: snapshot.data["name"].length < 26 ? 20 : 15, ));
                     }else{
                       return Container();
                     }
@@ -249,7 +254,7 @@ class CardList extends StatelessWidget {
                   case ConnectionState.active:
                   case ConnectionState.done:  
                     if (snapshot.hasData){
-                      return Text(snapshot.data["name"], style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff380b4c), fontSize: 20, ));
+                      return Text(snapshot.data["name"], style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff380b4c), fontSize: snapshot.data["name"].length < 26 ? 20 : 15, ));
                     }else{
                       return Container();
                     }
@@ -267,7 +272,7 @@ class CardList extends StatelessWidget {
                     case ConnectionState.active:
                     case ConnectionState.done:  
                       if (snapshot.hasData){
-                        return Text(snapshot.data["name"], style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff380b4c), fontSize: 20, ));
+                        return Text(snapshot.data["name"], style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff380b4c), fontSize: snapshot.data["name"].length < 26 ? 20 : 15, ));
                       }else{
                         return Container();
                       }

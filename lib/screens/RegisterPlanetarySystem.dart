@@ -234,7 +234,7 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
                           child: InkWell(
                               onTap: () async{
                                 var planet = await showDialog(context: context, builder: (context) {
-                                    return SelectDialog(db.getAll('planet', Planet), "Adicionar Planeta",listIdPlanets,"planeta");
+                                    return SelectDialog(db.getAll('planet', Planet), "Adicionar Planeta",listIdPlanets,"um planeta");
                                 });
 
                                 if(planet != null) { 
@@ -277,7 +277,7 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
                               children: <Widget>[
                                 Padding(
                                   padding: const EdgeInsets.all(0),
-                                  child: Text(selectedPlanets[index-1]['name'], style: TextStyle(color: Color(0xff380b4c), fontSize: 16),),
+                                  child: Text(selectedPlanets[index-1]['name'], style: TextStyle(color: Color(0xff380b4c), fontSize:  selectedPlanets[index-1]['name'].length < 23 ? 16 : 13),),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -335,7 +335,7 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
                           child: InkWell(
                               onTap: () async{
                                 var star = await showDialog(context: context, builder: (context) {
-                                    return SelectDialog(db.getAll('star', Star), "Adicionar Estrela",listIdStars,"estrela");
+                                    return SelectDialog(db.getAll('star', Star), "Adicionar Estrela",listIdStars,"uma estrela");
                                 });
 
                                 if(star != null) { 
@@ -376,9 +376,9 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Padding(
+                                 Padding(
                                   padding: const EdgeInsets.all(0),
-                                  child: Text(selectedStars[index-1]['name'], style: TextStyle(color: Color(0xff380b4c), fontSize: 16),),
+                                  child: Text(selectedStars[index-1]['name'], style: TextStyle(color: Color(0xff380b4c), fontSize: selectedStars[index-1]['name'].length < 23 ? 16 : 13),),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
