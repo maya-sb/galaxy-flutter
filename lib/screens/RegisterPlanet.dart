@@ -3,6 +3,7 @@ import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:galaxy_flutter/Api.dart';
+import 'package:galaxy_flutter/RouteGenerator.dart';
 import 'package:galaxy_flutter/models/Planet.dart';
 import 'package:galaxy_flutter/models/PlanetGas.dart';
 import 'package:galaxy_flutter/models/PlanetSystemPlanetary.dart';
@@ -123,7 +124,7 @@ class _RegisterPlanetState extends State<RegisterPlanet> {
                 await updateSystem(system["id"], "+");
               }
               
-              Navigator.pop(context);
+              Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_PLANETS);
 
             }
       

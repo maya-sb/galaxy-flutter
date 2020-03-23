@@ -67,7 +67,7 @@ class _SelectDialogState extends State<SelectDialog> {
             child: Text(item.name,  style: TextStyle(
                                 color: Colors.purple[700],
                                 fontFamily: "Poppins",
-                                fontSize: 15.0,)),
+                                fontSize: 16.0,)),
             value: item,  
         )
         );

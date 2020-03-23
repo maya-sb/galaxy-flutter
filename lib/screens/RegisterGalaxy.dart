@@ -2,6 +2,7 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:galaxy_flutter/Api.dart';
+import 'package:galaxy_flutter/RouteGenerator.dart';
 import 'package:galaxy_flutter/widgets/Animations.dart';
 import 'package:galaxy_flutter/widgets/Dialogs.dart';
 import 'package:galaxy_flutter/widgets/Fields.dart';
@@ -70,7 +71,7 @@ class _RegisterGalaxyState extends State<RegisterGalaxy> {
             if (_formKey.currentState.validate()) {
               Galaxy galaxy = Galaxy(name: nameController.text, earthDistance:distanceController.text, numSystems: 0, colorId: selectedColor);
               db.insert("galaxy", galaxy);
-              Navigator.pop(context);
+              Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_GALAXIES);
             }
             }),
         body: SingleChildScrollView(

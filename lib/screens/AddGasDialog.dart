@@ -39,7 +39,7 @@ class _AddGasDialogState extends State<AddGasDialog> {
         child: Text(item.name,  style: TextStyle(
                                 color: Colors.white,
                                 fontFamily: "Poppins",
-                                fontSize: 15.0,)),
+                                fontSize: 16.0,)),
         //value: item.id,
         value: item,  
         ));
@@ -51,7 +51,7 @@ class _AddGasDialogState extends State<AddGasDialog> {
         child: Text("Cadastrar Novo",  style: TextStyle(
                                 color: Colors.pink[800],
                                 fontFamily: "Poppins",
-                                fontSize: 15.0,)),
+                                fontSize: 16.0,)),
         value: newGas,
       ));
 

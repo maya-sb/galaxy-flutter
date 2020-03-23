@@ -48,7 +48,7 @@ class _RegisterOrbitState extends State<RegisterOrbit> {
         child: Text("Nenhum",  style: TextStyle(
                                 color: Colors.white,
                                 fontFamily: "Poppins",
-                                fontSize: 15.0,)),
+                                fontSize: 16.0,)),
         value: Planet(id: "", name:"Nenhum"),
       ));
     for (var item in list){
@@ -56,7 +56,7 @@ class _RegisterOrbitState extends State<RegisterOrbit> {
         child: Text(item.name,  style: TextStyle(
                                 color: Colors.white,
                                 fontFamily: "Poppins",
-                                fontSize: 15.0,)),
+                                fontSize: 16.0,)),
         value: item,
       ));
     }
@@ -95,7 +95,7 @@ class _RegisterOrbitState extends State<RegisterOrbit> {
               
               if (value){
                 await db.insert('orbit', orbit);
-                Navigator.pop(context);
+                Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_ORBITS);
               }else{
                 showDialog(
                   context: context,

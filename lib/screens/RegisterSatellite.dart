@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:galaxy_flutter/Api.dart';
+import 'package:galaxy_flutter/RouteGenerator.dart';
 import 'package:galaxy_flutter/models/Satellite.dart';
 import 'package:galaxy_flutter/models/SatelliteGas.dart';
 import 'package:galaxy_flutter/screens/AddGasDialog.dart';
@@ -99,7 +100,7 @@ class _RegisterSatelliteState extends State<RegisterSatellite> {
                 db.insert('satelliteGas', satelliteGas);
               }
 
-              Navigator.pop(context);
+              Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_SATELLITES);
 
             }
             }),

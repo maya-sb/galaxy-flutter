@@ -66,7 +66,7 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
         child: Text(item.name,  style: TextStyle(
                                 color: Colors.white,
                                 fontFamily: "Poppins",
-                                fontSize: 15.0,)),
+                                fontSize: 16.0,)),
         value: item.id,
       ));
     }
@@ -144,7 +144,7 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
                 db.insert('starSystemPlanetary', starSystem);
               }
 
-              Navigator.pop(context);
+              Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_PLANETARY_SYSTEMS);
             }
             }),
         body: SingleChildScrollView(
