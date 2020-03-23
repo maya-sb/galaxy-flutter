@@ -59,7 +59,7 @@ class _AddGasDialogState extends State<AddGasDialog> {
 }
 
   @override
-  void initState() {
+  void initState(){
     super.initState();
     //items = loadGasesList();
   }

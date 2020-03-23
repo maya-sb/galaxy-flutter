@@ -27,10 +27,15 @@ class _RegisterOrbitState extends State<RegisterOrbit> {
   var satelliteController = TextEditingController();
   var planetController = TextEditingController();
   var starController = TextEditingController();
+  var assetController = TextEditingController(text: '0');
 
   var planetList; 
   var satelliteList;
   var starList;
+
+  refresh() {
+    setState(() {});
+  }
 
   Api db = Api();
 
@@ -84,7 +89,7 @@ class _RegisterOrbitState extends State<RegisterOrbit> {
           onPressed: () async{
             if (_formKey.currentState.validate()) {
 
-              Orbit orbit = Orbit(satelliteId: satelliteController.text, planetId: planetController.text, starId: starController.text);            
+              Orbit orbit = Orbit(satelliteId: satelliteController.text, planetId: planetController.text, starId: starController.text, orbitColor: int.parse(assetController.text));            
               
               var value = await db.check(orbit, "insert");
               
@@ -142,7 +147,7 @@ class _RegisterOrbitState extends State<RegisterOrbit> {
                           width: 150,
                           height: 150,
                               child: FlareActor(
-                                 'assets/animations/pinkSystem.flr',
+                                 'assets/animations/'+orbitsAssets[int.parse(assetController.text)],
                                   animation: 'rotation',
                                   fit: BoxFit.cover,
                                 ),
@@ -166,7 +171,7 @@ class _RegisterOrbitState extends State<RegisterOrbit> {
                   child: 
                   Form(
                     key: _formKey,
-                    child: Info(satelliteController: satelliteController, starController: starController, planetController: planetController, planetList: planetList, starList: starList, satelliteList: satelliteList)),
+                    child: Info(satelliteController: satelliteController, starController: starController, planetController: planetController, planetList: planetList, starList: starList, satelliteList: satelliteList, assetController: assetController, notifyParent: refresh)),
                 ),
               ),
             ],
@@ -178,7 +183,7 @@ class _RegisterOrbitState extends State<RegisterOrbit> {
 }
 
 class Info extends StatefulWidget {
-  Info({this.satelliteController, this.starController, this.planetController, this.satelliteList, this.starList, this.planetList});
+  Info({this.satelliteController, this.starController, this.planetController, this.satelliteList, this.starList, this.planetList, this.assetController,  @required this.notifyParent});
 
   final satelliteController;
   final starController;
@@ -186,6 +191,8 @@ class Info extends StatefulWidget {
   final satelliteList;
   final starList;
   final planetList;
+  final assetController;
+  final Function() notifyParent;
 
   @override
   _InfoState createState() => _InfoState();
@@ -196,6 +203,51 @@ class _InfoState extends State<Info> {
   var selectedPlanet;
   var selectedStar;
   var selectedSatellite;
+  var asset;
+
+  _selectAsset(){
+    asset = "";
+
+    if (selectedStar != null){
+      if (selectedStar.name != "Nenhum"){
+        asset = "s";
+      }
+    }
+    if (selectedPlanet != null){
+      if (selectedPlanet.name != "Nenhum"){
+        asset = asset + "p";
+      }
+    }
+    if (selectedSatellite != null){
+      if (selectedSatellite.name != "Nenhum"){
+        asset = asset + "l";
+      }
+    }
+
+    var index;
+    switch(asset){
+      case 'pl':
+        index = 0;
+        break;
+      case 'sl':
+        index = 1;
+        break;
+      case 'spl':
+        index = 2;
+        break;
+      case 'sp':
+        index = 3;
+        break;
+      default: 
+        index = 0;
+    }
+
+    setState((){
+      widget.assetController.text = index.toString();
+      widget.notifyParent();
+    });
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -279,6 +331,7 @@ class _InfoState extends State<Info> {
                                         setState(() {
                                           selectedPlanet = newValue;
                                           widget.planetController.text = newValue.id;
+                                          _selectAsset();
                                         });
                                               },
                                     ),
@@ -363,6 +416,7 @@ class _InfoState extends State<Info> {
                                         setState(() {
                                           selectedSatellite = newValue;
                                           widget.satelliteController.text = newValue.id;
+                                          _selectAsset();
                                         });
                                               },
                                     ),
@@ -447,6 +501,7 @@ class _InfoState extends State<Info> {
                                         setState(() {
                                           selectedStar = newValue;
                                           widget.starController.text = newValue.id;
+                                          _selectAsset();
                                         });
                                               },
                                     ),

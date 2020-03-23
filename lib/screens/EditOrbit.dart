@@ -23,9 +23,10 @@ class EditOrbit extends StatefulWidget {
 class _EditOrbitState extends State<EditOrbit> {
 
    final _formKey = GlobalKey<FormState>();
-  var satelliteController = TextEditingController();
-  var planetController = TextEditingController();
-  var starController = TextEditingController();
+  var satelliteIdController = TextEditingController();
+  var planetIdController = TextEditingController();
+  var starIdController = TextEditingController();
+  var assetController = TextEditingController(text: '0');
 
   var planetList; 
   var satelliteList;
@@ -39,24 +40,29 @@ class _EditOrbitState extends State<EditOrbit> {
 
   Api db = Api();
 
+  refresh() {
+    setState(() {});
+  }
+
    _getOrbit() async{
     try{
       Map<String, dynamic> data = await db.getbyId("orbit", widget.id);
       if (data["planetId"] != ""){
         var planet = await db.getdocbyId('planet', data["planetId"]);
         selectedPlanet = Planet.fromMap(planet);
-        planetController.text = selectedPlanet.id;
+        planetIdController.text = selectedPlanet.id;
       }
       if (data["satelliteId"] != ""){
         var satellite = await db.getdocbyId('satellite', data["satelliteId"]);
         selectedSatellite = Satellite.fromMap(satellite);
-        satelliteController.text = selectedSatellite.id;
+        satelliteIdController.text = selectedSatellite.id;
       }
       if (data["starId"] != ""){
         var star = await db.getdocbyId('star', data["starId"]);
         selectedStar = Star.fromMap(star);
-        starController.text = selectedStar.id;
+        starIdController.text = selectedStar.id;
       }
+      assetController.text = data["orbitColor"].toString();
     }catch(e){
       print(e);
     }
@@ -100,6 +106,7 @@ class _EditOrbitState extends State<EditOrbit> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.pink[700],
@@ -107,7 +114,7 @@ class _EditOrbitState extends State<EditOrbit> {
           onPressed: () async{
             if (_formKey.currentState.validate()) {
 
-              Orbit orbit = Orbit(id: widget.id, satelliteId: satelliteController.text, planetId: planetController.text, starId: starController.text);            
+              Orbit orbit = Orbit(id: widget.id, satelliteId: satelliteIdController.text, planetId: planetIdController.text, starId: starIdController.text, orbitColor: int.parse(assetController.text));            
               
               var value = await db.check(orbit, "update");
 
@@ -176,7 +183,7 @@ class _EditOrbitState extends State<EditOrbit> {
                                 width: 150,
                                 height: 150,
                                     child: FlareActor(
-                                      'assets/animations/pinkSystem.flr',
+                                      'assets/animations/'+orbitsAssets[int.parse(assetController.text)],
                                         animation: 'rotation',
                                         fit: BoxFit.cover,
                                       ),
@@ -221,7 +228,7 @@ class _EditOrbitState extends State<EditOrbit> {
                         child: 
                         Form(
                           key: _formKey,
-                          child: Info(satelliteController: satelliteController, starController: starController, planetController: planetController, planetList: planetList, starList: starList, satelliteList: satelliteList, selectedPlanet: selectedPlanet, selectedSatellite: selectedSatellite, selectedStar: selectedStar,)),
+                          child: Info(satelliteController: satelliteIdController, starController: starIdController, planetController: planetIdController, planetList: planetList, starList: starList, satelliteList: satelliteList, selectedPlanet: selectedPlanet, selectedSatellite: selectedSatellite, selectedStar: selectedStar,assetController: assetController, notifyParent: refresh)),
                       ),
                     ),
                   ],
@@ -236,7 +243,7 @@ class _EditOrbitState extends State<EditOrbit> {
 
 
 class Info extends StatefulWidget {
-  Info({this.satelliteController, this.starController, this.planetController, this.satelliteList, this.starList, this.planetList, this.selectedPlanet, this.selectedSatellite, this.selectedStar});
+  Info({this.satelliteController, this.starController, this.planetController, this.satelliteList, this.starList, this.planetList, this.selectedPlanet, this.selectedSatellite, this.selectedStar, this.assetController, this.notifyParent});
 
   final satelliteController;
   final starController;
@@ -244,6 +251,8 @@ class Info extends StatefulWidget {
   final satelliteList;
   final starList;
   final planetList;
+  final assetController;
+  final Function() notifyParent;
   var selectedPlanet;
   var selectedStar;
   var selectedSatellite;
@@ -257,13 +266,62 @@ class _InfoState extends State<Info> {
   var selectedPlanet;
   var selectedStar;
   var selectedSatellite;
+  var asset;
+
+  _selectAsset(){
+    asset = "";
+
+    if (selectedStar != null){
+      if (selectedStar.name != "Nenhum"){
+        asset = "s";
+      }
+    }
+    if (selectedPlanet != null){
+      if (selectedPlanet.name != "Nenhum"){
+        asset = asset + "p";
+      }
+    }
+    if (selectedSatellite != null){
+      if (selectedSatellite.name != "Nenhum"){
+        asset = asset + "l";
+      }
+    }
+
+    var index;
+    switch(asset){
+      case 'pl':
+        index = 0;
+        break;
+      case 'sl':
+        index = 1;
+        break;
+      case 'spl':
+        index = 2;
+        break;
+      case 'sp':
+        index = 3;
+        break;
+      default: 
+        index = 0;
+    }
+
+    setState((){
+      widget.assetController.text = index.toString();
+      widget.notifyParent();
+    });
+
+  }
 
   @override
-  Widget build(BuildContext context) {
-
+  void initState() {
+    super.initState();
     selectedPlanet = widget.selectedPlanet;
     selectedStar = widget.selectedStar;
     selectedSatellite = widget.selectedSatellite;
+  }
+
+  @override
+  Widget build(BuildContext context) {
 
     return  Column(
       children: <Widget>[
@@ -343,8 +401,10 @@ class _InfoState extends State<Info> {
                                 value: selectedPlanet,
                                 onChanged: (newValue) {
                                   setState(() {
+                                    selectedPlanet = newValue;
                                     widget.selectedPlanet = newValue;
                                     widget.planetController.text = newValue.id;
+                                    _selectAsset();
                                   });
                                         },
                               ),
@@ -427,8 +487,10 @@ class _InfoState extends State<Info> {
                                 value: selectedSatellite,
                                 onChanged: (newValue) {
                                   setState(() {
+                                    selectedSatellite = newValue;
                                     widget.selectedSatellite = newValue;
                                     widget.satelliteController.text = newValue.id;
+                                    _selectAsset();
                                   });
                                         },
                               ),
@@ -511,8 +573,10 @@ class _InfoState extends State<Info> {
                                 value: selectedStar,
                                 onChanged: (newValue) {
                                   setState(() {
+                                    selectedStar = newValue;
                                     widget.selectedStar = newValue;
                                     widget.starController.text = newValue.id;
+                                    _selectAsset();
                                   });
                                         },
                               ),
