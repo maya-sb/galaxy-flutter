@@ -78,7 +78,7 @@ class _EditOrbitState extends State<EditOrbit> {
         child: Text("Nenhum",  style: TextStyle(
                                 color: Colors.white,
                                 fontFamily: "Poppins",
-                                fontSize: 18.0,)),
+                                fontSize: 15.0,)),
         value: Planet(id: "", name:"Nenhum"),
       ));
     for (var item in list){
@@ -86,7 +86,7 @@ class _EditOrbitState extends State<EditOrbit> {
         child: Text(item.name,  style: TextStyle(
                                 color: Colors.white,
                                 fontFamily: "Poppins",
-                                fontSize: 18.0,)),
+                                fontSize: 15.0,)),
         value: item,
       ));
     }

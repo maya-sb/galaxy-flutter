@@ -66,7 +66,7 @@ class _RegisterPlanetarySystemState extends State<RegisterPlanetarySystem> {
         child: Text(item.name,  style: TextStyle(
                                 color: Colors.white,
                                 fontFamily: "Poppins",
-                                fontSize: 18.0,)),
+                                fontSize: 15.0,)),
         value: item.id,
       ));
     }
@@ -485,7 +485,7 @@ class _InfoState extends State<Info> {
                 title: "Idade", 
                 controller: widget.ageController, 
                 validator: validatorAge, 
-                suffixText: "anos-luz",
+                suffixText: "bilhões de anos",
                 fontSize: 18.0,
                 keyboardType: TextInputType.number,
             ),), 

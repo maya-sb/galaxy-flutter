@@ -138,7 +138,7 @@ class _EditPlanetarySystemState extends State<EditPlanetarySystem> {
         child: Text(item.name,  style: TextStyle(
                                 color: Colors.white,
                                 fontFamily: "Poppins",
-                                fontSize: 18.0,)),
+                                fontSize: 15.0,)),
         value: item.id,
       ));
     }
