@@ -68,7 +68,7 @@ class Api {
   delete(String collectionName, String id){
     db.collection(collectionName).document(id).delete();
   }
-
+  
   check(Orbit orbit, var op) async{
 
     var count;

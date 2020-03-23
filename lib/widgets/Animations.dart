@@ -3,6 +3,7 @@ import 'package:flare_flutter/flare_actor.dart';
 
 var assets = ["pink", "blue", "green", "yellow", "orange", "grey"];
 var starAssets = ["ab", "av", "ga", "gv", "eb", "bn"];
+var orbitsAssets = ['plOrbita.flr', 'slOrbita.flr', 'splOrbita.flr', 'spOrbita.flr'];
 
 class AnimationList extends StatelessWidget {
   AnimationList({this.asset});

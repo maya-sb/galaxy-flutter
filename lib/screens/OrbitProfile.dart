@@ -22,6 +22,7 @@ class _OrbitProfileState extends State<OrbitProfile> {
   var planetController = TextEditingController();
   var starController = TextEditingController();
 
+  var orbitColor = 0;
   var selectedPlanet;
   var selectedStar;
   var selectedSatellite;
@@ -45,6 +46,7 @@ class _OrbitProfileState extends State<OrbitProfile> {
         selectedStar = await db.getbyId('star', data["starId"]);
         starController.text = selectedStar["name"];
       }
+      orbitColor = data["orbitColor"];
     }catch(e){
       print(e);
     }
@@ -105,7 +107,7 @@ class _OrbitProfileState extends State<OrbitProfile> {
                           width: 150,
                           height: 150,
                               child: FlareActor(
-                                'assets/animations/pinkSystem.flr',
+                                'assets/animations/'+orbitsAssets[orbitColor],
                                   animation: 'rotation',
                                   fit: BoxFit.cover,
                                 ),

@@ -114,6 +114,10 @@ flutter:
   - assets/animations/gvStar.flr
   - assets/animations/ebStar.flr
   - assets/animations/bnStar.flr
+  - assets/animations/plOrbita.flr
+  - assets/animations/slOrbita.flr
+  - assets/animations/splOrbita.flr
+  - assets/animations/spOrbita.flr
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

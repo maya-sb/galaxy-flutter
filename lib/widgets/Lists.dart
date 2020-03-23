@@ -168,7 +168,7 @@ class NameList extends StatelessWidget {
                                 context, 
                                 route, 
                                 arguments: item.id),
-                              asset:'assets/animations/pinkSystem.flr',
+                              asset:'assets/animations/'+orbitsAssets[item.orbitColor],
                               db: db,
                             ),
                           );
