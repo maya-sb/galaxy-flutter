@@ -485,6 +485,7 @@ class _InfoState extends State<Info> {
                 title: "Idade", 
                 controller: widget.ageController, 
                 validator: validatorAge, 
+                suffixText: "anos-luz",
                 fontSize: 18.0,
                 keyboardType: TextInputType.number,
             ),), 

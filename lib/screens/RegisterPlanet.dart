@@ -465,15 +465,15 @@ class Info extends StatelessWidget {
              ),  
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: EditField(title: "Tamanho", controller: sizeController, validator: validatorSize, fontSize: 18.0, keyboardType: TextInputType.number),
+              child: EditField(title: "Tamanho", controller: sizeController, validator: validatorSize, suffixText: "Km",fontSize: 18.0, keyboardType: TextInputType.number),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: EditField(title: "Massa", controller: massController, validator: validatorMass, fontSize: 18.0, keyboardType: TextInputType.number ,),
+              child: EditField(title: "Massa", controller: massController, validator: validatorMass, suffixText: "Kg",fontSize: 18.0, keyboardType: TextInputType.number ,),
             ),
             Padding(
                padding: const EdgeInsets.all(8.0),
-               child: EditField(title: "Velocidade de Rotação", controller: rotationController, validator: validatorRotation, fontSize: 18.0, keyboardType: TextInputType.number),
+               child: EditField(title: "Velocidade de Rotação", controller: rotationController, validator: validatorRotation, suffixText: "Km/h",fontSize: 18.0, keyboardType: TextInputType.number),
             ),   
             
           ],

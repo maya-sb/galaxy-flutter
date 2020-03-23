@@ -441,6 +441,7 @@ class Info extends StatelessWidget {
               child: EditField(
                 title: "Tamanho", 
                 controller: sizeController, 
+                suffixText: "Km",
                 validator: validatorSize, 
                 fontSize: 18.0,
                 keyboardType: TextInputType.number,
@@ -451,6 +452,7 @@ class Info extends StatelessWidget {
                 title: "Massa", 
                 controller: massController, 
                 validator: validatorMass, 
+                suffixText: "Kg",
                 fontSize: 18.0,
                 keyboardType: TextInputType.number,
             ),),

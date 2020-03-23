@@ -235,6 +235,7 @@ class Info extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: EditField(
+                suffixText: "anos-luz",
                 title: "Distância da Terra", 
                 controller: distanceController, 
                 validator: validatorDistance, 

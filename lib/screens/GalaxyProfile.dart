@@ -32,7 +32,7 @@ class _GalaxyProfileState extends State<GalaxyProfile> {
 
     Map<String, dynamic> data = await db.getbyId("galaxy", widget.id);
     nameController.text = data["name"];
-    distanceController.text = data["earthDistance"];
+    distanceController.text = data["earthDistance"] + " anos-luz";
     numSystemsController.text = data["numSystems"].toString();
     _selectedColor = data["colorId"];
     return widget.id;
@@ -204,6 +204,7 @@ class Info extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: OutputField(
                 title: "Distância da Terra", 
+                suffixText: "anos-luz",
                 controller: distanceController,  
             ),), 
             Padding(
