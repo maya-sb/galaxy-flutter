@@ -26,12 +26,6 @@ class _OrbitsState extends State<Orbits> {
           title: Text("Órbitas", style: TextStyle(color: Colors.white)),
           iconTheme: IconThemeData(color: Colors.white),
           backgroundColor: Colors.transparent,
-          actions: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(right: 20.0),
-              child: Icon(Icons.search),
-            )
-          ],
          ),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add,color: Colors.pink[700],),

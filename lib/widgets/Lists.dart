@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:galaxy_flutter/models/Galaxy.dart';
 import 'package:galaxy_flutter/models/Orbit.dart';
+import 'package:galaxy_flutter/models/Planet.dart';
+import 'package:galaxy_flutter/models/Satellite.dart';
+import 'package:galaxy_flutter/models/Star.dart';
+import 'package:galaxy_flutter/models/PlanetarySystem.dart';
 import 'package:galaxy_flutter/widgets/Cards.dart';
 import 'package:galaxy_flutter/widgets/Animations.dart';
 
@@ -107,12 +112,105 @@ class OrbitList extends StatelessWidget {
 }
 
 class NameList extends StatelessWidget {
-  const NameList({this.type, this.future, this.route, this.db});
+  NameList({this.type, this.future, this.route, this.db, this.query=""});
 
   final String type;
   final future;
   final route;
   final db;
+  final query;
+
+  List lista;
+
+  List makeList(snapshot) {
+    List items = [];
+
+    switch (type) {
+      case "Satelite":
+        for(var item in snapshot.data) {
+          Satellite satellite = Satellite(
+            id: item.id,
+            name: item.name,
+            size: item.size,
+            mass: item.mass,
+            colorId: item.colorId,
+          );
+          items.add(satellite);
+        }
+        return items;
+      
+      case "Planet":
+        for(var item in snapshot.data) {
+          Planet planet = Planet(
+            id: item.id,
+            name: item.name,
+            size: item.size,
+            mass: item.mass,
+            rotationSpeed: item.rotationSpeed,
+            colorId: item.colorId,
+          );
+          items.add(planet);
+        }
+        return items;
+      
+      case "Star":
+        for(var item in snapshot.data) {
+          Star star = Star(
+            id: item.id,
+            name: item.name,
+            age: item.age,
+            size: item.size,
+            mass: item.mass,
+            distance: item.distance,
+            type: item.type,
+            death: item.death,
+            colorId: item.colorId,
+          );
+          items.add(star);
+        }
+        return items;
+      
+      case "System":
+        for(var item in snapshot.data) {
+          PlanetarySystem planetarySystem = PlanetarySystem(
+            id: item.id,
+            name: item.name,
+            age: item.age,
+            numStars: item.numStars,
+            numPlanets: item.numPlanets,
+            galaxyId: item.galaxyId,
+            colorId: item.colorId,
+          );
+          items.add(planetarySystem);
+        }
+        return items;
+
+      case "Galaxy":
+        for(var item in snapshot.data) {
+          Galaxy galaxy = Galaxy(
+            id: item.id,
+            name: item.name,
+            earthDistance: item.earthDistance,
+            numSystems: item.numSystems,
+            colorId: item.colorId,
+          );
+          items.add(galaxy);
+        }
+        return items;
+      
+      case "Orbit":
+        for(var item in snapshot.data) {
+          Orbit orbit = Orbit(
+            id: item.id,
+            satelliteId: item.satelliteId,
+            planetId: item.planetId,
+            starId: item.starId,
+          );
+          items.add(orbit);
+        }
+        return items;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -143,10 +241,18 @@ class NameList extends StatelessWidget {
                       if (snapshot.data.length == 0){
                         return Center(child: Text("Nada por aqui :c", style: TextStyle(color: Colors.white70, fontSize: 25),),);
                       } else {
+                      
+                      List items = makeList(snapshot);
+                      List lista = items;
+
+                      if(type != 'Orbit') {
+                        lista = query.isEmpty? items : items.where((check) => check.name.toLowerCase().contains(query.toLowerCase())).toList();
+                      } 
+
                       return ListView.builder(
-                        itemCount: snapshot.data.length,
+                        itemCount: lista.length,
                         itemBuilder: (context, index) {
-                          List itens = snapshot.data;
+                          List itens = lista;
                           var item = itens[index];
                           return Padding(
                             padding: const EdgeInsets.all(0.0),

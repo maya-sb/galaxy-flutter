@@ -15,11 +15,16 @@ class _StarsState extends State<Stars> {
   Api db = Api();
 
   NameList lista;
+  var searchController = TextEditingController();
+  String query = "";
+  bool search = false;
+  String choiceGlobal;
 
   @override
   void initState(){
     super.initState();
-    lista = NameList(type: 'Star', future: db.getAll('star', Star), route: RouteGenerator.ROUTE_STAR_PROFILE);
+    lista = NameList(type: 'Star', future: db.getAll('star', Star), route: RouteGenerator.ROUTE_STAR_PROFILE, query: query);
+    choiceGlobal = "Todos";
   }
 
   @override
@@ -30,15 +35,22 @@ class _StarsState extends State<Stars> {
          return false;
        },
        child: Scaffold(
-         appBar: AppBar(
-          title: Text("Estrelas", style: TextStyle(color: Colors.white)),
+         appBar: !search ? AppBar(
+          title: Text("Estrelas"),
           iconTheme: IconThemeData(color: Colors.white),
           backgroundColor: Colors.transparent,
           actions: <Widget>[
             Padding(
               padding: const EdgeInsets.only(right: 20.0),
               //TODO busca por nome
-              child: Icon(Icons.search),
+              child: IconButton(
+                icon: Icon(Icons.search),
+                onPressed: () {
+                  setState(() {
+                    search = true;
+                  });
+                },
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(right: 20.0),
@@ -56,7 +68,43 @@ class _StarsState extends State<Stars> {
               )
             )
           ],
-         ),
+         )
+        
+        : AppBar(
+          backgroundColor: Colors.pink[700],
+          title: TextField(
+            textInputAction: TextInputAction.search,
+            autofocus: true,
+            onChanged: (value) {
+              setState(() {
+                query = value;
+                choiceAction(choiceGlobal);
+              });
+            },
+            cursorColor: Colors.white,
+            controller: searchController,
+            decoration: InputDecoration(
+              suffixIcon: IconButton(
+                icon: Icon(Icons.close, color: Colors.white, size: 27,), 
+                onPressed: () {
+                  setState(() {
+                    search = false;
+                    searchController.text = "";
+                    query = "";
+                    choiceAction(choiceGlobal);
+                  });
+                }
+              ),
+              hintText: "Search",
+              border: InputBorder.none,
+            ),
+            style: TextStyle(
+              fontFamily: "Poppins",
+              color: Colors.white,
+              fontSize: 20,
+            ),
+          ),
+        ),
         //Navigator.pushNamed(context, RouteGenerator.ROUTE_REGISTER_SATELLITE);
         floatingActionButton: SpeedDial(
           // both default to 16
@@ -146,33 +194,34 @@ class _StarsState extends State<Stars> {
 
   void choiceAction(String choice) {
     setState(() {
+      choiceGlobal = choice;
       switch (choice) {
         case "Todos":
-          lista = NameList(type: 'Star', future: db.getAll('star', Star), route: RouteGenerator.ROUTE_STAR_PROFILE);
+          lista = NameList(type: 'Star', future: db.getAll('star', Star), route: RouteGenerator.ROUTE_STAR_PROFILE, query: query);
           break;
         
         case "Anã branca":
-          lista = NameList(type: 'Star', future: db.getWhere('star', Star, 'type', 'Anã branca'), route: RouteGenerator.ROUTE_STAR_PROFILE);
+          lista = NameList(type: 'Star', future: db.getWhere('star', Star, 'type', 'Anã branca'), route: RouteGenerator.ROUTE_STAR_PROFILE, query: query);
           break;
         
         case "Anã vermelha":
-          lista = NameList(type: 'Star', future: db.getWhere('star', Star, 'type', 'Anã vermelha'), route: RouteGenerator.ROUTE_STAR_PROFILE);
+          lista = NameList(type: 'Star', future: db.getWhere('star', Star, 'type', 'Anã vermelha'), route: RouteGenerator.ROUTE_STAR_PROFILE, query: query);
           break;
         
         case "Gigante azul":
-          lista = NameList(type: 'Star', future: db.getWhere('star', Star, 'type', 'Gigante azul'), route: RouteGenerator.ROUTE_STAR_PROFILE);
+          lista = NameList(type: 'Star', future: db.getWhere('star', Star, 'type', 'Gigante azul'), route: RouteGenerator.ROUTE_STAR_PROFILE, query: query);
           break;
         
         case "Gigante vermelha":
-          lista = NameList(type: 'Star', future: db.getWhere('star', Star, 'type', 'Gigante vermelha'), route: RouteGenerator.ROUTE_STAR_PROFILE);
+          lista = NameList(type: 'Star', future: db.getWhere('star', Star, 'type', 'Gigante vermelha'), route: RouteGenerator.ROUTE_STAR_PROFILE, query: query);
           break;
         
         case "Estrela binária":
-          lista = NameList(type: 'Star', future: db.getWhere('star', Star, 'type','Estrela binária'), route: RouteGenerator.ROUTE_STAR_PROFILE);
+          lista = NameList(type: 'Star', future: db.getWhere('star', Star, 'type','Estrela binária'), route: RouteGenerator.ROUTE_STAR_PROFILE, query: query);
           break;
         
         case "Buraco negro":
-          lista = NameList(type: 'Star', future: db.getWhere('star', Star, 'death', true), route: RouteGenerator.ROUTE_STAR_PROFILE);
+          lista = NameList(type: 'Star', future: db.getWhere('star', Star, 'death', true), route: RouteGenerator.ROUTE_STAR_PROFILE, query: query);
       }
     });
     
