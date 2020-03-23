@@ -46,7 +46,7 @@ class _StarsState extends State<Stars> {
                 icon: Icon(Icons.filter_list),
                 onSelected: choiceAction,
                 itemBuilder: (BuildContext context) {
-                  return <String>["Todos", "Anã branca", "Anã vermelha", "Gigante azul", "Gigante vermelha", "Estrela binária", "Buraco negro"].map((String choice) {
+                  return <String>["Todos", "Anã Branca", "Anã Vermelha", "Gigante Azul", "Gigante Vermelha", "Estrela Binária", "Buraco Negro"].map((String choice) {
                     return PopupMenuItem<String>(
                       value: choice,
                       child: Text(choice, style: TextStyle(color: Colors.purple[800]),),
@@ -71,8 +71,6 @@ class _StarsState extends State<Stars> {
           curve: Curves.bounceIn,
           overlayColor: Colors.purple[900],
           overlayOpacity: 0.5,
-          onOpen: () => print('OPENING DIAL'),
-          onClose: () => print('DIAL CLOSED'),
           tooltip: 'Speed Dial',
           heroTag: 'speed-dial-hero-tag',
           backgroundColor: Colors.white,
@@ -83,7 +81,7 @@ class _StarsState extends State<Stars> {
             SpeedDialChild(
               child: Icon(Icons.star, color: Colors.pink[700],),
               backgroundColor: Colors.white,
-              label: 'Anã branca',
+              label: 'Anã Branca',
               labelStyle: TextStyle(fontSize: 18.0, color: Colors.pink[700]),
               onTap: () => Navigator.pushNamed(
                             context, 
@@ -94,7 +92,7 @@ class _StarsState extends State<Stars> {
             SpeedDialChild(
               child: Icon(Icons.star, color: Colors.pink[700],),
               backgroundColor: Colors.white,
-              label: 'Anã vermelha',
+              label: 'Anã Vermelha',
               labelStyle: TextStyle(fontSize: 18.0, color: Colors.pink[700]),
               onTap: () => Navigator.pushNamed(
                             context, 
@@ -105,7 +103,7 @@ class _StarsState extends State<Stars> {
             SpeedDialChild(
               child: Icon(Icons.star, color: Colors.pink[700],),
               backgroundColor: Colors.white,
-              label: 'Gigante azul',
+              label: 'Gigante Azul',
               labelStyle: TextStyle(fontSize: 18.0, color: Colors.pink[700]),
               onTap: () => Navigator.pushNamed(
                             context, 
@@ -116,7 +114,7 @@ class _StarsState extends State<Stars> {
             SpeedDialChild(
               child: Icon(Icons.star, color: Colors.pink[700],),
               backgroundColor: Colors.white,
-              label: 'Gigante vermelha',
+              label: 'Gigante Vermelha',
               labelStyle: TextStyle(fontSize: 18.0, color: Colors.pink[700]),
               onTap: () => Navigator.pushNamed(
                             context, 
@@ -127,7 +125,7 @@ class _StarsState extends State<Stars> {
             SpeedDialChild(
               child: Icon(Icons.star, color: Colors.pink[700],),
               backgroundColor: Colors.white,
-              label: 'Estrela binária',
+              label: 'Estrela Binária',
               labelStyle: TextStyle(fontSize: 18.0, color: Colors.pink[700]),
               onTap: () => Navigator.pushNamed(
                             context, 
@@ -151,28 +149,28 @@ class _StarsState extends State<Stars> {
           lista = NameList(type: 'Star', future: db.getAll('star', Star), route: RouteGenerator.ROUTE_STAR_PROFILE);
           break;
         
-        case "Anã branca":
+        case "Anã Branca":
           lista = NameList(type: 'Star', future: db.getWhere('star', Star, 'type', 'Anã branca'), route: RouteGenerator.ROUTE_STAR_PROFILE);
           break;
         
-        case "Anã vermelha":
+        case "Anã Vermelha":
           lista = NameList(type: 'Star', future: db.getWhere('star', Star, 'type', 'Anã vermelha'), route: RouteGenerator.ROUTE_STAR_PROFILE);
           break;
         
-        case "Gigante azul":
+        case "Gigante Azul":
           lista = NameList(type: 'Star', future: db.getWhere('star', Star, 'type', 'Gigante azul'), route: RouteGenerator.ROUTE_STAR_PROFILE);
           break;
         
-        case "Gigante vermelha":
+        case "Gigante Vermelha":
           lista = NameList(type: 'Star', future: db.getWhere('star', Star, 'type', 'Gigante vermelha'), route: RouteGenerator.ROUTE_STAR_PROFILE);
           break;
         
-        case "Estrela binária":
+        case "Estrela Binária":
           lista = NameList(type: 'Star', future: db.getWhere('star', Star, 'type','Estrela binária'), route: RouteGenerator.ROUTE_STAR_PROFILE);
           break;
         
-        case "Buraco negro":
-          lista = NameList(type: 'Star', future: db.getWhere('star', Star, 'death', true), route: RouteGenerator.ROUTE_STAR_PROFILE);
+        case "Buraco Negro":
+          lista = NameList(type: 'Star', future: db.getWhere('star', Star, 'death', 'true'), route: RouteGenerator.ROUTE_STAR_PROFILE);
       }
     });
     

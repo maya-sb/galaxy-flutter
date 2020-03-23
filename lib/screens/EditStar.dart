@@ -31,12 +31,11 @@ class _EditStarState extends State<EditStar> {
   var ageController = TextEditingController();
   var distanceController = TextEditingController();
   var deathController = TextEditingController();
+  var colorController = TextEditingController();
   String type;
-
 
   Api db = Api();
 
-  var _selectedColor = 0;
   var dadosStar;
 
   Future selectedSystems;
@@ -93,7 +92,7 @@ class _EditStarState extends State<EditStar> {
     ageController.text = data["age"];
     distanceController.text = data["distance"];
     type = data["type"];
-    _selectedColor = data["colorId"];
+    colorController.text = data["colorId"].toString();
     deathController.text = data["death"];
     return widget.id;
   }
@@ -106,6 +105,10 @@ class _EditStarState extends State<EditStar> {
     selectedSystems = _getSystems();
   }
 
+  refresh() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,7 +118,7 @@ class _EditStarState extends State<EditStar> {
           onPressed: () async{
             if (_formKey.currentState.validate()) {
             
-              Star star = Star(id: widget.id, name: nameController.text, age: ageController.text, size: sizeController.text, mass: massController.text, distance: distanceController.text, type: type, death: deathController.text, colorId: _selectedColor);
+              Star star = Star(id: widget.id, name: nameController.text, age: ageController.text, size: sizeController.text, mass: massController.text, distance: distanceController.text, type: type, death: deathController.text, colorId: int.parse(colorController.text));
 
               db.update("star", star);
 
@@ -174,7 +177,7 @@ class _EditStarState extends State<EditStar> {
                                   width: 150,
                                   height: 150,
                                       child: FlareActor(
-                                        'assets/animations/'+ starAssets[_selectedColor] +'Star.flr',
+                                        'assets/animations/'+ starAssets[int.parse(colorController.text)] +'Star.flr',
                                           animation: 'rotation',
                                           fit: BoxFit.cover,
                                         ),
@@ -226,7 +229,7 @@ class _EditStarState extends State<EditStar> {
                               child: 
                               Form(
                                 key: _formKey,
-                                child: Info(nameController: nameController, sizeController: sizeController, massController: massController, ageController: ageController, distanceController: distanceController, type: type, deathController: deathController),
+                                child: Info(nameController: nameController, sizeController: sizeController, massController: massController, ageController: ageController, distanceController: distanceController, type: type, deathController: deathController, colorController: colorController, notifyParent: refresh),
                               )),
                           ),
         
@@ -379,7 +382,7 @@ class _EditStarState extends State<EditStar> {
 
 class Info extends StatefulWidget {
 
-  Info({this.nameController, this.sizeController, this.massController, this.ageController, this.distanceController, this.type, this.deathController});
+  Info({this.nameController, this.sizeController, this.massController, this.ageController, this.distanceController, this.type, this.deathController, this.colorController, @required this.notifyParent});
 
   final nameController;
   final sizeController;
@@ -388,7 +391,9 @@ class Info extends StatefulWidget {
   final distanceController;
   final type;
   final deathController;
+  final colorController;
   DeathState _deathState;
+  final Function() notifyParent;
 
   @override
   _InfoState createState() => _InfoState();
@@ -502,7 +507,11 @@ class _InfoState extends State<Info> {
                               value: DeathState.viva,
                               groupValue: widget._deathState,
                               onChanged: (DeathState value) {
-                                setState(() { widget.deathController.text = "false"; });
+                                setState(() { 
+                                  widget.deathController.text = "false"; 
+                                  widget.colorController.text = 3.toString();
+                                  widget.notifyParent();
+                                  });
                               },
                             ),
                             Text("Viva", style: TextStyle(color: Colors.pink[700], fontSize: 18),)
@@ -516,7 +525,11 @@ class _InfoState extends State<Info> {
                               value: DeathState.morta,
                               groupValue: widget._deathState,
                               onChanged: (DeathState value) {
-                                setState(() { widget.deathController.text = "true"; });
+                                setState(() { 
+                                  widget.deathController.text = "true";
+                                  widget.colorController.text = 5.toString(); 
+                                  widget.notifyParent();
+                                });
                               },
                             ),
                             Text("Morta", style: TextStyle(color: Colors.pink[700], fontSize: 18),)

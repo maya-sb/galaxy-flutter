@@ -36,26 +36,58 @@ class _RegisterStarState extends State<RegisterStar> {
   var ageController = TextEditingController();
   var distanceController = TextEditingController();
   var deathController = TextEditingController();
+  var colorController = TextEditingController();
   String type;
 
   Api db = Api();
 
-  var _selectedColor = 0;
   List selectedSystems = [];
   List listIdSystems = [];
   
   var listId = [];
 
+  refresh() {
+    setState(() {});
+  }
+
   updateSystem(String id, String op) async{
     var data = await db.getbyId('system', id);
 
     if (data != null){
-      int numStar = data['numStar'];
+      int numStars = data['numStars'];
       if (op == "+"){
-        await db.updateField('system', id, 'numStar', numStar+1);
+        await db.updateField('system', id, 'numStars', numStars+1);
       }else{
-        await db.updateField('system', id, 'numStar', numStar-1);
+        await db.updateField('system', id, 'numStars', numStars-1);
       }
+    }
+  }
+
+  _selectColor(){
+    switch(type) {
+      case "Anã branca":
+        colorController.text = 0.toString();
+        break;
+      
+      case "Anã vermelha":
+        colorController.text = 1.toString();
+        break;
+      
+      case "Gigante azul":
+        colorController.text = 2.toString();
+        break;
+      
+      case "Gigante vermelha":
+        if(deathController.text == "true") {
+          colorController.text = 5.toString();
+        } else {
+          colorController.text = 3.toString();
+        }
+        break;
+
+      case "Estrela binária":
+        colorController.text = 4.toString();
+        break; 
     }
   }
 
@@ -63,10 +95,12 @@ class _RegisterStarState extends State<RegisterStar> {
   void initState() {
     super.initState();
     type = widget.type;
+    _selectColor();
   }
 
   @override
   Widget build(BuildContext context) {
+    
     return WillPopScope(
       onWillPop: () async {
         showDialog(context: context, builder: (context) {
@@ -81,33 +115,7 @@ class _RegisterStarState extends State<RegisterStar> {
           onPressed: () async{
             if (_formKey.currentState.validate()) {
               
-              switch(type) {
-                case "Anã branca":
-                  _selectedColor = 0;
-                  break;
-                
-                case "Anã vermelha":
-                  _selectedColor = 1;
-                  break;
-                
-                case "Gigante azul":
-                  _selectedColor = 2;
-                  break;
-                
-                case "Gigante vermelha":
-                  if(deathController.text == "true") {
-                    _selectedColor = 4;
-                  } else {
-                    _selectedColor = 3;
-                  }
-                  break;
-
-                case "Estrela binária":
-                  _selectedColor = 4;
-                  break;
-                
-              }
-              Star star = Star(name: nameController.text, age: ageController.text, size: sizeController.text, mass: massController.text, distance: distanceController.text, type: type, death: deathController.text, colorId: _selectedColor);
+              Star star = Star(name: nameController.text, age: ageController.text, size: sizeController.text, mass: massController.text, distance: distanceController.text, type: type, death: deathController.text, colorId: int.parse(colorController.text));
 
               var id = db.set('star', star);
 
@@ -117,7 +125,7 @@ class _RegisterStarState extends State<RegisterStar> {
                 await updateSystem(system["id"], "+");
               }
 
-              Navigator.pop(context);
+              Navigator.popAndPushNamed(context, RouteGenerator.ROUTE_STARS);
 
             }
           }),
@@ -149,7 +157,8 @@ class _RegisterStarState extends State<RegisterStar> {
                           width: 150,
                           height: 150,
                               child: FlareActor(
-                                'assets/animations/'+ starAssets[_selectedColor] +'Star.flr',
+                                //'assets/animations/'+ starAssets[_selectedColor] +'Star.flr',
+                                'assets/animations/'+ starAssets[int.parse(colorController.text)] +'Star.flr',
                                   animation: 'rotation',
                                   fit: BoxFit.cover,
                                 ),
@@ -180,7 +189,7 @@ class _RegisterStarState extends State<RegisterStar> {
                           child: 
                             Form(
                               key: _formKey,
-                              child: Info(nameController: nameController, sizeController: sizeController, massController: massController, ageController: ageController, distanceController: distanceController, type: type, deathController: deathController),
+                              child: Info(nameController: nameController, sizeController: sizeController, massController: massController, ageController: ageController, distanceController: distanceController, type: type, deathController: deathController, selectedColor: colorController, notifyParent: refresh),
                             )
                           ),
                       ),
@@ -298,8 +307,9 @@ class _RegisterStarState extends State<RegisterStar> {
 
 class Info extends StatefulWidget {
 
-  Info({this.nameController, this.sizeController, this.massController, this.ageController, this.distanceController, this.type, this.deathController});
+  Info({this.nameController, this.sizeController, this.massController, this.ageController, this.distanceController, this.type, this.deathController, this.selectedColor, @required this.notifyParent});
 
+  final Function() notifyParent;
   final nameController;
   final sizeController;
   final massController;
@@ -307,6 +317,7 @@ class Info extends StatefulWidget {
   final distanceController;
   final type;
   final deathController;
+  final selectedColor;
   DeathState _deathState;
 
   @override
@@ -421,7 +432,11 @@ class _InfoState extends State<Info> {
                               value: DeathState.viva,
                               groupValue: widget._deathState,
                               onChanged: (DeathState value) {
-                                setState(() { widget.deathController.text = "false"; });
+                                setState(() { 
+                                  widget.deathController.text = "false"; 
+                                  widget.selectedColor.text = 3.toString(); 
+                                  widget.notifyParent();
+                                  });
                               },
                             ),
                             Text("Viva", style: TextStyle(color: Colors.pink[700], fontSize: 18),)
@@ -435,7 +450,10 @@ class _InfoState extends State<Info> {
                               value: DeathState.morta,
                               groupValue: widget._deathState,
                               onChanged: (DeathState value) {
-                                setState(() { widget.deathController.text = "true"; });
+                                setState(() { 
+                                  widget.deathController.text = "true";
+                                  widget.selectedColor.text = 5.toString(); 
+                                  widget.notifyParent();});
                               },
                             ),
                             Text("Morta", style: TextStyle(color: Colors.pink[700], fontSize: 18),)
@@ -447,8 +465,6 @@ class _InfoState extends State<Info> {
                 ),
               )
               : Container(),
-
-              
             ],
               ),
             margin: const EdgeInsets.symmetric(
