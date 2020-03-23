@@ -205,6 +205,7 @@ class NameList extends StatelessWidget {
             satelliteId: item.satelliteId,
             planetId: item.planetId,
             starId: item.starId,
+            orbitColor: item.orbitColor,
           );
           items.add(orbit);
         }
