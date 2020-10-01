@@ -10,11 +10,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Galaxy Flutter',
       theme: ThemeData(
-        primarySwatch: Colors.purple,
-        textSelectionHandleColor: Colors.purple[700],
-        cursorColor: Colors.purple[700],
-        scaffoldBackgroundColor: Color(0xff380b4c)
-      ),
+          primarySwatch: Colors.purple,
+          textSelectionHandleColor: Colors.purple[700],
+          cursorColor: Colors.purple[700],
+          scaffoldBackgroundColor: Color(0xff380b4c)),
       initialRoute: RouteGenerator.INITIAL_ROUTE,
       //initialRoute: RouteGenerator.ROUTE_PLANETAS,
       onGenerateRoute: RouteGenerator.generateRoute,
